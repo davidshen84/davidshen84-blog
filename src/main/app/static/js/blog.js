@@ -22,69 +22,6 @@ function redirectLinks() {
   });
 }
 
-/*function updateUI(title, content) {
-  // update browser title
-  document.title = title;
-
-  // update page title
-  $('#title').text(title);
-
-  // update breadcrumbs navigation
-  var path = window.location.pathname;
-  path = path.substr(1); // strip the leading slash
-  if(path[path.length-1] == '/') // and the ending slash
-    path = path.substr(0, path.length-1);
-
-  // build breadcrumbs items
-  var pathsplit = path.split('/');
-  var pathmapping = new Array();
-  for(var i=0; i<pathsplit.length; i++) {
-    var t = '';
-    for(var j=0; j<=i; j++) {
-      t += '/' + pathsplit[j];
-    }
-    pathmapping[i] = {key: pathsplit[i], value: t};
-  }
-
-  var template = _.template(
-    "{% _.each(p, function(e, i, l) {\
-      if(i!=l.length-1) { %}\
-<li><a href=\"{{e.value}}\">{{e.key}}</a><span class=\"divider\">/</span></li>\
-{% } else { %}\
-<li class=\"active\">{{e.key}}</li>\
-      {% }}); %}");
-
-  $('nav > ul').html(template({p: pathmapping}));
-
-  // update content
-  $('#content').html(content);
-
-  // bind route events
-  redirectLinks();
-}*/
-
-/*function contentFromArchives(archives, year, month) {
-  var content = null;
-
-  if(month === undefined) {
-  // filter by year only
-    var template = _.template(
-      "{% _.each(a[y], function(titles, m) { %}\
-{{m}}\n\n\
-{% _.each(titles, function(t) { %}\
-- [{{t}}](/blog/{{y}}/{{m}}/{{t}})\n\
-{% });}) %}");
-    content = converter.makeHtml(template({a: archives, y: year}));
-  } else {
-    // filter by year and month
-    var template = _.template("{%_.each(a[y][m], function(t) {%}- [{{t}}](/blog/{{y}}/{{m}}/{{t}})\n{%});%}");
-
-    content = template({a: archives, y: year, m: month});
-  }
-
-  return content;
-}*/
-
 // :data: a jQuery object
 // :showComment: control the visibility of the commants and the add comment form
 function updatePage(data, showComment) {
@@ -173,7 +110,7 @@ $(function(){
   {
     model: new BlogComment(),
     commentel: $('#comments'),
-    commentTemplate: _.template('<dt>{{ screenname }}:</dt><dd>{{ comment }}</dd>'),
+    commentTemplate: _.template('<dt><em>{{ screenname }}</em> on {{ created }}:</dt><dd class="well">{{ comment }}</dd>'),
     events: {
       'click .clear': 'clear'
     },
@@ -222,11 +159,19 @@ $(function(){
 
       // update client
       var children = this.commentel.children();
+      var date = new Date();
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      month = month < 10 ? '0' + month : month;
+      var dateOfMonth = date.getDate() + 1;
+      dateOfMonth = dateOfMonth > 10 ? dateOfMonth : '0' + dateOfMonth;
+
       var il = this.commentTemplate(
       {
         'email': this.model.get('email'),
         'screenname': model.get('screenname'),
-        'comment': model.get('comment')
+        'comment': model.get('comment'),
+        'created': year + '-' + month + '-' + dateOfMonth
       });
 
       this.commentel.append(il);
