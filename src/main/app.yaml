@@ -1,0 +1,38 @@
+application: davidshen84
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /blog/static
+  static_dir: blogapp/static
+
+- url: /blog/api.*
+  script: blogapp.myblogapi.app
+  login: admin
+
+- url: /blog/comment/api.*
+  script: blogapp.mycommentapi.app
+  #login: admin
+
+- url: /blog/admin
+  static_files: blogapp/templates/admin.html
+  upload: blogapp/templates/admin.html
+  login: admin
+
+- url: /blog/admin/logout
+  script: blogapp.mycommentapi.app
+
+- url: /blog.*
+  script: blogapp.myblog.app
+
+libraries:
+- name: jinja2
+  version: "2.6"
+- name: markupsafe
+  version: "0.15"

@@ -1,0 +1,83 @@
+{% if not isXhr %}
+{% extends "base.html" %}
+{% endif %}
+
+{% block title %}
+<title>{{ title|title }}</title>
+{% endblock %}
+
+{% block nav %}
+<ul id="nav" class="breadcrumb">
+{% for i in breadcrumbs %}
+  {% if not loop.last %}
+    <li><a href="{{i['href']}}">{{i['text']}}</a><span class="divider">/</span></li>
+  {% else %}
+    <li class="active">{{i['text']}}</li>
+  {% endif %}
+{% endfor %}
+</ul>
+{% endblock %}
+
+{% block article %}
+<article id="article" class="markdown">
+{% if article %}
+  {{ article|safe }}
+{% else %}
+  {% if month %}
+    <ul class="nav nav-list">
+    {% for t in archives[year][month] %}
+      <li><a href="{{year}}/{{month}}/{{t}}">{{t}}</a></li>
+    {% endfor %}
+    </ul>
+  {% elif year %}
+    <ul class="nav nav-list">
+    {% for m, ts in archives[year].iteritems() %}
+      <li class="nav-header">{{ monthFullName[m-1] }}</li>
+      {% for t in ts %}
+        <li><a href="{{ year }}/{{ m }}/{{ t }}">{{ t }}</a></li>
+      {% endfor %}
+    {% endfor %}
+    </ul>
+  {% elif tag %}
+    <ul class="nav nav-list">
+    {% for y, m, t in tags[tag] %}
+      <li><a href="{{ y }}/{{ m }}/{{ t }}">{{ t }}</a></li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    <ul class="nav nav-list">
+    {% for tag, metas in tags.iteritems() %}
+      <li class="nav-header">{{ tag }}</li>
+      {% for y, m, t in metas %}
+        <li><a href="{{ y }}/{{ m }}/{{ t }}">{{ t }}</a></li>
+      {% endfor %}
+    {% endfor %}
+    </ul>  
+  {% endif %}
+{% endif %}
+</article>
+{% endblock %}
+
+{% block comments %}
+<dl id="comments">
+{% for c in comments %}
+  <dt><em>{{ c.screenname }}</em> on {{ c.created }}:</dt>
+  <dd  class="well">{{ c.comment }}</dd>
+{% endfor %}
+</dl>
+{% endblock %}
+
+{% block scripts %}
+{% if not isXhr %}
+  {# <script type="text/javascript" src="static/js/Markdown.Converter.js"></script> #}
+  <script type="text/javascript" src="static/js/blog.js"></script>
+  {# <script type="text/javascript" src="static/js/router.js"></script> #}
+  <script type="text/javascript">
+    // bootstrap script
+    var refbase = '{{ refbase }}'
+    var articlePath = encodeURI('{{ articlePath }}');
+
+    var isInitialized = false;
+  </script>
+{% endif %}
+{% endblock %}

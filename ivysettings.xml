@@ -1,0 +1,30 @@
+<ivysettings>
+  <resolvers>
+    <url name="jquery">
+      <artifact pattern="http://[organization]/[module]-[revision](.[min]).[ext]"/>
+    </url>
+    <url name="backbone">
+      <artifact pattern="http://[organization]/[module]/[module](-[min]).[ext]"/>
+    </url>
+    <url name="epiceditor">
+      <artifact pattern="http://[organization]/[module]/[artifact]-[revision].[ext]"/>
+    </url>
+    <url name="bootstrap">
+      <artifact pattern="http://[organization]/[module]/assets/[artifact].[ext]"/>
+    </url>
+    <url name="underscore">
+      <artifact pattern="http://[organization]/[module](-[min]).[ext]"/>
+    </url>
+    <url name="lesscss">
+      <artifact pattern="http://[organization]/files/[artifact]-[revision].min.[ext]"/>
+    </url>
+  </resolvers>
+  <modules>
+    <module organisation="code.jquery.com" resolver="jquery"/>
+    <module organisation="documentcloud.github.com" resolver="backbone"/>
+    <module organisation="epiceditor.com" resolver="epiceditor"/>
+    <module organisation="twitter.github.com" resolver="bootstrap"/>
+    <module organisation="underscorejs.org" resolver="underscore"/>
+    <module organisation="lesscss.googlecode.com" resolver="lesscss"/>
+  </modules>
+</ivysettings>

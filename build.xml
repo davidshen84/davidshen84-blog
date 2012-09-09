@@ -1,0 +1,115 @@
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="markdownBlog" default="build" basedir=".">
+    <description>
+        A blog powered by markdown2
+    </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="dist" location="dist"/>
+  
+  <property name="staticdir" location="${build}/app/static"/>
+  <property name="jsdir" location="${staticdir}/js"/>
+  <property name="jquery" value="jquery-1.8.0.js"/>
+  <property name="backbone" value="backbone-latest.js"/>
+  <property name="epiceditor" value="EpicEditor-v0.1.1"/>
+  <property name="underscore" value="underscore-latest.js"/>
+  <property name="bootstrap" value="bootstrap-latest"/>
+  <property name="lesscss" value="less-1.3.0.js"/>
+
+  <property name="maindir" location="src/main"/>
+  <property name="testdir" location="src/test"/>
+  <property name="py25" location="/usr/lib64/python2.5/site-packages"/>
+  <property name="gaesdk" location="/home/xi/google_appengine/"/>
+
+  <target name="resolve"
+          description="Resolve ivy">
+    <ivy:retrieve/>
+  </target>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+  </target>
+
+  <target name="build" depends="init"
+          description="generate the distribution" >
+    <!-- Create the distribution directory -->
+    <mkdir dir="${build}"/>
+
+    <!-- Copy src -->
+    <copy todir="${build}">
+      <fileset dir="${maindir}"/>
+    </copy>
+
+    <copy todir="${build}\test">
+      <fileset dir="${testdir}"/>
+    </copy>
+
+    <!-- Copy lib -->
+    <copy file="lib/${jquery}" tofile="${jsdir}/jquery.js"/>
+    <copy file="lib/${backbone}" tofile="${jsdir}/backbone.js"/>
+    <copy file="lib/${underscore}" tofile="${jsdir}/underscore.js"/>
+    <copy file="lib/${lesscss}" tofile="${jsdir}/less.js"/>
+    <unzip src="lib/${epiceditor}.zip" dest="lib"/>
+    <copy todir="${staticdir}">
+      <fileset dir="lib/${epiceditor}"/>
+    </copy>
+    <unzip src="lib/${bootstrap}.zip" dest="lib"/>
+    <copy todir="${staticdir}/bootstrap">
+      <fileset dir="lib/bootstrap"/>
+    </copy>
+    <copy file="${py25}/markdown2.py" todir="${build}"/>
+
+    <zip destfile="${build}/werkzeug.zip"
+      basedir="${py25}"
+      includes="werkzeug/"
+      excludes="**/testsuite/**, **/debug/**, **/*.pyc, **/*.pyo"/>
+
+    <zip destfile="${build}/flask.zip"
+      basedir="${py25}"
+      includes="flask/"
+      excludes="**/testsuite/**, **/debug/**, **/*.pyc, **/*.pyo"/>
+  </target>
+
+  <target name="dist" depends="build"
+          description="generate the distribution" >
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}"/>
+  </target>
+
+  <target name="test" depends="build"
+          description="unit test">
+    <!-- Execute the unittest -->
+    <exec executable="python" dir="${build}\test">
+      <arg value="testblog.py"/>
+      <arg value="${gaesdk}"/>
+    </exec>
+
+    <exec executable="python" dir="${build}\test">
+      <arg value="testcomment.py"/>
+      <arg value="${gaesdk}"/>
+    </exec>
+
+    <exec executable="python" dir="${build}\test">
+      <arg value="testmycommentapi.py"/>
+      <arg value="${gaesdk}"/>
+    </exec>
+
+    <exec executable="python" dir="${build}\test">
+      <arg value="testmyblogapi.py"/>
+      <arg value="${gaesdk}"/>
+    </exec>
+  </target>
+
+  <target name="clean"
+          description="clean up">
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+
+  <target name="cleanivy"
+          description="clean ivy cache">
+    <ivy:cleancache />
+  </target>
+</project>

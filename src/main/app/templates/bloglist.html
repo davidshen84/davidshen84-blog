@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+<div id="content" class="markdown">{{content}}</div>
+
+{% block breadcrumb %}
+<ul class="breadcrumb">
+  {% for i in items %}
+    {% if not loop.last %}
+      <li><a href="{{i['href']}}">{{i['text']}}</a><span class="divider">/</span></li>
+    {% else %}
+      <li class="active">{{i['text']}}<span class="divider">/</span></li>
+    {% endif %}
+  {% endfor %}
+</ul>
+{% endblock %}
