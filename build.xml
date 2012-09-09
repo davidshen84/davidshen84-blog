@@ -3,23 +3,22 @@
         A blog powered by markdown2
     </description>
   <!-- set global properties for this build -->
-  <property name="src" location="src"/>
   <property name="build" location="build"/>
   <property name="dist" location="dist"/>
-  
-  <property name="staticdir" location="${build}/app/static"/>
-  <property name="jsdir" location="${staticdir}/js"/>
-  <property name="jquery" value="jquery-1.8.0.js"/>
-  <property name="backbone" value="backbone-latest.js"/>
-  <property name="epiceditor" value="EpicEditor-v0.1.1"/>
-  <property name="underscore" value="underscore-latest.js"/>
-  <property name="bootstrap" value="bootstrap-latest"/>
-  <property name="lesscss" value="less-1.3.0.js"/>
-
-  <property name="maindir" location="src/main"/>
-  <property name="testdir" location="src/test"/>
-  <property name="py25" location="/usr/lib64/python2.5/site-packages"/>
+  <property name="src" location="src"/>
+  <property name="main" location="${src}/main"/>
+  <property name="test" location="${src}/test"/>
+  <property name="static" location="${build}/app/static"/>
   <property name="gaesdk" location="/home/xi/google_appengine/"/>
+  <property name="js" location="${static}/js"/>
+  <property name="py25" location="/usr/lib64/python2.5/site-packages"/>
+
+  <property name="backbone" value="backbone-latest.js"/>
+  <property name="bootstrap" value="bootstrap-latest"/>
+  <property name="epiceditor" value="EpicEditor-v0.1.1"/>
+  <property name="jquery" value="jquery-1.8.0.js"/>
+  <property name="lesscss" value="less-1.3.0.js"/>
+  <property name="underscore" value="underscore-latest.js"/>
 
   <target name="resolve"
           description="Resolve ivy">
@@ -38,24 +37,26 @@
 
     <!-- Copy src -->
     <copy todir="${build}">
-      <fileset dir="${maindir}"/>
+      <fileset dir="${main}"/>
     </copy>
 
     <copy todir="${build}\test">
-      <fileset dir="${testdir}"/>
+      <fileset dir="${test}"/>
     </copy>
 
     <!-- Copy lib -->
+<!--
     <copy file="lib/${jquery}" tofile="${jsdir}/jquery.js"/>
-    <copy file="lib/${backbone}" tofile="${jsdir}/backbone.js"/>
-    <copy file="lib/${underscore}" tofile="${jsdir}/underscore.js"/>
-    <copy file="lib/${lesscss}" tofile="${jsdir}/less.js"/>
+-->
+    <copy file="lib/${backbone}" tofile="${js}/backbone.js"/>
+    <copy file="lib/${underscore}" tofile="${js}/underscore.js"/>
+    <copy file="lib/${lesscss}" tofile="${js}/less.js"/>
     <unzip src="lib/${epiceditor}.zip" dest="lib"/>
-    <copy todir="${staticdir}">
+    <copy todir="${static}">
       <fileset dir="lib/${epiceditor}"/>
     </copy>
     <unzip src="lib/${bootstrap}.zip" dest="lib"/>
-    <copy todir="${staticdir}/bootstrap">
+    <copy todir="${static}/bootstrap">
       <fileset dir="lib/bootstrap"/>
     </copy>
     <copy file="${py25}/markdown2.py" todir="${build}"/>

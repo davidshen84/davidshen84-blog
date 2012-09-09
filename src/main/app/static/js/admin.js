@@ -71,7 +71,7 @@ $(function() {
     render: function() {
       var view = this;
       // update content view
-      this.ee.import(view.model.get('title'), view.model.get('content'));
+      this.ee.importFile(view.model.get('title'), view.model.get('content'));
       // update control statuses
       this.$('.controller').html(
         this.template(_.extend(
@@ -100,20 +100,22 @@ $(function() {
       view.options.searchView.editorView = view;
 
       // initialize the EE only once
-      var editor = new EpicEditor(this.$('.contentview').get(0));
-      editor.options({
-        basePath: 'static/epiceditor'
-      })
-      .load()
+      var editor = new EpicEditor({
+          'container': this.$('.contentview').get(0),
+          'basePath': 'static/epiceditor'
+      });
+      this.ee = editor;
+
+      editor.load()
+      .importFile(view.model.get('title'), view.model.get('content'))
       .preview()
       // bind save event
       .on('preview', function() {
-        var content = $(editor.get('editor')).val();
+        var content = editor.getElement('editor').body.innerText;
         view.model.set('content', content);
         view.saved = false;
         view.render();
       });
-      this.ee = editor;
     },
     events: {
       'click #btnsave': 'save',
@@ -132,7 +134,7 @@ $(function() {
       title = title[0].substr(1);
 
       view.model.save(
-        { title: title },            
+        { title: title },
         {
           success: function(model, response) {
             // sync. id with title
