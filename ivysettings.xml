@@ -4,7 +4,7 @@
       <artifact pattern="http://[organization]/[module]-[revision](.[min]).[ext]"/>
     </url>
     <url name="backbone">
-      <artifact pattern="http://[organization]/[module]/[module](-[min]).[ext]"/>
+      <artifact pattern="http://[organization]/[module]/[artifact].[ext]"/>
     </url>
     <url name="epiceditor">
       <artifact pattern="http://[organization]/[module]/[artifact]-[revision].[ext]"/>
@@ -13,10 +13,18 @@
       <artifact pattern="http://[organization]/[module]/assets/[artifact].[ext]"/>
     </url>
     <url name="underscore">
-      <artifact pattern="http://[organization]/[module](-[min]).[ext]"/>
+      <artifact pattern="http://[organization]/[artifact].[ext]"/>
     </url>
-    <url name="lesscss">
-      <artifact pattern="http://[organization]/files/[artifact]-[revision].min.[ext]"/>
+    <chain name="googlecode">
+      <url name="url">
+        <artifact pattern="http://[module].[organization]/files/[artifact]-[revision][suffix].[ext]"/>
+      </url>
+      <filesystem name="fs">
+        <artifact pattern="/home/xi/Downloads/[artifact]-[revision][suffix].[ext]"/>
+      </filesystem>
+    </chain>
+    <url name="yuicompressor">
+      <artifact pattern="http://[organization]/releases/[module]/[artifact]-[revision].[ext]"/>
     </url>
   </resolvers>
   <modules>
@@ -25,6 +33,7 @@
     <module organisation="epiceditor.com" resolver="epiceditor"/>
     <module organisation="twitter.github.com" resolver="bootstrap"/>
     <module organisation="underscorejs.org" resolver="underscore"/>
-    <module organisation="lesscss.googlecode.com" resolver="lesscss"/>
+    <module organisation="googlecode.com" resolver="googlecode"/>
+    <module organisation="yui.zenfs.com" resolver="yuicompressor"/>
   </modules>
 </ivysettings>

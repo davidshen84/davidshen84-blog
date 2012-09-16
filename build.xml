@@ -1,37 +1,90 @@
 <project xmlns:ivy="antlib:org.apache.ivy.ant" name="markdownBlog" default="build" basedir=".">
-    <description>
-        A blog powered by markdown2
-    </description>
+  <description>
+      A blog powered by markdown2
+  </description>
+
   <!-- set global properties for this build -->
   <property name="build" location="build"/>
   <property name="dist" location="dist"/>
   <property name="src" location="src"/>
   <property name="main" location="${src}/main"/>
   <property name="test" location="${src}/test"/>
-  <property name="static" location="${build}/app/static"/>
   <property name="gaesdk" location="/home/xi/google_appengine/"/>
-  <property name="js" location="${static}/js"/>
   <property name="py25" location="/usr/lib64/python2.5/site-packages"/>
+  <property name="jslint" value="jslint4java-2.0.2"/>
+  <property name="jslint.zip" location="lib/${jslint}.zip"/>
+  <property name="jslint.jar" location="lib/${jslint}.jar"/>
+  <property name="yuicompressor" value="yuicompressor-2.4.7"/>
+  <property name="yuicompressor.zip" location="lib/${yuicompressor}.zip"/>
+  <property name="yuicompressor.jar" location="lib/${yuicompressor}.jar"/>
 
   <property name="backbone" value="backbone-latest.js"/>
+  <property name="backbone-min" value="backbone-min-latest.js"/>
   <property name="bootstrap" value="bootstrap-latest"/>
-  <property name="epiceditor" value="EpicEditor-v0.1.1"/>
+  <property name="epiceditor" value="EpicEditor-v0.1.1.1"/>
+<!--
   <property name="jquery" value="jquery-1.8.0.js"/>
+-->
   <property name="lesscss" value="less-1.3.0.js"/>
   <property name="underscore" value="underscore-latest.js"/>
+  <property name="underscore-min" value="underscore-min-latest.js"/>
+
+  <taskdef name="jslint"
+           classname="com.googlecode.jslint4java.ant.JSLintTask"
+           classpath="${jslint.jar}" />
 
   <target name="resolve"
           description="Resolve ivy">
     <ivy:retrieve/>
+    <unzip src="${jslint.zip}" dest="lib">
+      <patternset>
+          <include name="${jslint}/${jslint}.jar"/>
+      </patternset>
+      <mapper type="flatten"/>
+    </unzip>
+    <unzip src="${yuicompressor.zip}" dest="lib">
+      <patternset>
+          <include name="${yuicompressor}/build/${yuicompressor}.jar"/>
+      </patternset>
+      <mapper type="flatten"/>
+    </unzip>
+  </target>
+
+  <target name="yuicompressor">
+    <exec executable="java">
+      <arg value="-jar"/>
+      <arg value="${yuicompressor.jar}"/>
+      <arg value="--type"/>
+      <arg value="${type}"/>
+      <arg value="--charset"/>
+      <arg value="utf-8"/>
+      <arg value="-o"/>
+      <arg value="${out}"/>
+      <arg value="${in}"/>
+    </exec>
   </target>
 
   <target name="init">
-    <!-- Create the time stamp -->
+    <!-- create the time stamp -->
     <tstamp/>
   </target>
 
-  <target name="build" depends="init"
+  <target name="run-jslint">
+    <property name="src.js" location="${main}/app/static/js"/>
+    <jslint options="indent=2,nomen=true,regexp=true,es5=true">
+      <predef>$,_,Backbone,EpicEditor,window,document,isInitialized,refbase</predef>
+      <formatter type="plain" destfile="jslint.out" />
+      <fileset file="${src.js}/admin.js"/>
+      <fileset file="${src.js}/blog.js"/>
+    </jslint>
+  </target>
+
+  <target name="build" depends="init, run-jslint"
           description="generate the distribution" >
+
+    <property name="static" location="${build}/app/static"/>
+    <property name="js" location="${static}/js"/>
+
     <!-- Create the distribution directory -->
     <mkdir dir="${build}"/>
 
@@ -45,9 +98,6 @@
     </copy>
 
     <!-- Copy lib -->
-<!--
-    <copy file="lib/${jquery}" tofile="${jsdir}/jquery.js"/>
--->
     <copy file="lib/${backbone}" tofile="${js}/backbone.js"/>
     <copy file="lib/${underscore}" tofile="${js}/underscore.js"/>
     <copy file="lib/${lesscss}" tofile="${js}/less.js"/>
@@ -72,10 +122,63 @@
       excludes="**/testsuite/**, **/debug/**, **/*.pyc, **/*.pyo"/>
   </target>
 
-  <target name="dist" depends="build"
+  <target name="dist" depends="init, run-jslint"
           description="generate the distribution" >
-    <!-- Create the distribution directory -->
+
+    <property name="static" location="${dist}/app/static"/>
+    <property name="js" location="${static}/js"/>
+
+    <!-- create the distribution directory -->
     <mkdir dir="${dist}"/>
+
+    <!-- copy src -->
+    <copy todir="${dist}">
+      <fileset dir="${main}"/>
+    </copy>
+
+    <!-- copy lib -->
+    <copy file="lib/${backbone-min}" tofile="${js}/backbone.js"/>
+    <copy file="lib/${underscore-min}" tofile="${js}/underscore.js"/>
+    <copy file="lib/${lesscss}" tofile="${js}/less.js"/>
+    <unzip src="lib/${epiceditor}.zip" dest="lib"/>
+    <copy todir="${static}">
+      <fileset dir="lib/${epiceditor}"/>
+    </copy>
+    <move file="${static}/epiceditor/js/epiceditor.min.js"
+          tofile="${static}/epiceditor/js/epiceditor.js"/>
+    <unzip src="lib/${bootstrap}.zip" dest="lib"/>
+    <copy todir="${static}/bootstrap">
+      <fileset dir="lib/bootstrap"/>
+    </copy>
+    <move file="${static}/bootstrap/js/bootstrap.min.js"
+          tofile="${static}/bootstrap/js/bootstrap.js"/>
+          
+    <!-- copy dependent libs from system -->
+    <copy file="${py25}/markdown2.py" todir="${dist}"/>
+
+    <zip destfile="${dist}/werkzeug.zip"
+      basedir="${py25}"
+      includes="werkzeug/"
+      excludes="**/testsuite/**, **/debug/**, **/*.pyc, **/*.pyo"/>
+
+    <zip destfile="${dist}/flask.zip"
+      basedir="${py25}"
+      includes="flask/"
+      excludes="**/testsuite/**, **/debug/**, **/*.pyc, **/*.pyo"/>
+  </target>
+
+  <target name="compress" depends="dist">
+    <antcall target="yuicompressor">
+      <param name="in" value="${dist}/app/static/js/admin.js"/>
+      <param name="out" value="${dist}/app/static/js/admin.js"/>
+      <param name="type" value="js"/>
+    </antcall>
+    
+    <antcall target="yuicompressor">
+      <param name="in" value="${dist}/app/static/js/blog.js"/>
+      <param name="out" value="${dist}/app/static/js/blog.js"/>
+      <param name="type" value="js"/>
+    </antcall>
   </target>
 
   <target name="test" depends="build"
@@ -107,6 +210,7 @@
     <!-- Delete the ${build} and ${dist} directory trees -->
     <delete dir="${build}"/>
     <delete dir="${dist}"/>
+    <delete dir="lib"/>
   </target>
 
   <target name="cleanivy"

@@ -1,25 +1,34 @@
 <ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
   <info organisation="org.private.shen" module="blog"/>
   <dependencies>
+<!--
     <dependency org="code.jquery.com" name="jquery" rev="1.8.0">
       <artifact name="jquery" type="javascript" ext="js"/>
       <artifact name="jquery-min" type="javascript" ext="js" e:min="min"/>
     </dependency>
+-->
     <dependency org="documentcloud.github.com" name="backbone" rev="latest">
       <artifact name="backbone" type="javascript" ext="js"/>
-      <artifact name="backbone-min" type="javascript" ext="js" e:min="min"/>
+      <artifact name="backbone-min" type="javascript" ext="js"/>
     </dependency>
-    <dependency org="epiceditor.com" name="docs/downloads" rev="v0.1.1">
+    <dependency org="epiceditor.com" name="docs/downloads" rev="v0.1.1.1">
       <artifact name="EpicEditor" type="zip"/>
     </dependency>
     <dependency org="underscorejs.org" name="underscore" rev="latest">
       <artifact name="underscore" type="javascript" ext="js"/>
+      <artifact name="underscore-min" type="javascript" ext="js"/>
     </dependency>
     <dependency org="twitter.github.com" name="bootstrap" rev="latest">
       <artifact name="bootstrap" type="zip"/>
     </dependency>
-    <dependency org="lesscss.googlecode.com" name="lesscss" rev="1.3.0">
+    <dependency org="googlecode.com" name="lesscss" rev="1.3.0" e:suffix=".min">
       <artifact name="less" type="javascript" ext="js"/>
+    </dependency>
+    <dependency org="googlecode.com" name="jslint4java" rev="2.0.2" e:suffix="-dist">
+      <artifact name="jslint4java" type="zip"/>
+    </dependency>
+    <dependency org="yui.zenfs.com" name="yuicompressor" rev="2.4.7">
+      <artifact name="yuicompressor" type="zip"/>
     </dependency>
   </dependencies>
 </ivy-module>
