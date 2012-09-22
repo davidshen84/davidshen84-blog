@@ -72,7 +72,7 @@ $(function () {
     },
     //initialize: function (options) {/*nothing yet!*/},
     blog: function (year, month, title) {
-      if (isInitialized) {
+      if (window.isInitialized) {
         $.get(year + '/' + month + '/' + encodeURIComponent(title), null,
           function (data, textStatus) {
             updatePage($(data), true);
@@ -80,11 +80,11 @@ $(function () {
           });
       } else {
         redirectLinks();
-        isInitialized = true;
+        window.isInitialized = true;
       }
     },
     archives: function (year, month) {
-      if (isInitialized) {
+      if (window.isInitialized) {
         // get archive data
         var path = year + '/' + (month !== undefined ? (month + '/') : '');
 
@@ -95,7 +95,7 @@ $(function () {
           });
       } else {
         redirectLinks();
-        isInitialized = true;
+        window.isInitialized = true;
       }
     }
   });
@@ -190,5 +190,5 @@ $(function () {
   addComment = new BlogAddCommentFormView({el: $('#addcommentform form').get(0)});
 
   window.router = new BlogRouter();
-  Backbone.history.start({pushState: true, root: refbase});
+  Backbone.history.start({pushState: true, root: window.refbase});
 });
