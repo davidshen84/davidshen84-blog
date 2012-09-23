@@ -10,7 +10,7 @@
   <property name="main" location="${src}/main"/>
   <property name="test" location="${src}/test"/>
   <property name="gaesdk" location="/home/xi/google_appengine/"/>
-  <property name="py25" location="/usr/lib64/python2.5/site-packages"/>
+  <property name="py27" location="/usr/lib64/python2.7/site-packages"/>
   <property name="jslint" value="jslint4java-2.0.2"/>
   <property name="jslint.zip" location="lib/${jslint}.zip"/>
   <property name="jslint.jar" location="lib/${jslint}.jar"/>
@@ -107,15 +107,15 @@
     <copy todir="${build.static}/bootstrap">
       <fileset dir="lib/bootstrap"/>
     </copy>
-    <copy file="${py25}/markdown2.py" todir="${build}"/>
+    <copy file="${py27}/markdown2.py" todir="${build}"/>
 
     <zip destfile="${build}/werkzeug.zip"
-      basedir="${py25}"
+      basedir="${py27}"
       includes="werkzeug/"
       excludes="**/testsuite/**, **/debug/**, **/*.pyc, **/*.pyo"/>
 
     <zip destfile="${build}/flask.zip"
-      basedir="${py25}"
+      basedir="${py27}"
       includes="flask/"
       excludes="**/testsuite/**, **/debug/**, **/*.pyc, **/*.pyo"/>
   </target>
