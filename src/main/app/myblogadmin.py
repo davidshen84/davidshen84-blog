@@ -10,4 +10,4 @@ app = Flask(__name__)
 
 @app.route('/blog/admin/logout')
 def logout():
-	return redirect(users.create_logout_url('/blog'))
+  return redirect(users.create_logout_url('/blog'))

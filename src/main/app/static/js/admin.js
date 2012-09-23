@@ -108,22 +108,25 @@ $(function () {
     },
     initialize: function () {
       var view = this,
-      // initialize the EE only once
+        // initialize the EE only once
         editor = new EpicEditor({
           'container': this.$('.contentview').get(0),
           'basePath': 'static/epiceditor'
-        });
+        }),
+        filename = view.model.get('title');
 
       // associate editor view with search view
       view.options.searchView.editorView = view;
       this.ee = editor;
 
       editor.load()
-        .importFile(view.model.get('title'), view.model.get('content'))
+        .importFile(filename, view.model.get('content'))
         //.preview()
         // bind save event
         .on('preview', function () {
+          editor.save();
           var content = editor.getElement('editor').body.innerText;
+          content = editor.exportFile(filename);
           view.model.set('content', content);
           view.saved = false;
           view.render();
