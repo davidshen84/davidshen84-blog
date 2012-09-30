@@ -121,12 +121,10 @@ $(function () {
 
       editor.load()
         .importFile(filename, view.model.get('content'))
-        //.preview()
         // bind save event
         .on('preview', function () {
           editor.save();
-          var content = editor.getElement('editor').body.innerText;
-          content = editor.exportFile(filename);
+          var content = editor.exportFile(view.model.get('title'));
           view.model.set('content', content);
           view.saved = false;
           view.render();

@@ -9,6 +9,7 @@ from markdown2 import markdown
 from blog import Blog
 from blogcomment import BlogComment
 
+BAD_SP = unichr(0xa0)
 app = Flask(__name__)
 route_base = '/blog/'
 
@@ -37,7 +38,7 @@ def blog(year, month, title):
     year = created.year
     month = created.month
     blogtitle = myblog.title
-    blogcontent = myblog.content
+    blogcontent = myblog.content.replace(BAD_SP, ' ')
     breadcrumbs = [ {'href': '', 'text': 'blog'},
                     {'href': '%d/' % (year), 'text': year},
                     {'href': '%d/%d/' % (year, month), 'text': month},

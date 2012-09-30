@@ -33,6 +33,10 @@
   <target name="resolve"
           description="Resolve ivy">
     <ivy:retrieve conf="source"/>
+
+    <unzip src="lib/${epiceditor}.zip" dest="lib"/>
+    <unzip src="lib/${bootstrap}.zip" dest="lib"/>
+
     <unzip src="${jslint.zip}" dest="lib">
       <patternset>
           <include name="${jslint}/${jslint}.jar"/>
@@ -99,11 +103,13 @@
     <copy file="lib/${backbone}" tofile="${build.js}/backbone.js"/>
     <copy file="lib/${underscore}" tofile="${build.js}/underscore.js"/>
     <copy file="lib/${lesscss}" tofile="${build.js}/less.js"/>
-    <unzip src="lib/${epiceditor}.zip" dest="lib"/>
-    <copy todir="${build.static}">
+
+    <copy todir="${build.static}" force="true">
       <fileset dir="lib/${epiceditor}"/>
+<!--
+      <fileset dir="/home/xi/github/EpicEditor"/>
+-->
     </copy>
-    <unzip src="lib/${bootstrap}.zip" dest="lib"/>
     <copy todir="${build.static}/bootstrap">
       <fileset dir="lib/bootstrap"/>
     </copy>

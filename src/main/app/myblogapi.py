@@ -17,8 +17,6 @@ MSG_UPDATE_FAIL = 'update blog failed'
 MSG_NO_CONTENT = 'content is required'
 MSG_SAVE_DUP = 'duplicate title'
 
-BAD_SP = unichr(0xa0)
-
 app = Flask(__name__)
 route_base = '/blog/api/'
 
@@ -49,7 +47,7 @@ def create():
   # clean tags
   tags = [ t.strip() for t in tags ]
   tags = filter(lambda t: len(t) > 0, tags)
-  blogcontent = blog['content'].replace(BAD_SP, ' ')
+  blogcontent = blog['content']
   blogkey = Blog.create(blog['title'], blogcontent, tags)
 
   if blogkey:
@@ -65,7 +63,7 @@ def update(title):
   # clean tags
   tags = [ t.strip() for t in tags ]
   tags = filter(lambda t: len(t) > 0, tags)
-  blogcontent = blog['content'].replace(BAD_SP, ' ')
+  blogcontent = blog['content']
   blogkey = Blog.update(title, blogcontent, tags)
 
   if blogkey:
