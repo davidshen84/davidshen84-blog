@@ -23,6 +23,7 @@
 {% if article %}
   {{ article|safe }}
   <hr />
+  {% if not isXhr %}
   <div class="row socialbtn">
     <div class="span2">
       <a href="https://twitter.com/share" class="twitter-share-button" data-via="davidshen84" data-hashtags="blog">Tweet</a>
@@ -54,6 +55,9 @@
       </script>
     </div>
   </div>
+  {% else %}
+    <em style="font-size: smaller; color: gray;">Refresh to see the social share button!</em>
+  {% endif%}
 {% else %}
   {% if month %}
     <ul class="nav nav-list">
