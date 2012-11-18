@@ -66,6 +66,16 @@ class Blog(db.Model):
     return [ b.title for b in q ]
 
   @staticmethod
+  def getBlogStatus(publishedOnly=True):
+    q = db.Query(Blog)
+    if publishedOnly:
+      q.filter('published =', True)
+
+    return [ { 'title': b.title,
+              'published': b.published,
+              'lastmodified': str(b.lastmodified) } for b in q ]
+
+  @staticmethod
   def publish(title, published=True):
     blog = Blog.get_by_key_name(title)
     if blog:

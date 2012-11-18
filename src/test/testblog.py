@@ -77,11 +77,35 @@ class BlogTestCase(unittest.TestCase):
     self.assertTrue(blog1.published)
     self.assertFalse(blog2.published)
 
+  def testPublish_new(self):
+    key1 = Blog.create(self.title1, self.content1)
+    key2 = Blog.create(self.title2, self.content2)
+    
+    Blog.update(self.title1, published=True)
+
+    blog1 = Blog.get(key1)
+    blog2 = Blog.get(key2)
+
+    self.assertTrue(blog1.published)
+    self.assertFalse(blog2.published)
+
   def testUnpublish(self):
     key1 = Blog.create(self.title1, self.content1, published=True)
     key2 = Blog.create(self.title2, self.content2, published=True)
 
     Blog.publish(self.title1, False)
+
+    blog1 = Blog.get(key1)
+    blog2 = Blog.get(key2)
+
+    self.assertFalse(blog1.published)
+    self.assertTrue(blog2.published)
+
+  def testUnpublish_new(self):
+    key1 = Blog.create(self.title1, self.content1, published=True)
+    key2 = Blog.create(self.title2, self.content2, published=True)
+
+    Blog.update(self.title1, published=False)
 
     blog1 = Blog.get(key1)
     blog2 = Blog.get(key2)
@@ -135,7 +159,9 @@ class BlogTestCase(unittest.TestCase):
     # verify blog can be updated
     newtags = ['new', 'newnew']
     Blog.create(self.title1, self.content1, self.tags1)
-    Blog.update(self.title1, 'new', newtags)
+    updateData = {'content': 'new', 'tags': newtags}
+    # Blog.update(self.title1, content='new', tags=newtags)
+    Blog.update(self.title1, **updateData)
     blog = Blog.get_by_key_name(self.title1)
     self.assertIsNotNone(blog)
     self.assertEqual(blog.title, self.title1)

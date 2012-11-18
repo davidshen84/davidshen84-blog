@@ -71,10 +71,10 @@
 
   <target name="run-jslint">
     <property name="src.js" location="${main}/app/static/js"/>
-<!--     <antcall target="jslint">
-      <param name="in" value="${src.js}/admin.js"/>
-    </antcall> -->
     <delete file="jslint.out"/>
+    <antcall target="jslint">
+      <param name="in" value="${src.js}/admin.js"/>
+    </antcall>
     <antcall target="jslint">
       <param name="in" value="${src.js}/blog.js"/>
     </antcall>

@@ -90,13 +90,13 @@ class MyBlogApiTestCase(unittest.TestCase):
     self.assertEqual(200, r.status_code)
     self.assertEqual(content, Blog.get_by_key_name('test1').content)
 
+  @unittest.skip('outdated')
   def testPut_notexist(self):
     r = self.app.put(self.base + 'sync/test_notexist',
-      data=json.dumps({
+      data={
         'content': 'content',
         'tags': ['test']
-      }),
-      content_type='application/json')
+      })
     self.assertEqual(404, r.status_code)
 
   def testPut_badFormat(self):
@@ -114,25 +114,39 @@ class MyBlogApiTestCase(unittest.TestCase):
     self.assertEqual(200, r.status_code)
     self.assertEqual(True, Blog.get_by_key_name('test1').published)
 
+  def testPublish_new(self):
+    self.assertEqual(False, Blog.get_by_key_name('test1').published)
+    r = self.app.put(self.base + 'sync/test1',
+      data=json.dumps({'published': True}),
+      content_type='application/json')
+    self.assertEqual(200, r.status_code)
+    self.assertEqual(True, Blog.get_by_key_name('test1').published)
+
   def testPublish_notexist(self):
     r = self.app.put(self.base + 'syncpub/test_notexist', data={'published': 'true'})
     self.assertEqual(404, r.status_code)
-    
-  def testTitles(self):
+
+  def testPublish_notexist_new(self):
+    r = self.app.put(self.base + 'sync/test_notexist',
+      data=json.dumps({'published': 'true'}),
+      content_type='application/json')
+    self.assertEqual(404, r.status_code)
+
+  def testBlogStatus(self):
     Blog.create('atest', 'test content')
     Blog.create('btest', 'test content')
 
     # without filter
-    r = self.app.get(self.base + 'titles')
+    r = self.app.get(self.base + 'sync')
     self.assertEqual(200, r.status_code)
     data = json.loads(r.data)
-    self.assertEqual(3, len(data['titles']))
+    self.assertEqual(3, len(data['blogs']))
 
     # with filter
-    r = self.app.get(self.base + 'titles?f=ab')
+    r = self.app.get(self.base + 'sync?f=ab')
     self.assertEqual(200, r.status_code)
     data = json.loads(r.data)
-    self.assertEqual(2, len(data['titles']))
+    self.assertEqual(2, len(data['blogs']))
 
   def testArchives(self):
     now = datetime.now()

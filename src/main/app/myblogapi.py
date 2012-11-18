@@ -5,7 +5,7 @@ import re
 
 from apidecorator import login_admin, simpleauth
 from google.appengine.api import users
-from flask import Flask, render_template, request, jsonify, abort, redirect
+from flask import Flask, render_template, request, make_response, jsonify, abort, redirect, json
 from blog import Blog
 from datetime import datetime
 
@@ -24,6 +24,20 @@ route_base = '/blog/api/'
 @login_admin
 def index():
   return jsonify(msg=users.get_current_user().nickname(), logout=users.create_logout_url('/blog/api/'))
+
+@app.route(route_base + 'sync')
+def query():
+  blogs = Blog.getBlogStatus(False)
+  # apply filters if provided
+  f = request.values.get('f')
+  if f:
+    # filter the titles by each char
+    blogs = map(lambda c: filter(lambda b: b['title'].find(c) > -1, blogs), f)
+    # reduce multiple lists into one, and get unique
+    titles={}
+    blogs = filter(lambda b: not titles.has_key(b['title']) and not titles.update({b['title']: 1}), reduce(lambda x, y: x + y, blogs))
+
+  return jsonify(blogs=blogs)
 
 @app.route(route_base + 'sync/<title>')
 def fetch(title):
@@ -57,14 +71,26 @@ def create():
 
 @app.route(route_base + 'sync/<title>', methods=['PUT'])
 def update(title):
+  updateData = {}
   blog = request.json
 
-  tags = blog['tags']
-  # clean tags
-  tags = [ t.strip() for t in tags ]
-  tags = filter(lambda t: len(t) > 0, tags)
-  blogcontent = blog['content']
-  blogkey = Blog.update(title, blogcontent, tags)
+  # update tags
+  if blog.has_key('tags'):
+    tags = blog['tags']
+    # clean tags
+    tags = [ t.strip() for t in tags ]
+    tags = filter(lambda t: len(t) > 0, tags)
+    updateData['tags'] = tags
+
+  # update content
+  if blog.has_key('content'):
+    updateData['content'] = blog['content']
+
+  # update publish status
+  if blog.has_key('published'):
+    updateData['published'] = blog['published']
+
+  blogkey = Blog.update(title, **updateData)
 
   if blogkey:
     return jsonify(msg=MSG_OK)
@@ -86,19 +112,6 @@ def publish(title):
     return jsonify(msg=MSG_OK)
   else:
     return MSG_UPDATE_FAIL, 404
-
-@app.route(route_base + 'titles')
-def titles():
-  titles = Blog.allTitles(False)
-  # apply filters if provided
-  f = request.values.get('f')
-  if f:
-    # filter the titles by each char
-    titles = map(lambda c: filter(lambda t: t.find(c) > -1, titles), f)
-    # reduce multiple lists into one, and get unique
-    titles = list(set(reduce(lambda x, y: x + y, titles)))
-
-  return jsonify(titles=titles)
 
 @app.route(route_base + 'archives')
 @simpleauth

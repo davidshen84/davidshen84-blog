@@ -1,0 +1,13 @@
+<label class="text">Title:
+  <input id="searchText" ng-model="searchText" type="text" class="input-medium search-query" placeholder="title"/>
+</label>
+<ul>
+  <li ng-repeat="blog in blogs.blogs">
+    <span>{{blog.title}}</span>
+    <span class="pull-right">
+      <a href="#/edit/{{blog.title}}" class="">Edit</a>
+      <a href="#/" ng-class="{{ pubCls(blog.published) }}" ng-click="setPubStat(blog.title, !blog.published)">{{ getPubStat(blog.published) }}</a>
+    </span>
+  </li>
+</ul>
+<a href="#/new">new</a>

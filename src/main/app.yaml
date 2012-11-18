@@ -25,6 +25,10 @@ handlers:
   upload: app/templates/admin.html
   login: admin
 
+- url: /blog/admin/templates
+  static_dir: app/templates/admin
+  login: admin
+
 - url: /blog/admin/logout
   script: app.mycommentapi.app
 

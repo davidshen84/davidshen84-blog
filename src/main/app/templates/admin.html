@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!doctype html>
-<html lang="en">
+<html lang="en" ng-app="blog">
   <head>
     <title>Admin Page</title>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-    <script src="static/js/underscore.js"></script>
-    <script src="static/js/backbone.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular-resource.min.js"></script>
+    <script src="static/bootstrap/js/bootstrap.js"></script>
+    <script src="static/js/less.js"></script>
+    <!-- // <script src="static/js/underscore.js"></script> -->
+    <!-- // <script src="static/js/backbone.js"></script> -->
+    <script src="static/epiceditor/js/epiceditor.js"></script>
+    <script src="static/js/admin2.js"></script>
+
     <link href="static/bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" />
+    <link href="static/css/admin.css" type="text/css" rel="stylesheet" />
   </head>
   <body>
     <div class="navbar navbar-fixed-top">
@@ -31,45 +39,12 @@
         <h1>Admin Page</h1>
       </div>
       <div class="row">
-        <div class="span8 well">
-          <form class="form-search" id="searchview">
-            <label class="text">Title:
-              <input type="text" class="input-medium search-query title" data-provide="typeahead" />
-            </label>
-            <button type="button" class="btn edit">Edit</button>
-            <button type="button" class="btn btn-primary create">New</button>
-          </form>
-          <div id="viewcontainer">
-            <div class="contentview"></div>
-            <form class="form-inline controller"></form>
-          </div>
+        <div class="span8 well" ng-view>
+          
         </div>
         <div class="span3" id="commentsview">
-          <!-- <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">Archives</li>
-              {% for y, mo in archives.iteritems() %}
-              <li class="nav-header">{{ y }}</li>
-              {% for m, c in mo.iteritems() %}
-              <li><a href='/blog/{{y}}/{{m}}'>{{ m }} ({{ c|length }})</a></li>
-              {% endfor %}
-              {% endfor %}
-            </ul>
-          </div>
-          <div class="well sidebar-nav">
-            <ul class="nav nav-list">
-              <li class="nav-header">Tags</li>
-              {% for t, c in tags.iteritems() %}
-              <li><a href="#">{{t}} ({{c}})</a></li>
-              {% endfor %}
-            </ul>
-          </div> -->
         </div>
       </div>
     </div>
-    <script src="static/bootstrap/js/bootstrap.js"></script>
-    <script src="static/epiceditor/js/epiceditor.js"></script>
-    <script src="static/js/less.js"></script>
-    <script src="static/js/admin.js"></script>
   </body>
 </html>
