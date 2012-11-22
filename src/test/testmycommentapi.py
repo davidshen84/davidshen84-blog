@@ -81,7 +81,7 @@ class MyCommentApiTestCase(unittest.TestCase):
 
   def testCollection(self):
     BlogComment.create(self.blogkey1, 'user1', 'a@b.c', 'comments')
-    r = self.app.get(self.base + 'collection?title=%s' % ('test1'))
+    r = self.app.get(self.base + 'sync?title=%s' % ('test1'))
     self.assertEqual(200, r.status_code)
     self.assertEqual(1, len(json.loads(r.data)))
 

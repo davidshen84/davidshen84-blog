@@ -1,13 +1,14 @@
 <label class="text">Title:
-  <input id="searchText" ng-model="searchText" type="text" class="input-medium search-query" placeholder="title"/>
+  <input id="searchText" ng-model="search" type="text" class="input-medium search-query" placeholder="title"/>
 </label>
 <ul>
-  <li ng-repeat="blog in blogs.blogs">
+  <li ng-repeat="blog in blogs.blogs | filter:search">
     <span>{{blog.title}}</span>
     <span class="pull-right">
-      <a href="#/edit/{{blog.title}}" class="">Edit</a>
-      <a href="#/" ng-class="{{ pubCls(blog.published) }}" ng-click="setPubStat(blog.title, !blog.published)">{{ getPubStat(blog.published) }}</a>
+      <a href="#/edit/{{blog.title}}">Edit</a>
+      <a href="#" ng-class="{{ pubCls(blog.published) }}" ng-click="setPubStat(blog.title, !blog.published)">{{ getPubAction(blog.published) }}</a>
+      <a href="#" ng-click="delete(blog.title)">Delete</a>
     </span>
   </li>
 </ul>
-<a href="#/new">new</a>
+<a href="#/new" class="btn btn-primary">new</a>

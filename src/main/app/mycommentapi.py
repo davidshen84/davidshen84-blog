@@ -13,8 +13,8 @@ MSG_SAVE_ERROR = 'failed to save comment'
 app = Flask(__name__)
 route_base = '/blog/comment/api/'
 
-@app.route(route_base + 'collection')
-def collection():
+@app.route(route_base + 'sync')
+def query():
   title = request.values['title']
   blog = Blog.getByTitle(title)
   

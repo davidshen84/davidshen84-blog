@@ -8,48 +8,56 @@ function ListCtrl($scope, Blog) {
   };
 
   $scope.setPubStat = function (title, publish) {
-    Blog.update({ "title": title }, { "published": publish });
+    Blog.update({ "title": title }, { "published": publish },
+      function () {
+        $scope.blogs = Blog.query();
+      });
   };
 
-  $scope.getPubStat = function (published) {
+  $scope.getPubAction = function (published) {
     return published ? 'Unpublish' : 'Publish';
+  };
+
+  $scope.delete = function (title) {
+    Blog.delete({ "title": title });
   };
 }
 
-function CreateCtrl($scope, Blog, editor) {
+function CreateEditCtrl($scope, $routeParams, Blog, editor) {
   'use strict';
 
-  var titlePattern = /^#[^\n\r]*/i;
+  var titlePattern = /^#.*$/m;
+
+  if ($routeParams.title) {
+    Blog.get({title: $routeParams.title}, function (blog) {
+      editor().importFile(blog.title, blog.content);
+    });
+
+    // try to get comments
+  }
 
   function extractTitleFromContent(content) {
-    return titlePattern.exec(content);
+    var title = titlePattern.exec(content);
+
+    return title && title.length > 0 ? title[0].substr(1) : null;
   }
 
   $scope.save = function () {
-    console.log(editor().exportFile());
     var content = editor().exportFile(),
       title = extractTitleFromContent(content),
-      tags = $scope.tags.trim();
+      tags = $scope.tags || '';
 
-    if (title === null || title.length === 0) {
+    if (title === null) {
       window.alert('blog needs a title');
       return;
     }
 
     Blog.save({
-      title: title[0].substr(1),
-      content: content,
-      tags: tags.length ? $scope.tags.split(',') : []
+      "title": title,
+      "content": content,
+      "tags": tags.length ? $scope.tags.split(',') : []
     });
   };
-}
-
-function BlogEditCtrl($scope, $routeParams, Blog, editor) {
-  'use strict';
-
-  Blog.get({title: $routeParams.title}, function (blog) {
-    editor().importFile(blog.title, blog.content);
-  });
 }
 
 angular.module('blogapi', ['ngResource']).
@@ -57,10 +65,16 @@ angular.module('blogapi', ['ngResource']).
     'use strict';
 
     var Blog = $resource('api/sync/:title', {},
-      { query: { method: 'GET', isArray: false },
-        update: { method: 'PUT'} });
+      { "query": { "method": "GET", "isArray": false },
+        "update": { "method": "PUT" } });
 
     return Blog;
+  }).
+  factory('BlogComment', function ($resource) {
+    'use strict';
+
+    return $resource('comment/api/sync/:id', {},
+      { "query": { "method": "GET", "isArray": false } });
   });
 
 angular.module('blog', ['blogapi']).
@@ -68,10 +82,10 @@ angular.module('blog', ['blogapi']).
     'use strict';
 
     $routeProvider.
-      when('/', { controller: ListCtrl, templateUrl: '/blog/admin/templates/bloglist.html' }).
-      when('/edit/:title', { controller: BlogEditCtrl, templateUrl: '/blog/admin/templates/blogedit.html' }).
-      when('/new', { controller: CreateCtrl, templateUrl: '/blog/admin/templates/blogedit.html' }).
-      otherwise({ redirectTo: '/' });
+      when('/', { "controller": ListCtrl, "templateUrl": '/blog/admin/templates/bloglist.html' }).
+      when('/edit/:title', { "controller": CreateEditCtrl, "templateUrl": '/blog/admin/templates/blogedit.html' }).
+      when('/new', { "controller": CreateEditCtrl, "templateUrl": '/blog/admin/templates/blogedit.html' }).
+      otherwise({ "redirectTo": '/' });
   }).
   factory('editor', function () {
     'use strict';
