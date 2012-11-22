@@ -11,9 +11,6 @@
   <property name="test" location="${src}/test"/>
   <property name="gaesdk" location="/home/xi/google_appengine/"/>
   <property name="py27" location="/usr/lib64/python2.7/site-packages"/>
-  <property name="jslint" value="jslint4java-2.0.2"/>
-  <property name="jslint.zip" location="lib/${jslint}.zip"/>
-  <property name="jslint.jar" location="lib/${jslint}.jar"/>
   <property name="yuicompressor" value="yuicompressor-2.4.7"/>
   <property name="yuicompressor.zip" location="lib/${yuicompressor}.zip"/>
   <property name="yuicompressor.jar" location="lib/${yuicompressor}.jar"/>
@@ -37,22 +34,12 @@
     <unzip src="lib/${epiceditor}.zip" dest="lib"/>
     <unzip src="lib/${bootstrap}.zip" dest="lib"/>
 
-    <unzip src="${jslint.zip}" dest="lib">
-      <patternset>
-          <include name="${jslint}/${jslint}.jar"/>
-      </patternset>
-      <mapper type="flatten"/>
-    </unzip>
     <unzip src="${yuicompressor.zip}" dest="lib">
       <patternset>
           <include name="${yuicompressor}/build/${yuicompressor}.jar"/>
       </patternset>
       <mapper type="flatten"/>
     </unzip>
-    
-    <taskdef name="jslint"
-             classname="com.googlecode.jslint4java.ant.JSLintTask"
-             classpath="${jslint.jar}" />
   </target>
 
   <target name="yuicompressor">
@@ -69,6 +56,25 @@
     </exec>
   </target>
 
+  <target name="jslint">
+    <exec executable="jslint" output="jslint.out" append="true" failonerror="true">
+      <arg value="--indent"/>
+      <arg value="2"/>
+      <arg value="--browser"/>
+      <arg value="--plusplus"/>
+      <arg value="--regexp"/>
+      <arg value="--predef"/>
+      <arg value="$"/>
+      <arg value="--predef"/>
+      <arg value="Backbone"/>
+      <arg value="--predef"/>
+      <arg value="_"/>
+      <arg value="--nomen"/>
+      <arg value="--"/>
+      <arg value="${in}"/>
+    </exec>
+  </target>
+
   <target name="init" depends="resolve, run-jslint">
     <!-- create the time stamp -->
     <tstamp/>
@@ -76,12 +82,13 @@
 
   <target name="run-jslint">
     <property name="src.js" location="${main}/app/static/js"/>
-    <jslint options="indent=2,nomen=true,regexp=true,es5=true">
-      <predef>$,_,Backbone,EpicEditor,window,document</predef>
-      <formatter type="plain" destfile="jslint.out" />
-      <fileset file="${src.js}/admin.js"/>
-      <fileset file="${src.js}/blog.js"/>
-    </jslint>
+<!--     <antcall target="jslint">
+      <param name="in" value="${src.js}/admin.js"/>
+    </antcall> -->
+    <delete file="jslint.out"/>
+    <antcall target="jslint">
+      <param name="in" value="${src.js}/blog.js"/>
+    </antcall>
   </target>
 
   <target name="build" depends="init"
