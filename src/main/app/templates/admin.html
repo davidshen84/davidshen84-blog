@@ -3,6 +3,9 @@
 <html lang="en" ng-app="blog">
   <head>
     <title>Admin Page</title>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="static/css/admin.less" type="text/css" rel="stylesheet/less" />
+
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular-resource.min.js"></script>
@@ -13,11 +16,6 @@
     <!-- // <script src="static/js/backbone.js"></script> -->
     <script src="static/epiceditor/js/epiceditor.js"></script>
     <script src="static/js/admin2.js"></script>
-
-    <!-- <link href="static/bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" /> -->
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
-
-    <link href="static/css/admin.css" type="text/css" rel="stylesheet" />
   </head>
   <body>
     <div class="navbar navbar-fixed-top">
@@ -41,11 +39,7 @@
       <div class="hero-unit">
         <h1>Admin Page</h1>
       </div>
-      <div class="row">
-        <div class="span8 well" ng-view></div>
-        <div class="span3" id="commentsview">
-        </div>
-      </div>
+      <div class="row" ng-view></div>
     </div>
   </body>
 </html>

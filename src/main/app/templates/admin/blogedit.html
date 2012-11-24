@@ -1,4 +1,15 @@
-<eeditor id="ee"></eeditor>
-<label><input type="text" ng-model="tags" placeholder="Tags"/></label>
-<button ng-click="save()" class="btn btn-primary">save</button>
-<a href="#/">close</a>
+<div class="span8 well">
+  <eeditor id="ee"></eeditor>
+  <input type="text" ng-model="tags" placeholder="Tags"/>
+  <button ng-click="save()" class="btn btn-mini btn-primary pull-right"><i class="icon-ok"></i></button>
+  <a href="#/" class="btn btn-mini pull-right"><i class="icon-off"></i></a>
+</div>
+<div class="span3" id="commentsview">
+  Comments:
+  <ul>
+    <li ng-repeat="comment in comments.comments">
+      <a mailto="{{comment.email}}">{{comment.screenname}}</a>:<span class="pull-right">{{comment.created}}</span>
+      <div>{{comment.comment}}</div>
+    </li>
+  </ul>
+</div>

@@ -108,6 +108,7 @@ class MyBlogApiTestCase(unittest.TestCase):
     self.assertEqual(200, r.status_code)
     self.assertIsNone(Blog.get_by_key_name('test1'))
 
+  @unittest.skip('outdated')
   def testPublish(self):
     self.assertEqual(False, Blog.get_by_key_name('test1').published)
     r = self.app.put(self.base + 'syncpub/test1', data={'published': 'true'})
@@ -122,6 +123,7 @@ class MyBlogApiTestCase(unittest.TestCase):
     self.assertEqual(200, r.status_code)
     self.assertEqual(True, Blog.get_by_key_name('test1').published)
 
+  @unittest.skip('outdated')
   def testPublish_notexist(self):
     r = self.app.put(self.base + 'syncpub/test_notexist', data={'published': 'true'})
     self.assertEqual(404, r.status_code)

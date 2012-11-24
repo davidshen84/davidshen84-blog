@@ -58,6 +58,10 @@
       <arg value="Backbone"/>
       <arg value="--predef"/>
       <arg value="_"/>
+      <arg value="--predef"/>
+      <arg value="angular"/>
+      <arg value="--predef"/>
+      <arg value="EpicEditor"/>
       <arg value="--nomen"/>
       <arg value="--"/>
       <arg value="${in}"/>
@@ -158,7 +162,7 @@
       <param name="out" value="${dist}/app/static/js/admin.js"/>
       <param name="type" value="js"/>
     </antcall>
-    
+
     <antcall target="yuicompressor">
       <param name="in" value="${dist}/app/static/js/blog.js"/>
       <param name="out" value="${dist}/app/static/js/blog.js"/>

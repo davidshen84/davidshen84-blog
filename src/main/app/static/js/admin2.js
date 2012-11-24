@@ -3,8 +3,8 @@ function ListCtrl($scope, Blog) {
 
   $scope.blogs = Blog.query();
 
-  $scope.pubCls = function (published) {
-    return published ? 'unpub' : '';
+  $scope.pubIcon = function (published) {
+    return published ? 'icon-eye-open' : 'icon-eye-close';
   };
 
   $scope.setPubStat = function (title, publish) {
@@ -23,17 +23,21 @@ function ListCtrl($scope, Blog) {
   };
 }
 
-function CreateEditCtrl($scope, $routeParams, Blog, editor) {
+function CreateEditCtrl($scope, $routeParams, Blog, BlogComment, editor) {
   'use strict';
 
-  var titlePattern = /^#.*$/m;
+  var titlePattern = /^#.*$/m,
+    isNew = true;
 
   if ($routeParams.title) {
     Blog.get({title: $routeParams.title}, function (blog) {
       editor().importFile(blog.title, blog.content);
     });
 
+    isNew = false;
+
     // try to get comments
+    $scope.comments = BlogComment.query({ "title": $routeParams.title });
   }
 
   function extractTitleFromContent(content) {
@@ -52,11 +56,19 @@ function CreateEditCtrl($scope, $routeParams, Blog, editor) {
       return;
     }
 
-    Blog.save({
-      "title": title,
-      "content": content,
-      "tags": tags.length ? $scope.tags.split(',') : []
-    });
+    if (isNew) {
+      Blog.save({
+        "title": title,
+        "content": content,
+        "tags": tags.length ? $scope.tags.split(',') : []
+      });
+    } else {
+      Blog.update(
+        { "title": title },
+        { "content": content,
+          "tags": tags.length ? $scope.tags.split(',') : [] }
+      );
+    }
   };
 }
 

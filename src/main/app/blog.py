@@ -38,16 +38,18 @@ class Blog(db.Model):
       return Blog(key_name=title, title=title, content=content, tags=tags, **kws).put()
 
   @staticmethod
-  def update(title, content, tags):
+  def update(title, **kw):
     blog = Blog.get_by_key_name(title)
     if not blog:
       return None
     else:
       # update blog
-      if content:
-        blog.content = content
-      if tags:
-        blog.tags = tags
+      if kw.has_key('content'):
+        blog.content = kw['content']
+      if kw.has_key('tags'):
+        blog.tags = kw['tags']
+      if kw.has_key('published'):
+        blog.published = kw['published']
 
       return blog.put()
 
