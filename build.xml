@@ -11,9 +11,7 @@
   <property name="test" location="${src}/test"/>
   <property name="gaesdk" location="/home/xi/google_appengine/"/>
   <property name="py27" location="/usr/lib64/python2.7/site-packages"/>
-  <property name="yuicompressor" value="yuicompressor-2.4.7"/>
-  <property name="yuicompressor.zip" location="lib/${yuicompressor}.zip"/>
-  <property name="yuicompressor.jar" location="lib/${yuicompressor}.jar"/>
+
   <property name="build.static" location="${build}/app/static"/>
   <property name="build.js" location="${build.static}/js"/>
   <property name="dist.static" location="${dist}/app/static"/>
@@ -33,19 +31,10 @@
 
     <unzip src="lib/${epiceditor}.zip" dest="lib"/>
     <unzip src="lib/${bootstrap}.zip" dest="lib"/>
-
-    <unzip src="${yuicompressor.zip}" dest="lib">
-      <patternset>
-          <include name="${yuicompressor}/build/${yuicompressor}.jar"/>
-      </patternset>
-      <mapper type="flatten"/>
-    </unzip>
   </target>
 
   <target name="yuicompressor">
-    <exec executable="java">
-      <arg value="-jar"/>
-      <arg value="${yuicompressor.jar}"/>
+    <exec executable="yuicompressor">
       <arg value="--type"/>
       <arg value="${type}"/>
       <arg value="--charset"/>

@@ -23,9 +23,6 @@
         <artifact pattern="/home/xi/Downloads/[artifact]-[revision][suffix].[ext]"/>
       </filesystem>
     </chain>
-    <url name="yuicompressor">
-      <artifact pattern="http://[organization]/releases/[module]/[artifact]-[revision].[ext]"/>
-    </url>
   </resolvers>
   <modules>
     <module organisation="code.jquery.com" resolver="jquery"/>
@@ -34,6 +31,5 @@
     <module organisation="twitter.github.com" resolver="bootstrap"/>
     <module organisation="underscorejs.org" resolver="underscore"/>
     <module organisation="googlecode.com" resolver="googlecode"/>
-    <module organisation="yui.zenfs.com" resolver="yuicompressor"/>
   </modules>
 </ivysettings>
