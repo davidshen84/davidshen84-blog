@@ -4,6 +4,8 @@
   <head>
     <base href="{{refbase}}" />
     {% block title %}{% endblock %}
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-35014753-1']);
@@ -25,8 +27,8 @@
         evaluate: /\{\%(.+?)\%\}/g
       };
     </script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="static/js/backbone.js"></script>
-    {# <link href="static/css/bootstrap-responsive.css" type="text/css" rel="stylesheet" /> #}
     {# <link href="http://kevinburke.bitbucket.org/markdowncss/markdown.css" rel="stylesheet"></link> #}
   </head>
   <body>
@@ -62,7 +64,7 @@
           <nav id="breadcrumbs">
           {% block nav %}{% endblock %}
           </nav>
-        {% block article %}{% endblock %}
+          {% block article %}{% endblock %}
           <div class="row">
             <div class="span7">
             {% block comments %}{% endblock %}
@@ -128,9 +130,7 @@
         <address>E-Mail: <a href="mailto:">davidshen84 at gmail dot com</a></address>
       </footer>
     </div>
-    <link href="static/bootstrap/css/bootstrap.css" type="text/css" rel="stylesheet" />
-    <script src="static/bootstrap/js/bootstrap.js"></script>
-    <script src="static/js/less.js"></script>
+    {# <script src="static/js/less.js"></script> #}
 
     {% block scripts %}{% endblock %}
   </body>

@@ -9,9 +9,6 @@
     <url name="epiceditor">
       <artifact pattern="http://[organization]/[module]/[artifact]-[revision].[ext]"/>
     </url>
-    <url name="bootstrap">
-      <artifact pattern="http://[organization]/[module]/assets/[artifact].[ext]"/>
-    </url>
     <url name="underscore">
       <artifact pattern="http://[organization]/[artifact].[ext]"/>
     </url>
@@ -28,7 +25,6 @@
     <module organisation="code.jquery.com" resolver="jquery"/>
     <module organisation="documentcloud.github.com" resolver="backbone"/>
     <module organisation="epiceditor.com" resolver="epiceditor"/>
-    <module organisation="twitter.github.com" resolver="bootstrap"/>
     <module organisation="underscorejs.org" resolver="underscore"/>
     <module organisation="googlecode.com" resolver="googlecode"/>
   </modules>

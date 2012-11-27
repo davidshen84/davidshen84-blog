@@ -19,7 +19,6 @@
 
   <property name="backbone" value="backbone-latest.js"/>
   <property name="backbone.min" value="backbone-min-latest.js"/>
-  <property name="bootstrap" value="bootstrap-latest"/>
   <property name="epiceditor" value="EpicEditor-v0.1.1.1"/>
   <property name="lesscss" value="less-1.3.0.js"/>
   <property name="underscore" value="underscore-latest.js"/>
@@ -30,7 +29,6 @@
     <ivy:retrieve conf="source"/>
 
     <unzip src="lib/${epiceditor}.zip" dest="lib"/>
-    <unzip src="lib/${bootstrap}.zip" dest="lib"/>
   </target>
 
   <target name="yuicompressor">
@@ -110,9 +108,6 @@
       <fileset dir="/home/xi/github/EpicEditor"/>
 -->
     </copy>
-    <copy todir="${build.static}/bootstrap">
-      <fileset dir="lib/bootstrap"/>
-    </copy>
     <copy file="${py27}/markdown2.py" todir="${build}"/>
 
     <zip destfile="${build}/werkzeug.zip"
@@ -145,14 +140,6 @@
 
     <move file="${dist.static}/epiceditor/js/epiceditor.min.js"
           tofile="${dist.static}/epiceditor/js/epiceditor.js" force="true"/>
-
-    <move file="${dist.static}/bootstrap/js/bootstrap.min.js"
-          tofile="${dist.static}/bootstrap/js/bootstrap.js"/>
-    <move file="${dist.static}/bootstrap/css/bootstrap.min.css"
-          tofile="${dist.static}/bootstrap/css/bootstrap.css"/>
-    <move file="${dist.static}/bootstrap/css/bootstrap-responsive.min.css"
-          tofile="${dist.static}/bootstrap/css/bootstrap-responsive.css"/>
-
     <antcall target="compress"/>
   </target>
 
