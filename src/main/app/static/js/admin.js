@@ -1,300 +1,124 @@
-$(function () {
-  'use strict';
+'use strict';
 
-  // set defaults for underscore.js
-  _.templateSettings = {
-    interpolate: /\{\{(.+?)\}\}/g,
-    evaluate: /\{\%(.+?)\%\}/g
+function ListCtrl($scope, Blog) {
+  $scope.blogs = Blog.query();
+
+  $scope.pubIcon = function (published) {
+    return published ? 'icon-eye-open' : 'icon-eye-close';
   };
 
-  var Blog, BlogComment, BlogCommentsCollection, BlogEditView,
-    BlogSearchView, BlogCommentsView,
-    commentsView, searchView, editView;
-
-  Blog = Backbone.Model.extend({
-    defaults: {
-      title: 'empty',
-      content: '#empty\n\ncontent',
-      tags: [],
-      published: false,
-      created: null,
-      lastmodified: null
-    },
-    initialize: function () {
-      this.on('change:tags', function () {
-        var tags = this.get('tags');
-        if (typeof tags === 'string') {
-          tags = tags.split(',');
-          this.set('tags', tags);
-        }
+  $scope.setPubStat = function (title, publish) {
+    Blog.update({ "title": title }, { "published": publish },
+      function () {
+        $scope.blogs = Blog.query();
       });
-    },
-    urlRoot: 'api/sync',
-    publish: function (success) {
-      this.set('published', !this.get('published'));
-      $.ajax({
-        type: 'PUT',
-        url: this.urlRoot + 'pub/' + encodeURIComponent(this.get('id')),
-        data: { published: this.get('published') },
-        contentType: 'application/x-www-form-urlencoded',
-        success: success
+  };
+
+  $scope.getPubAction = function (published) {
+    return published ? 'Unpublish' : 'Publish';
+  };
+
+  $scope.delete = function (title) {
+    Blog.delete({ "title": title });
+  };
+}
+
+function CreateEditCtrl($scope, $routeParams, Blog, BlogComment, editor) {
+  var titlePattern = /^#.*$/m,
+    isNew = true;
+
+  if ($routeParams.title) {
+    Blog.get({title: $routeParams.title}, function (blog) {
+      editor().importFile(blog.title, blog.content);
+    });
+
+    isNew = false;
+
+    // try to get comments
+    $scope.comments = BlogComment.query({ "title": $routeParams.title });
+  }
+
+  function extractTitleFromContent(content) {
+    var title = titlePattern.exec(content);
+
+    return title && title.length > 0 ? title[0].substr(1) : null;
+  }
+
+  $scope.save = function () {
+    var content = editor().exportFile(),
+      title = extractTitleFromContent(content),
+      tags = $scope.tags || '';
+
+    if (title === null) {
+      window.alert('blog needs a title');
+      return;
+    }
+
+    if (isNew) {
+      Blog.save({
+        "title": title,
+        "content": content,
+        "tags": tags.length ? $scope.tags.split(',') : []
       });
-    }
-  });
-
-  BlogComment = Backbone.Model.extend({
-    defaults: {
-      id: '',
-      blogtitle: '',
-      screenname: '',
-      email: '',
-      comment: '',
-      created: ''
-    },
-    urlRoot: 'comment/api/sync'
-  });
-
-  BlogCommentsCollection = Backbone.Collection.extend({
-    model: BlogComment,
-    url: 'comment/api/collection',
-    parse: function (response) {
-      return response.comments;
-    }
-  });
-
-  BlogEditView = Backbone.View.extend({
-    model: new Blog(),
-    searchView: null,
-    template: _.template(
-      '<label class=\"text\">Tags: <input type=\"text\" class=\"tags\" value="{{tags}}"/></label>\
-       <div class=\"btn-group pull-right\">\
-       <button type=\"button\" class=\"btn btn-primary" {{saved ? \'disabled\' : \'\'}} id=\"btnsave\">Save</button>\
-       <button type=\"button\" class=\"btn btn-danger\" id=\"btndel\" {{isnew ? \'disabled\' : \'\'}}>Delete</button>\
-       {% if(!published) { %}\
-       <button type=\"button\" class=\"btn\" id=\"btnpub\" {{!saved ? \'disabled\' : \'\'}} data-act=\"publish\">Publish</button>\
-       {% } else { %}\
-       <button type=\"button\" class=\"btn\" id=\"btnpub\" {{!saved ? \'disabled\' : \'\'}} data-act=\"unpublish\">Unpublish</button>\
-       {% } %}\
-       </div>'
-    ),
-    alertTemplate: _.template("<div class='alert alert-{{type}}'>{{msg}}<a class='close' data-dismiss='alert'>x</a></div>"),
-    render: function () {
-      var view = this;
-      // update content view
-      this.ee.importFile(view.model.get('title'), view.model.get('content'));
-      // update control statuses
-      this.$('.controller').html(
-        this.template(
-          _.extend(view.model.toJSON(),
-            {
-              isnew: view.model.isNew(),
-              saved: this.saved === true
-            })
-        )
+    } else {
+      Blog.update(
+        { "title": title },
+        { "content": content,
+          "tags": tags.length ? $scope.tags.split(',') : [] }
       );
+    }
+  };
+}
 
-      this.$('.tags').change(function () {
-        var $this = $(this);
-        view.model.set('tags', $this.val());
-        view.saved = false;
-        view.render();
-      });
+angular.module('blogapi', ['ngResource']).
+  factory('Blog', function ($resource) {
+    var Blog = $resource('api/sync/:title', {},
+      { "query": { "method": "GET", "isArray": false },
+        "update": { "method": "PUT" } });
 
-      return this;
-    },
-    titlePattern: /^#[^\n\r]*/,
-    extractTitleFromContent: function (content) {
-      return this.titlePattern.exec(content);
-    },
-    initialize: function () {
-      var view = this,
-        // initialize the EE only once
-        editor = new EpicEditor({
-          'container': this.$('.contentview').get(0),
-          'basePath': 'static/epiceditor'
-        }),
-        filename = view.model.get('title');
+    return Blog;
+  }).
+  factory('BlogComment', function ($resource) {
+    return $resource('comment/api/sync/:id', {},
+      { "query": { "method": "GET", "isArray": false } });
+  });
 
-      // associate editor view with search view
-      view.options.searchView.editorView = view;
-      this.ee = editor;
+angular.module('blog', ['blogapi']).
+  config(function ($routeProvider) {
+    $routeProvider.
+      when('/', { "controller": ListCtrl, "templateUrl": '/blog/admin/templates/bloglist.html' }).
+      when('/edit/:title', { "controller": CreateEditCtrl, "templateUrl": '/blog/admin/templates/blogedit.html' }).
+      when('/new', { "controller": CreateEditCtrl, "templateUrl": '/blog/admin/templates/blogedit.html' }).
+      otherwise({ "redirectTo": '/' });
+  }).
+  factory('editor', function () {
+    var epiceditor;
 
-      editor.load()
-        .importFile(filename, view.model.get('content'))
-        // bind save event
-        .on('preview', function () {
-          editor.save();
-          var content = editor.exportFile(view.model.get('title'));
-          view.model.set('content', content);
-          view.saved = false;
-          view.render();
-        });
-    },
-    events: {
-      'click #btnsave': 'save',
-      'click #btnpub': 'togglePublish',
-      'click #btndel': 'destroy'
-    },
-    save: function () {
-      var view = this,
-        content = view.model.get('content'),
-        title = view.extractTitleFromContent(content);
-
-      if (title === null || title.length === 0) {
-        window.alert('need title', 'error');
-        return;
+    return function (opt) {
+      if (opt) {
+        epiceditor = new EpicEditor(opt);
+      } else if (!epiceditor) {
+        throw 'option is required for initialize.';
       }
-      title = title[0].substr(1);
 
-      view.model.save(
-        { title: title },
-        {
-          success: function (model, response) {
-            // sync. id with title
-            model.set('id', model.get('title'));
-            view.saved = true;
-            view.render();
-            view.alert('blog saved', 'success');
-          }
-        }
-      );
-    },
-    togglePublish: function () {
-      var view = this,
-        publish = !this.model.get('published');
+      return epiceditor;
+    };
+  }).
+  directive('eeditor', function () {
+    return {
+      restrict: 'E',
+      transclude: true,
+      scope: {},
+      controller: function ($scope, $element, editor) {
+        var opt = {
+          container: $element[0],
+          basePath: 'static/epiceditor',
+          clientSideStorage: false
+        };
 
-      this.model.publish(function (data, textStatus) {
-        if (data.msg === 'ok') {
-          view.render();
-          if (publish) {
-            view.alert('blog published', 'success');
-          } else {
-            view.alert('blog unpublished', 'success');
-          }
-        }
-      });
-    },
-    destroy: function () {
-      var view = this;
-      view.model.destroy({
-        success: function (model, response) {
-          if (response.msg === 'ok') {
-            view.model = new Blog();
-            view.render();
-            view.alert('blog destroied', 'success');
-          }
-        }
-      });
-    },
-    alert: function (msg, type) {
-      this.$el.prepend(this.alertTemplate({msg: msg, type: type}));
-    }
+        editor(opt).load();
+      },
+      template: '<div></div>',
+      replace: true
+    };
   });
-
-  BlogSearchView = Backbone.View.extend({
-    // model: new Blogs(),
-    editorView: null,
-    commentsView: null,
-    events: {
-      'click .edit': 'edit',
-      'click .create': 'create',
-      'keypress .title': 'updateTypeahead'
-    },
-    updateUI: function () {
-      // update type-ahead data source
-      this.$('input').data('source', this.model.map(function (b) { return b.get('title'); }));
-    },
-    updateTypeahead: function (e) {
-      var that = this,
-        title = $('.title').val(),
-        working = false;
-
-      if (title.length > 1 && !working) {
-        working = true;
-        $.get('api/titles?f=' + encodeURIComponent(title),
-          null,
-          function (data, textStatus) {
-            that.$('.title').data('typeahead').source = data.titles;
-            working = false;
-          });
-      }
-    },
-    edit: function () {
-      var view = this.editorView,
-        comments = this.options.commentsView,
-        title = this.$('input').val();
-
-      new Blog({id: title})
-        .fetch({
-          success: function (model, response) {
-            view.model = model;
-            view.saved = true;
-            view.render();
-
-            // fetch comments
-            comments.setBlogTitle(title);
-          }
-        });
-    },
-    create: function () {
-      this.editorView.model = new Blog();
-      this.editorView.saved = false;
-      this.editorView.render();
-    }
-  });
-
-  BlogCommentsView = Backbone.View.extend({
-    model: new BlogCommentsCollection(),
-    blogTitle: '',
-    template: _.template(
-      '<ul>{% _.each(comments, function (c) { %}\
-        <li class="comment" id="{{ c.id }}">\
-          <a class="label label-inverse pull-right" href="#">X</a>\
-          <h4>{{ c.screenname }} on {{ c.created }}:</h4>\
-          <p>{{ c.comment }}</p>\
-        </li>\
-        {% }); %}\
-      </ul>'
-    ),
-    render: function () {
-      var model = this.model;
-
-      this.$el.html(this.template({comments: this.model.toJSON()}));
-      this.$('.comment').bind('close', function (e) {
-        var $this = $(this),
-          id = $this.attr('id');
-        if (window.confirm('really?')) {
-          model.get(id).destroy();
-          $this.remove();
-        }
-      }).children().filter('a').click(function (e) {
-        $(this).parent().trigger('close');
-      });
-    },
-    setBlogTitle: function (title) {
-      var view = this,
-        model = this.model;
-
-      this.blogTitle = title;
-      model.fetch({
-        data: {title: this.blogTitle},
-        success: function (collection, response) {
-          view.render();
-        }
-      });
-    }
-  });
-
-  commentsView = new BlogCommentsView({el: $('#commentsview').get(0)});
-  searchView = new BlogSearchView({
-    el: $('#searchview').get(0),
-    commentsView: commentsView
-  });
-  editView = new BlogEditView({
-    el: $('#viewcontainer').get(0),
-    searchView: searchView
-  })
-    .render();
-
-  window.searchView = searchView;
-});

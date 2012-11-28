@@ -8,7 +8,7 @@
   Comments:
   <ul>
     <li ng-repeat="comment in comments.comments">
-      <a mailto="{{comment.email}}">{{comment.screenname}}</a>:<span class="pull-right">{{comment.created}}</span>
+      <a href="mailto:{{comment.email}}">{{comment.screenname}}</a>:<span class="pull-right">{{comment.created}}</span>
       <div>{{comment.comment}}</div>
     </li>
   </ul>
