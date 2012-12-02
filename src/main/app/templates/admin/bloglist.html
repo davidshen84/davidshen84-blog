@@ -8,15 +8,15 @@
           </label>
         </th>
         <th colspan="3">Actions
-          <a href="#/new" class="btn btn-primary pull-right" title="Create new blog"><i class="icon-file"></i></a>
+          <a href="/blog/admin/new" class="btn btn-primary pull-right" title="Create new blog"><i class="icon-file"></i></a>
         </th>
       </tr>
     </thead>
     <tbody>
       <tr ng-repeat="blog in blogs.blogs | filter:search">
         <td>{{blog.title}}</td>
-        <td><a href="#" ng-class="pubCls(blog.published)" class="btn btn-mini" ng-click="setPubStat(blog.title, !blog.published)"><i ng-class="pubIcon(blog.published)"></i></a></td>
-        <td><a href="#/edit/{{blog.title}}" class="btn btn-mini"><i class="icon-edit"></i></a></td>
+        <td><a href="/blog/admin" ng-class="pubCls(blog.published)" class="btn btn-mini" ng-click="setPubStat(blog.title, !blog.published)"><i ng-class="pubIcon(blog.published)"></i></a></td>
+        <td><a href="/blog/admin/edit/{{blog.title}}" class="btn btn-mini"><i class="icon-edit"></i></a></td>
         <td><button ng-click="delete(blog.title)" class="btn btn-mini btn-danger"><i class="icon-remove"></i></button></td>
       </tr>
     </tbody>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!doctype html>
-<html lang="en" itemscope itemtype="http://schema.org/Blog">
+<html lang="en" itemscope itemtype="http://schema.org/Blog" ng-app="blog" ng-controller="RootCtrl">
   <head>
-    <base href="{{refbase}}" />
+    {# <base href="{{refbase}}" /> #}
+    {# <base href="/blog/" /> #}
     {% block title %}{% endblock %}
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
 
@@ -19,16 +20,20 @@
     </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
     <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
-    <script src="static/js/underscore.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular-resource.min.js"></script>
+    {# <script src="static/js/underscore.js"></script>
     <script type="text/javascript">
       // bootstrap for underscore.js
       _.templateSettings = {
         interpolate: /\{\{(.+?)\}\}/g,
         evaluate: /\{\%(.+?)\%\}/g
       };
-    </script>
+    </script> 
+    <script type="text/javascript" src="static/js/backbone.js"></script> #}
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="static/js/backbone.js"></script>
+    <script type="text/javascript" src="/blog/static/js/blog.js"></script>
+
     {# <link href="http://kevinburke.bitbucket.org/markdowncss/markdown.css" rel="stylesheet"></link> #}
   </head>
   <body>
@@ -73,29 +78,32 @@
           <div class="row" id="addcommentform" style="{{ 'display: none' if not article else '' }}" >
             <div class="span7">
               <h3>Please add your comments</h3>
-              <form action="" class="well form-horizontal">
+              <form class="well form-horizontal" name="commentForm" ng-controller="CommentCtrl" ng-submit="submit()">
                 <fieldset>
                   <div class="control-group">
                     <label class="control-label" for="screenname">Name*</label>
                     <div class="controls">
-                      <input type="text" class="input-xlarge" id="screenname" name="screenname" placeholder="screen name"/>
+                      <input type="text" class="input-xlarge" name="screenname" ng-model="screenname" placeholder="screen name" required ng-minlength="2"/>
+                      <span class="error" ng-show="commentForm.screenname.$error.required || commentForm.screenname.$error.minlength">Required!</span>
                     </div>
                   </div>
                   <div class="control-group">
                     <label class="control-label" for="emailaddr">Email*</label>
                     <div class="controls">
-                      <input type="text" class="input-xlarge" id="email" name="email" placeholder="email...it will NOT appear publicly" />
+                      <input type="email" class="input-xlarge" name="email" ng-model="email" placeholder="email...it will NOT appear publicly" required/>
+                      <span class="error" ng-show="commentForm.email.$invalid">Invalid Email!</span>
                     </div>
                   </div>
                   <div class="control-group">
                     <label class="control-label" for="comment">Comments*</label>
                     <div class="controls">
-                      <textarea class="input-xlarge" id="comment" name="comment" placeholder="please input your comments here..."></textarea>
+                      <textarea class="input-xlarge" name="comment" ng-model="comment" placeholder="please input your comments here..." required ng-minlength="5"></textarea>
+                      <span class="error" ng-show="commentForm.comment.$error.required || commentForm.comment.$error.minlength">Miss Message!</span>
                     </div>
                   </div>
                   <div class="form-actions">
-                    <button type="submit" class="btn btn-primary submit">Submit</button>
-                    <button type="button" class="btn btn-danger clear">Clear</button>
+                    <button type="submit" class="btn btn-primary submit" ng-disabled="commentForm.$invalid">Submit</button>
+                    <button type="reset" class="btn btn-danger clear">Clear</button>
                   </div>
                 </fieldset>
               </form>
@@ -132,6 +140,14 @@
     </div>
     {# <script src="static/js/less.js"></script> #}
 
-    {% block scripts %}{% endblock %}
+    {% block scripts %}
+    {% if not isXhr %}
+      <script type="text/javascript">
+        // bootstrap script
+        window.articlePath = '{{ articlePath }}';
+        window.forceLoad = false;
+      </script>
+    {% endif %}
+    {% endblock %}
   </body>
 </html>

@@ -20,77 +20,43 @@
 
 {% block article %}
 <article id="article" class="markdown" itemprop="description">
-{% if article %}
-  {{ article|safe }}
-  <hr />
-  {% if not isXhr %}
-  <div class="row socialbtn">
-    <div class="span2">
-      <a href="https://twitter.com/share" class="twitter-share-button" data-via="davidshen84" data-hashtags="blog">Tweet</a>
-      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-    </div>
-    <div class="span2">
-      <div id="fb-root"></div>
-      <script>
-        (function(d, s, id) {
-          var js, fjs = d.getElementsByTagName(s)[0];
-          if (d.getElementById(id)) return;
-          js = d.createElement(s); js.id = id;
-          js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-          fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-      </script>
-      <div class="fb-like" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true" data-font="verdana"></div>
-    </div>
-    <div class="span2">
-      <!-- Place this tag where you want the +1 button to render. -->
-      <div class="g-plusone" data-size="small"></div>
-      <!-- Place this tag after the last +1 button tag. -->
-      <script type="text/javascript">
-        (function() {
-          var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-          po.src = 'https://apis.google.com/js/plusone.js';
-          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-        })();
-      </script>
-    </div>
+{{ article|safe }}
+<hr />
+{% if not isXhr %}
+<div class="row socialbtn">
+  <div class="span2">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-via="davidshen84" data-hashtags="blog">Tweet</a>
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
   </div>
-  {% else %}
-    <em style="font-size: smaller; color: gray;">Refresh to see the social share button!</em>
-  {% endif%}
+  <div class="span2">
+    <div id="fb-root"></div>
+    <script>
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script>
+    <div class="fb-like" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true" data-font="verdana"></div>
+  </div>
+  <div class="span2">
+    <!-- Place this tag where you want the +1 button to render. -->
+    <div class="g-plusone" data-size="small"></div>
+    <!-- Place this tag after the last +1 button tag. -->
+    <script type="text/javascript">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>
+  </div>
+</div>
 {% else %}
-  {% if month %}
-    <ul class="nav nav-list">
-    {% for t in archives[year][month] %}
-      <li><a href="{{year}}/{{month}}/{{t}}">{{t}}</a></li>
-    {% endfor %}
-    </ul>
-  {% elif year %}
-    <ul class="nav nav-list">
-    {% for m, ts in archives[year].iteritems() %}
-      <li class="nav-header">{{ monthFullName[m-1] }}</li>
-      {% for t in ts %}
-        <li><a href="{{ year }}/{{ m }}/{{ t }}">{{ t }}</a></li>
-      {% endfor %}
-    {% endfor %}
-    </ul>
-  {% elif tag %}
-    <ul class="nav nav-list">
-    {% for y, m, t in tags[tag] %}
-      <li><a href="{{ y }}/{{ m }}/{{ t }}">{{ t }}</a></li>
-    {% endfor %}
-    </ul>
-  {% else %}
-    <ul class="nav nav-list">
-    {% for tag, metas in tags.iteritems() %}
-      <li class="nav-header">{{ tag }}</li>
-      {% for y, m, t in metas %}
-        <li><a href="{{ y }}/{{ m }}/{{ t }}">{{ t }}</a></li>
-      {% endfor %}
-    {% endfor %}
-    </ul>  
-  {% endif %}
-{% endif %}
+  <em style="font-size: smaller; color: gray;">Refresh to see the social share button!</em>
+{% endif%}
 </article>
 {% endblock %}
 
@@ -101,19 +67,4 @@
   <dd  class="well">{{ c.comment }}</dd>
 {% endfor %}
 </dl>
-{% endblock %}
-
-{% block scripts %}
-{% if not isXhr %}
-  {# <script type="text/javascript" src="static/js/Markdown.Converter.js"></script> #}
-  <script type="text/javascript" src="static/js/blog.js"></script>
-  {# <script type="text/javascript" src="static/js/router.js"></script> #}
-  <script type="text/javascript">
-    // bootstrap script
-    var refbase = '{{ refbase }}'
-    var articlePath = encodeURI('{{ articlePath }}');
-
-    var isInitialized = false;
-  </script>
-{% endif %}
 {% endblock %}

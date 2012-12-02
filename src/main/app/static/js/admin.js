@@ -1,7 +1,7 @@
 'use strict';
 
 function ListCtrl($scope, Blog) {
-  $scope.blogs = Blog.query();
+  $scope.blogs = Blog.get();
 
   $scope.pubIcon = function (published) {
     return published ? 'icon-eye-open' : 'icon-eye-close';
@@ -10,7 +10,7 @@ function ListCtrl($scope, Blog) {
   $scope.setPubStat = function (title, publish) {
     Blog.update({ "title": title }, { "published": publish },
       function () {
-        $scope.blogs = Blog.query();
+        $scope.blogs = Blog.get();
       });
   };
 
@@ -35,7 +35,8 @@ function CreateEditCtrl($scope, $routeParams, Blog, BlogComment, editor) {
     isNew = false;
 
     // try to get comments
-    $scope.comments = BlogComment.query({ "title": $routeParams.title });
+    // $scope.comments = BlogComment.query({ "title": $routeParams.title });
+    $scope.comments = BlogComment.get({ "title": $routeParams.title });
   }
 
   function extractTitleFromContent(content) {
@@ -72,24 +73,25 @@ function CreateEditCtrl($scope, $routeParams, Blog, BlogComment, editor) {
 
 angular.module('blogapi', ['ngResource']).
   factory('Blog', function ($resource) {
-    var Blog = $resource('api/sync/:title', {},
-      { "query": { "method": "GET", "isArray": false },
-        "update": { "method": "PUT" } });
+    var Blog = $resource('/blog/api/sync/:title', {},
+      { "update": { "method": "PUT" } });
 
     return Blog;
   }).
   factory('BlogComment', function ($resource) {
-    return $resource('comment/api/sync/:id', {},
+    return $resource('/blog/comment/api/sync/:title', {},
       { "query": { "method": "GET", "isArray": false } });
   });
 
 angular.module('blog', ['blogapi']).
-  config(function ($routeProvider) {
+  config(function ($routeProvider, $locationProvider) {
     $routeProvider.
-      when('/', { "controller": ListCtrl, "templateUrl": '/blog/admin/templates/bloglist.html' }).
-      when('/edit/:title', { "controller": CreateEditCtrl, "templateUrl": '/blog/admin/templates/blogedit.html' }).
-      when('/new', { "controller": CreateEditCtrl, "templateUrl": '/blog/admin/templates/blogedit.html' }).
-      otherwise({ "redirectTo": '/' });
+      when('/blog/admin', { "controller": ListCtrl, "templateUrl": '/blog/admin/templates/bloglist.html' }).
+      when('/blog/admin/edit/:title', { "controller": CreateEditCtrl, "templateUrl": '/blog/admin/templates/blogedit.html' }).
+      when('/blog/admin/new', { "controller": CreateEditCtrl, "templateUrl": '/blog/admin/templates/blogedit.html' }).
+      otherwise({ "redirectTo": '/blog/admin' });
+
+    $locationProvider.html5Mode(true);
   }).
   factory('editor', function () {
     var epiceditor;
@@ -112,7 +114,7 @@ angular.module('blog', ['blogapi']).
       controller: function ($scope, $element, editor) {
         var opt = {
           container: $element[0],
-          basePath: 'static/epiceditor',
+          basePath: '/blog/static/epiceditor',
           clientSideStorage: false
         };
 

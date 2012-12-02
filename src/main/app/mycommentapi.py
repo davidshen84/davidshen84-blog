@@ -13,9 +13,9 @@ MSG_SAVE_ERROR = 'failed to save comment'
 app = Flask(__name__)
 route_base = '/blog/comment/api/'
 
-@app.route(route_base + 'sync')
-def query():
-  title = request.values['title']
+@app.route(route_base + 'sync/<title>')
+def query(title):
+  #title = request.values['title']
   blog = Blog.getByTitle(title)
   
   if blog:
@@ -26,10 +26,10 @@ def query():
 
   return jsonify(comments=comments)
 
-@app.route(route_base + 'sync', methods=['POST'])
-def create():
+@app.route(route_base + 'sync/<title>', methods=['POST'])
+def create(title):
   comment = request.json
-  blog = Blog.getByTitle(comment['blogtitle'])
+  blog = Blog.getByTitle(title)
 
   if blog:
     commentKey = BlogComment.create(blog.key(), comment['screenname'], comment['email'], comment['comment'])

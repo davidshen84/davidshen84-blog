@@ -1,15 +1,55 @@
+{% if not isXhr %}
 {% extends "base.html" %}
+{% endif %}
 
-<div id="content" class="markdown">{{content}}</div>
+{% block title %}
+<title>{{ title|title }}</title>
+{% endblock %}
 
-{% block breadcrumb %}
-<ul class="breadcrumb">
-  {% for i in items %}
-    {% if not loop.last %}
-      <li><a href="{{i['href']}}">{{i['text']}}</a><span class="divider">/</span></li>
-    {% else %}
-      <li class="active">{{i['text']}}<span class="divider">/</span></li>
-    {% endif %}
-  {% endfor %}
+{% block nav %}
+<ul id="nav" class="breadcrumb">
+{% for i in breadcrumbs %}
+  {% if not loop.last %}
+    <li><a href="{{i['href']}}">{{i['text']}}</a><span class="divider">/</span></li>
+  {% else %}
+    <li class="active">{{i['text']}}</li>
+  {% endif %}
+{% endfor %}
 </ul>
+{% endblock %}
+
+{% block article %}
+<article id="article">
+{% if month %}
+  <ul class="nav nav-list">
+  {% for t in archives[year][month] %}
+    <li><a href="/blog/{{ year }}/{{ month }}/{{ t }}/">{{ t }}</a></li>
+  {% endfor %}
+  </ul>
+{% elif year %}
+  <ul class="nav nav-list">
+  {% for m, ts in archives[year].iteritems() %}
+    <li class="nav-header">{{ monthFullName[m-1] }}</li>
+    {% for t in ts %}
+      <li><a href="/blog/{{ year }}/{{ m }}/{{ t }}/">{{ t }}</a></li>
+    {% endfor %}
+  {% endfor %}
+  </ul>
+{% elif tag %}
+  <ul class="nav nav-list">
+  {% for y, m, t in tags[tag] %}
+    <li><a href="/blog/{{ y }}/{{ m }}/{{ t }}/">{{ t }}</a></li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <ul class="nav nav-list">
+  {% for tag, metas in tags.iteritems() %}
+    <li class="nav-header">{{ tag }}</li>
+    {% for y, m, t in metas %}
+      <li><a href="/blog/{{ y }}/{{ m }}/{{ t }}">{{ t }}</a></li>
+    {% endfor %}
+  {% endfor %}
+  </ul>
+{% endif %}
+</article>
 {% endblock %}
