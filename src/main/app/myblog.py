@@ -39,9 +39,9 @@ def blog(year, month, title):
     month = created.month
     blogtitle = myblog.title
     blogcontent = myblog.content.replace(BAD_SP, ' ')
-    breadcrumbs = [ {'href': '/blog/', 'text': 'blog'},
-                    {'href': '/blog/%d/' % (year), 'text': year},
-                    {'href': '/blog/%d/%d/' % (year, month), 'text': month},
+    breadcrumbs = [ {'href': route_base, 'text': 'blog'},
+                    {'href': route_base + '%d/' % (year), 'text': year},
+                    {'href': route_base + '%d/%d/' % (year, month), 'text': month},
                     {'href': '#', 'text': myblog.title} ]
   else:
     return abort(404)
@@ -65,10 +65,10 @@ def archivesByDate(year, month=None):
   myblogs = Blog.getArchiveStats(True)
 
   if myblogs:
-    breadcrumbs = [ {'href': '/blog/', 'text': 'blog'},
-                    {'href': '/blog/%d/' % (year), 'text': year} ]
+    breadcrumbs = [ {'href': route_base, 'text': 'blog'},
+                    {'href': route_base + '%d/' % (year), 'text': year} ]
     if month:
-      breadcrumbs.append({'href': '/blog/%d/%d/' % (year, month), 'text': month})
+      breadcrumbs.append({'href': route_base + '%d/%d/' % (year, month), 'text': month})
 
   return render_template('bloglist.html',
                          title='blog list',
@@ -88,13 +88,13 @@ def archivesByTags(tag):
   myblogs = Blog.getArchiveStats(True)
 
   if myblogs:
-    breadcrumbs = [ {'href': '', 'text': 'blog'},
-                    {'href': 'tag', 'text': 'tag'} ]
+    breadcrumbs = [ {'href': route_base, 'text': 'blog'},
+                    {'href': route_base + 'tag/', 'text': 'tag'} ]
 
   if tag:
-    breadcrumbs.append({'href': '%s' % (tag), 'text': tag})
+    breadcrumbs.append({'href': route_base + 'tag/%s/' % (tag), 'text': tag})
 
-  return render_template('blog.html',
+  return render_template('bloglist.html',
                          title='blog list',
                          refbase=route_base,
                          tag=tag,

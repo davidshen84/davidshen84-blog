@@ -28,14 +28,14 @@ function CreateEditCtrl($scope, $routeParams, Blog, BlogComment, editor) {
     isNew = true;
 
   if ($routeParams.title) {
-    Blog.get({title: $routeParams.title}, function (blog) {
-      editor().importFile(blog.title, blog.content);
-    });
-
     isNew = false;
 
+    Blog.get({title: $routeParams.title}, function (blog) {
+      editor().importFile(blog.title, blog.content);
+      $scope.tags = blog.tags.join(', ');
+    });
+
     // try to get comments
-    // $scope.comments = BlogComment.query({ "title": $routeParams.title });
     $scope.comments = BlogComment.get({ "title": $routeParams.title });
   }
 

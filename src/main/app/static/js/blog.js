@@ -49,6 +49,7 @@ angular.module('blog', ['blogapi'])
       .when('/blog')
       .when('/blog/:year')
       .when('/blog/:year/:month')
+      .when('/blog/tag/:tag')
       .when('/blog/:year/:month/:title');
 
     $locationProvider.html5Mode(true);

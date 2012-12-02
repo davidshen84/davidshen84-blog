@@ -46,7 +46,7 @@
   {% for tag, metas in tags.iteritems() %}
     <li class="nav-header">{{ tag }}</li>
     {% for y, m, t in metas %}
-      <li><a href="/blog/{{ y }}/{{ m }}/{{ t }}">{{ t }}</a></li>
+      <li><a href="/blog/{{ y }}/{{ m }}/{{ t }}/">{{ t }}</a></li>
     {% endfor %}
   {% endfor %}
   </ul>

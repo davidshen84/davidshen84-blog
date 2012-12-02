@@ -117,19 +117,19 @@
               {% for y, mo in archives.iteritems() %}
                 <li class="nav-header">{{ y }}</li>
                 {% for m, t in mo.iteritems() %}
-                  <li><a href='/blog/{{ y }}/{{ m }}'>{{ monthFullName[m-1] }} ({{ t|length }})</a></li>
+                  <li><a href='/blog/{{ y }}/{{ m }}/'>{{ monthFullName[m-1] }} ({{ t|length }})</a></li>
                 {% endfor %}
               {% endfor %}
             </ul>
           </div>
-            <div class="well sidebar-nav">
-                <ul class="nav nav-list">
-                  <li class="nav-header">Tags</li>
-                  {% for t, titles in tags.iteritems() %}
-                    <li><a href="/blog/tag/{{ t }}">{{ t }} ({{ titles|length }})</a></li>
-                  {% endfor %}
-                </ul>
-            </div> 
+          <div class="well sidebar-nav">
+              <ul class="nav nav-list">
+                <li class="nav-header">Tags</li>
+                {% for t, titles in tags.iteritems() %}
+                  <li><a href="/blog/tag/{{ t }}/">{{ t }} ({{ titles|length }})</a></li>
+                {% endfor %}
+              </ul>
+          </div>
         </aside>
       </div>
       <footer>
