@@ -8,6 +8,7 @@
   Comments:le 2
   <ul>
     <li ng-repeat="comment in comments.comments">
+      <a class="btn btn-mini" ng-click="deleteComment(comment.id)"><i class="icon-remove"></i></a>
       <a href="mailto:{{comment.email}}">{{comment.screenname}}</a>:<span class="pull-right">{{comment.created}}</span>
       <div>{{comment.comment}}</div>
     </li>

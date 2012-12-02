@@ -36,7 +36,7 @@ function CreateEditCtrl($scope, $routeParams, Blog, BlogComment, editor) {
     });
 
     // try to get comments
-    $scope.comments = BlogComment.get({ "title": $routeParams.title });
+    $scope.comments = BlogComment.get({ "title_id": $routeParams.title });
   }
 
   function extractTitleFromContent(content) {
@@ -69,6 +69,13 @@ function CreateEditCtrl($scope, $routeParams, Blog, BlogComment, editor) {
       );
     }
   };
+
+  $scope.deleteComment = function (id) {
+    BlogComment.delete({ "title_id": id }, null,
+      function () {
+        $scope.comments = BlogComment.get({ "title_id": $routeParams.title });
+      });
+  };
 }
 
 angular.module('blogapi', ['ngResource']).
@@ -79,8 +86,7 @@ angular.module('blogapi', ['ngResource']).
     return Blog;
   }).
   factory('BlogComment', function ($resource) {
-    return $resource('/blog/comment/api/sync/:title', {},
-      { "query": { "method": "GET", "isArray": false } });
+    return $resource('/blog/comment/api/sync/:title_id');
   });
 
 angular.module('blog', ['blogapi']).
