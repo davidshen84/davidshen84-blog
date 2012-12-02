@@ -17,12 +17,8 @@
   <property name="dist.static" location="${dist}/app/static"/>
   <property name="dist.js" location="${dist.static}/js"/>
 
-  <property name="backbone" value="backbone-latest.js"/>
-  <property name="backbone.min" value="backbone-min-latest.js"/>
   <property name="epiceditor" value="EpicEditor-v0.1.1.1"/>
   <property name="lesscss" value="less-1.3.0.js"/>
-  <property name="underscore" value="underscore-latest.js"/>
-  <property name="underscore.min" value="underscore-min-latest.js"/>
 
   <target name="resolve"
           description="Resolve ivy">
@@ -52,10 +48,6 @@
       <arg value="--regexp"/>
       <arg value="--predef"/>
       <arg value="$"/>
-      <arg value="--predef"/>
-      <arg value="Backbone"/>
-      <arg value="--predef"/>
-      <arg value="_"/>
       <arg value="--predef"/>
       <arg value="angular"/>
       <arg value="--predef"/>
@@ -98,8 +90,6 @@
     </copy>
 
     <!-- Copy lib -->
-    <copy file="lib/${backbone}" tofile="${build.js}/backbone.js"/>
-    <copy file="lib/${underscore}" tofile="${build.js}/underscore.js"/>
     <copy file="lib/${lesscss}" tofile="${build.js}/less.js"/>
 
     <copy todir="${build.static}" force="true">
@@ -131,13 +121,10 @@
     <copy todir="${dist}">
       <fileset dir="${build}/">
         <exclude name="**/test/"/>
-      </fileset> 
+      </fileset>
     </copy>
 
-    <!-- copy lib -->
-    <copy file="lib/${backbone.min}" tofile="${dist.js}/backbone.js" overwrite="true"/>
-    <copy file="lib/${underscore.min}" tofile="${dist.js}/underscore.js" overwrite="true"/>
-
+    <!-- copy/move lib -->
     <move file="${dist.static}/epiceditor/js/epiceditor.min.js"
           tofile="${dist.static}/epiceditor/js/epiceditor.js" force="true"/>
     <antcall target="compress"/>

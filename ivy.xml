@@ -4,16 +4,8 @@
       <conf name="source"  description="source code distro"/>
   </configurations>
   <dependencies>
-    <dependency org="documentcloud.github.com" name="backbone" rev="latest" conf="source->default">
-      <artifact name="backbone" type="javascript" ext="js"/>
-      <artifact name="backbone-min" type="javascript" ext="js"/>
-    </dependency>
     <dependency org="epiceditor.com" name="docs/downloads" rev="v0.1.1.1" conf="source->default">
       <artifact name="EpicEditor" type="zip"/>
-    </dependency>
-    <dependency org="underscorejs.org" name="underscore" rev="latest" conf="source->default">
-      <artifact name="underscore" type="javascript" ext="js"/>
-      <artifact name="underscore-min" type="javascript" ext="js"/>
     </dependency>
     <dependency org="googlecode.com" name="lesscss" rev="1.3.0" e:suffix=".min" conf="source->default">
       <artifact name="less" type="javascript" ext="js"/>

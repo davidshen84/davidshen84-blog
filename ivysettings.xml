@@ -3,14 +3,8 @@
     <url name="jquery">
       <artifact pattern="http://[organization]/[module]-[revision](.[min]).[ext]"/>
     </url>
-    <url name="backbone">
-      <artifact pattern="http://[organization]/[module]/[artifact].[ext]"/>
-    </url>
     <url name="epiceditor">
       <artifact pattern="http://[organization]/[module]/[artifact]-[revision].[ext]"/>
-    </url>
-    <url name="underscore">
-      <artifact pattern="http://[organization]/[artifact].[ext]"/>
     </url>
     <chain name="googlecode">
       <url name="url">
@@ -23,9 +17,7 @@
   </resolvers>
   <modules>
     <module organisation="code.jquery.com" resolver="jquery"/>
-    <module organisation="documentcloud.github.com" resolver="backbone"/>
     <module organisation="epiceditor.com" resolver="epiceditor"/>
-    <module organisation="underscorejs.org" resolver="underscore"/>
     <module organisation="googlecode.com" resolver="googlecode"/>
   </modules>
 </ivysettings>
