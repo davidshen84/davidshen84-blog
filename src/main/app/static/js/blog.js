@@ -46,21 +46,22 @@ angular.module('blogapi', ['ngResource'])
 angular.module('blog', ['blogapi'])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
-      .when('/blog')
-      .when('/blog/:year')
-      .when('/blog/:year/:month')
-      .when('/blog/tag/:tag')
+      .when('/blog/')
+      .when('/blog/:year/')
+      .when('/blog/:year/:month/')
+      .when('/blog/tag/:tag/')
       .when('/blog/:year/:month/:title');
 
     $locationProvider.html5Mode(true);
   });
 
 function RootCtrl($scope, $route, $location, $http) {
+  var changed = false;
+
   $scope.$on('$routeChangeSuccess', function ($event, current) {
-    if (current && current.redirectTo !== undefined
-        && (window.forceLoad || !window.articlePath.match('^' + $location.path()))) {
-      // force load the original content
-      window.forceLoad = true;
+    if (changed || !window.articlePath.match('^' + $location.path())) {
+      // force load the content
+      changed = true;
 
       $http.get($location.path())
         .success(function (data) {
@@ -70,23 +71,21 @@ function RootCtrl($scope, $route, $location, $http) {
   });
 }
 
-function CommentCtrl($scope, $route, $compile, BlogComment) {
-  var commentTempl = '<dt><em>{{ screenname }}</em> just now:</dt>\
-    <dd class="well">{{ comment }}</dd>';
+function CommentCtrl($scope, $route, $interpolate, BlogComment) {
+  var commentTempl = $interpolate(
+    '<dt><em>{{ screenname }}</em> just now:</dt>\
+    <dd class="well">{{ comment }}</dd>'
+  );
 
   $scope.submit = function () {
     BlogComment.save(
       { "title": $route.current.params.title },
       { "screenname": $scope.screenname,
         "email": $scope.email,
-        "comment": $scope.comment }/*,
+        "comment": $scope.comment },
       function () {
-          var $comments = $('#comments').append(commentTempl),
-            count = $comments.children().length;
-
-          $compile($comments.children(':nth-child(' + (count - 1) + ')'))($scope);
-          $compile($comments.children(':last'))($scope);
-        }*/
+        $('#comments').append(commentTempl($scope));
+      }
     );
   };
 }

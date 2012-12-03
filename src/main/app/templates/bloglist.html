@@ -23,7 +23,7 @@
 {% if month %}
   <ul class="nav nav-list">
   {% for t in archives[year][month] %}
-    <li><a href="/blog/{{ year }}/{{ month }}/{{ t }}/">{{ t }}</a></li>
+    <li><a href="/blog/{{ year }}/{{ month }}/{{ t }}">{{ t }}</a></li>
   {% endfor %}
   </ul>
 {% elif year %}
@@ -31,14 +31,14 @@
   {% for m, ts in archives[year].iteritems() %}
     <li class="nav-header">{{ monthFullName[m-1] }}</li>
     {% for t in ts %}
-      <li><a href="/blog/{{ year }}/{{ m }}/{{ t }}/">{{ t }}</a></li>
+      <li><a href="/blog/{{ year }}/{{ m }}/{{ t }}">{{ t }}</a></li>
     {% endfor %}
   {% endfor %}
   </ul>
 {% elif tag %}
   <ul class="nav nav-list">
   {% for y, m, t in tags[tag] %}
-    <li><a href="/blog/{{ y }}/{{ m }}/{{ t }}/">{{ t }}</a></li>
+    <li><a href="/blog/{{ y }}/{{ m }}/{{ t }}">{{ t }}</a></li>
   {% endfor %}
   </ul>
 {% else %}
@@ -46,10 +46,16 @@
   {% for tag, metas in tags.iteritems() %}
     <li class="nav-header">{{ tag }}</li>
     {% for y, m, t in metas %}
-      <li><a href="/blog/{{ y }}/{{ m }}/{{ t }}/">{{ t }}</a></li>
+      <li><a href="/blog/{{ y }}/{{ m }}/{{ t }}">{{ t }}</a></li>
     {% endfor %}
   {% endfor %}
   </ul>
 {% endif %}
 </article>
+{% endblock %}
+
+{% block comments %}
+<dl id="comments">
+{# keep it empty #}
+</dl>
 {% endblock %}
