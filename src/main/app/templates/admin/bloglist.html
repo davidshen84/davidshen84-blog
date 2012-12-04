@@ -17,7 +17,7 @@
         <td>{{blog.title}}</td>
         <td><a href="/blog/admin" ng-class="pubCls(blog.published)" class="btn btn-mini" ng-click="setPubStat(blog.title, !blog.published)"><i ng-class="pubIcon(blog.published)"></i></a></td>
         <td><a href="/blog/admin/edit/{{blog.title}}" class="btn btn-mini"><i class="icon-edit"></i></a></td>
-        <td><button ng-click="delete(blog.title)" class="btn btn-mini btn-danger"><i class="icon-remove"></i></button></td>
+        <td><button ng-click="deleteBlog(blog.title)" class="btn btn-mini btn-danger"><i class="icon-remove"></i></button></td>
       </tr>
     </tbody>
   </table>

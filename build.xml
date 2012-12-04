@@ -28,7 +28,9 @@
   </target>
 
   <target name="yuicompressor">
+    <echo message="compressing: ${in}" />
     <exec executable="yuicompressor">
+      <arg value="--nomunge"/>
       <arg value="--type"/>
       <arg value="${type}"/>
       <arg value="--charset"/>

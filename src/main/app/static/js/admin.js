@@ -18,8 +18,11 @@ function ListCtrl($scope, Blog) {
     return published ? 'Unpublish' : 'Publish';
   };
 
-  $scope.delete = function (title) {
-    Blog.delete({ "title": title });
+  $scope.deleteBlog = function (title) {
+    Blog.remove({ "title": title },
+      function () {
+        $scope.blogs = Blog.get();
+      });
   };
 }
 
@@ -71,7 +74,7 @@ function CreateEditCtrl($scope, $routeParams, Blog, BlogComment, editor) {
   };
 
   $scope.deleteComment = function (id) {
-    BlogComment.delete({ "title_id": id }, null,
+    BlogComment.remove({ "title_id": id }, null,
       function () {
         $scope.comments = BlogComment.get({ "title_id": $routeParams.title });
       });
