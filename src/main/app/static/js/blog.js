@@ -59,7 +59,7 @@ function RootCtrl($scope, $route, $location, $http) {
   var changed = false;
 
   $scope.$on('$routeChangeSuccess', function ($event, current) {
-    if (changed || !window.articlePath.match('^' + $location.path())) {
+    if (changed || window.articlePath !== $location.path()) {
       // force load the content
       changed = true;
 

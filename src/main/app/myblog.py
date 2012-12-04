@@ -32,7 +32,7 @@ def blog(year, month, title):
 
   if myblog:
     created = myblog.created
-    articlePath = '%d/%d/%s' % (created.year, created.month, myblog.title)
+    articlePath = '%s%d/%d/%s' % (route_base, created.year, created.month, myblog.title)
     comments = myblog.comments
 
     year = created.year
