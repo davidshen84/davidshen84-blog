@@ -18,19 +18,15 @@ handlers:
 
 - url: /blog/comment/api.*
   script: app.mycommentapi.app
-  #login: admin
 
 - url: /blog/admin
-  static_files: app/templates/admin.html
-  upload: app/templates/admin.html
+  static_files: app/admin/admin.html
+  upload: app/admin/admin.html
   login: admin
 
-- url: /blog/admin/templates
-  static_dir: app/templates/admin
+- url: /blog/admin/
+  static_dir: app/admin
   login: admin
-
-- url: /blog/admin/logout
-  script: app.mycommentapi.app
 
 - url: /blog.*
   script: app.myblog.app

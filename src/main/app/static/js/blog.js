@@ -31,31 +31,7 @@ function updatePage(data, showComment) {
   }
 }
 
-angular.module('blogapi', ['ngResource'])
-/*  .factory('Blog', function ($resource) {
-    var Blog = $resource('api/sync/:title', {},
-      { "query": { "method": "GET", "isArray": false },
-        "update": { "method": "PUT" } });
-
-    return Blog;
-  })*/
-  .factory('BlogComment', function ($resource) {
-    return $resource('/blog/comment/api/sync/:title');
-  });
-
-angular.module('blog', ['blogapi'])
-  .config(function ($routeProvider, $locationProvider) {
-    $routeProvider
-      .when('/blog/')
-      .when('/blog/:year/')
-      .when('/blog/:year/:month/')
-      .when('/blog/tag/:tag/')
-      .when('/blog/:year/:month/:title');
-
-    $locationProvider.html5Mode(true);
-  });
-
-function RootCtrl($scope, $route, $location, $http) {
+function RootCtrl($scope, $location, $http) {
   var changed = false;
 
   $scope.$on('$routeChangeSuccess', function ($event, current) {
@@ -71,12 +47,7 @@ function RootCtrl($scope, $route, $location, $http) {
   });
 }
 
-function CommentCtrl($scope, $route, $interpolate, BlogComment) {
-  var commentTempl = $interpolate(
-    '<dt><em>{{ screenname }}</em> just now:</dt>\
-    <dd class="well">{{ comment }}</dd>'
-  );
-
+function CommentCtrl($scope, $route, BlogComment) {
   $scope.submit = function () {
     BlogComment.save(
       { "title": $route.current.params.title },
@@ -84,7 +55,7 @@ function CommentCtrl($scope, $route, $interpolate, BlogComment) {
         "email": $scope.email,
         "comment": $scope.comment },
       function () {
-        $('#comments').append(commentTempl($scope));
+        $('#comments').append(BlogComment.createCommentHtml($scope));
       }
     );
   };

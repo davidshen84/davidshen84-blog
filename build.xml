@@ -42,6 +42,7 @@
   </target>
 
   <target name="jslint">
+    <echo message="jslint: ${in}" />
     <exec executable="jslint" output="jslint.out" append="true" failonerror="true">
       <arg value="--indent"/>
       <arg value="2"/>
@@ -49,11 +50,15 @@
       <arg value="--plusplus"/>
       <arg value="--regexp"/>
       <arg value="--predef"/>
-      <arg value="$"/>
-      <arg value="--predef"/>
       <arg value="angular"/>
       <arg value="--predef"/>
       <arg value="EpicEditor"/>
+      <arg value="--predef"/>
+      <arg value="$"/>
+      <arg value="--predef"/>
+      <arg value="ListCtrl"/>
+      <arg value="--predef"/>
+      <arg value="CreateEditCtrl"/>
       <arg value="--nomen"/>
       <arg value="--"/>
       <arg value="${in}"/>
@@ -69,10 +74,16 @@
     <property name="src.js" location="${main}/app/static/js"/>
     <delete file="jslint.out"/>
     <antcall target="jslint">
-      <param name="in" value="${src.js}/admin.js"/>
+      <param name="in" value="${main}/app/admin/admin.js"/>
+    </antcall>
+    <antcall target="jslint">
+      <param name="in" value="${main}/app/admin/ng.js"/>
     </antcall>
     <antcall target="jslint">
       <param name="in" value="${src.js}/blog.js"/>
+    </antcall>
+    <antcall target="jslint">
+      <param name="in" value="${src.js}/ng.js"/>
     </antcall>
   </target>
 
