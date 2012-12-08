@@ -47,7 +47,7 @@ def blog(year, month, title):
     return abort(404)
 
   return render_template('blog.html',
-                         refbase=route_base,
+                         url=request.url,
                          title=blogtitle,
                          article=markdown(blogcontent),
                          breadcrumbs=breadcrumbs,
@@ -72,7 +72,6 @@ def archivesByDate(year, month=None):
 
   return render_template('bloglist.html',
                          title='blog list',
-                         refbase=route_base,
                          year=year, month=month,
                          breadcrumbs=breadcrumbs,
                          archives=Blog.getArchiveStats(),
@@ -96,7 +95,6 @@ def archivesByTags(tag):
 
   return render_template('bloglist.html',
                          title='blog list',
-                         refbase=route_base,
                          tag=tag,
                          breadcrumbs=breadcrumbs,
                          archives=Blog.getArchiveStats(),

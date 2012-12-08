@@ -3,6 +3,7 @@
 <html lang="en" itemscope itemtype="http://schema.org/Blog" ng-app="blog" ng-controller="RootCtrl">
   <head>
     {% block title %}{% endblock %}
+    {% block meta %}{% endblock %}
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
 
     <script type="text/javascript">
@@ -17,18 +18,9 @@
       })();
     </script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular-resource.min.js"></script>
-    {# <script src="static/js/underscore.js"></script>
-    <script type="text/javascript">
-      // bootstrap for underscore.js
-      _.templateSettings = {
-        interpolate: /\{\{(.+?)\}\}/g,
-        evaluate: /\{\%(.+?)\%\}/g
-      };
-    </script> 
-    <script type="text/javascript" src="static/js/backbone.js"></script> #}
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/blog/static/js/blog.js"></script>
 
