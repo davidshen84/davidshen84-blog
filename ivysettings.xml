@@ -1,8 +1,5 @@
 <ivysettings>
   <resolvers>
-    <url name="jquery">
-      <artifact pattern="http://[organization]/[module]-[revision](.[min]).[ext]"/>
-    </url>
     <url name="epiceditor">
       <artifact pattern="http://[organization]/[module]/[artifact]-[revision].[ext]"/>
     </url>
@@ -16,7 +13,6 @@
     </chain>
   </resolvers>
   <modules>
-    <module organisation="code.jquery.com" resolver="jquery"/>
     <module organisation="epiceditor.com" resolver="epiceditor"/>
     <module organisation="googlecode.com" resolver="googlecode"/>
   </modules>
