@@ -47,7 +47,6 @@ def blog(year, month, title):
     return abort(404)
 
   return render_template('blog.html',
-                         url=request.url,
                          title=blogtitle,
                          article=markdown(blogcontent),
                          breadcrumbs=breadcrumbs,
