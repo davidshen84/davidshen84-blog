@@ -3,26 +3,12 @@
       A blog powered by markdown2
   </description>
 
-  <!-- set global properties for this build -->
-  <property name="build" location="build"/>
-  <property name="dist" location="dist"/>
-  <property name="src" location="src"/>
-  <property name="main" location="${src}/main"/>
-  <property name="test" location="${src}/test"/>
-  <property name="gaesdk" location="/home/xi/google_appengine/"/>
-  <property name="py27" location="/usr/lib64/python2.7/site-packages"/>
-
-  <property name="build.static" location="${build}/app/static"/>
-  <property name="build.js" location="${build.static}/js"/>
-  <property name="dist.static" location="${dist}/app/static"/>
-  <property name="dist.js" location="${dist.static}/js"/>
-
-  <property name="epiceditor" value="EpicEditor-v0.1.1.1"/>
-  <property name="lesscss" value="less-1.3.0.js"/>
+  <property file="build.properties"/>
 
   <target name="resolve"
           description="Resolve ivy">
     <ivy:retrieve conf="source"/>
+    <ivy:retrieve conf="lib" pattern="lib/[module]/[artifact].[ext]" />
 
     <unzip src="lib/${epiceditor}.zip" dest="lib"/>
   </target>

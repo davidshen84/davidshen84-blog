@@ -1,0 +1,12 @@
+<ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
+  <info organisation="org.private.shen"
+        module="bloglib"
+        status="integration" />
+  <configurations>
+      <conf name="lib"  description="private lib"/>
+  </configurations>
+  <publications>
+    <artifact name="blog" type="py" conf="lib" />
+    <artifact name="blogcomment" type="py" conf="lib" />
+  </publications>
+</ivy-module>

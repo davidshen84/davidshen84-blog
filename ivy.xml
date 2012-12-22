@@ -1,7 +1,10 @@
 <ivy-module version="2.0" xmlns:e="http://ant.apache.org/ivy/extra">
-  <info organisation="org.private.shen" module="blog"/>
+  <info organisation="org.private.shen"
+        module="blog"
+        status="integration" />
   <configurations>
-      <conf name="source"  description="source code distro"/>
+      <conf name="source" description="source code distro"/>
+      <conf name="lib" description="private lib"/>
   </configurations>
   <dependencies>
     <dependency org="epiceditor.com" name="docs/downloads" rev="v0.1.1.1" conf="source->default">
@@ -9,6 +12,10 @@
     </dependency>
     <dependency org="googlecode.com" name="lesscss" rev="1.3.0" e:suffix=".min" conf="source->default">
       <artifact name="less" type="javascript" ext="js"/>
+    </dependency>
+    <dependency name="bloglib" rev="latest.interation" conf="lib">
+      <artifact name="blog" type="py"/>
+      <artifact name="blogcomment" type="py"/>
     </dependency>
   </dependencies>
 </ivy-module>
