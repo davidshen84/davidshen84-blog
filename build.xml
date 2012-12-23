@@ -57,13 +57,13 @@
   </target>
 
   <target name="run-jslint">
-    <property name="src.js" location="${main}/app/static/js"/>
+    <property name="src.js" location="${app}/app/static/js"/>
     <delete file="jslint.out"/>
     <antcall target="jslint">
-      <param name="in" value="${main}/app/admin/admin.js"/>
+      <param name="in" value="${app}/app/admin/admin.js"/>
     </antcall>
     <antcall target="jslint">
-      <param name="in" value="${main}/app/admin/ng.js"/>
+      <param name="in" value="${app}/app/admin/ng.js"/>
     </antcall>
     <antcall target="jslint">
       <param name="in" value="${src.js}/blog.js"/>
@@ -81,14 +81,18 @@
 
     <!-- Copy src -->
     <copy todir="${build}">
-      <fileset dir="${main}"/>
+      <fileset dir="${app}"/>
     </copy>
 
-    <copy todir="${build}\test">
+    <copy todir="${build}/test">
       <fileset dir="${test}"/>
     </copy>
 
     <!-- Copy lib -->
+    <copy todir="${build}/app">
+      <fileset dir="lib/bloglib"/>
+    </copy>
+
     <copy file="lib/${lesscss}" tofile="${build.js}/less.js"/>
 
     <copy todir="${build.static}" force="true">
