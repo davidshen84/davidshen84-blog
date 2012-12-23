@@ -1,9 +1,13 @@
 'use strict';
 
-describe('test suite for ng moudle for admin.js', function () {
-  var $injector = angular.injector();
+describe('blog module', function () {
+  var $ctrl, $scope, Blog, param = {};
 
   beforeEach(module('blog'));
+  beforeEach(inject(function ($controller, $rootScope) {
+    $ctrl = $controller;
+    $scope = $rootScope;
+  }));
 
   it('should resolve Blog', inject(function (Blog) {
     expect(Blog).not.toBe(null);
@@ -25,36 +29,57 @@ describe('test suite for ng moudle for admin.js', function () {
     expect(typeof(editor)).toEqual('function');
   }));
 
-/*  it('should ???', inject(function ($route) {
-    expect($route).not.toBe(null);
-    dump($route.routes);
-  }));*/
+  it('should call Blog.get', inject(function (Blog) {
+    spyOn(Blog, 'get');
 
-  it('should match annotations', function () {
-    expect($injector.annotate(ListCtrl))
-      .toEqual([ '$scope', 'Blog' ]);
+    var ctrl = $ctrl('ListCtrl', { $scope: $scope, Blog: Blog });
 
-    expect($injector.annotate(CreateEditCtrl))
-      .toEqual([ '$scope', '$routeParams', 'Blog', 'BlogComment', 'editor' ]);
-  });
-
-  it('should call Blog methods', function () {
-    var scope = {},
-      Blog = jasmine.createSpyObj('Blog', [ 'get', 'update', 'remove' ]);
-
-    var ctrl = new ListCtrl(scope, Blog);
     expect(Blog.get).toHaveBeenCalled();
+  }));
 
-    expect(scope.pubIcon(true)).toEqual('icon-eye-open');
-    expect(scope.pubIcon(false)).toEqual('icon-eye-close');
+  it('should return correct published icon', inject(function (Blog) {
+    // spy on this only to avoid real method call
+    spyOn(Blog, 'get');
 
-    scope.setPubStat('test', true);
+    var ctrl = $ctrl('ListCtrl', { $scope: $scope, Blog: Blog });
+
+    expect($scope.pubIcon(true)).toEqual('icon-eye-open');
+    expect($scope.pubIcon(false)).toEqual('icon-eye-close');    
+  }));
+
+  it('should call Blog.update with correct parameters', inject(function (Blog) {
+    // spy on this only to avoid real method call
+    spyOn(Blog, 'get');
+    spyOn(Blog, 'update');
+
+    var ctrl = $ctrl('ListCtrl', { $scope: $scope, Blog: Blog });
+
+    $scope.setPubStat('test', true);
     expect(Blog.update).toHaveBeenCalledWith(
       { "title": 'test' },
       { "published": true },
       jasmine.any(Function));
+  }));
 
-    scope.deleteBlog('test');
-    expect(Blog.remove).toHaveBeenCalledWith({ "title": 'test' }, jasmine.any(Function));
-  })
+  it('should call Blog.remove with correct parameters', inject(function (Blog) {
+    spyOn(Blog, 'get');
+    spyOn(Blog, 'remove');
+
+    var ctrl = $ctrl('ListCtrl', { $scope: $scope, Blog: Blog });
+
+    $scope.deleteBlog('test');
+    expect(Blog.remove).toHaveBeenCalledWith({ "title": "test" }, jasmine.any(Function));
+  }));
+});
+
+describe('ng route', function () {
+  var $injector = angular.injector();
+
+  beforeEach(module('blog'));
+
+  it('should route to /blog/admin', inject(function ($route, $routeParams, $location) {
+    $location.path('/blog/admin');
+
+    expect($route.routes['/blog/admin']).not.toBe(undefined);
+  }));
 });
