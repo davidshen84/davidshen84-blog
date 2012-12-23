@@ -1,11 +1,11 @@
 <project xmlns:ivy="antlib:org.apache.ivy.ant" name="bloglib" default="publish" basedir=".">
   <description>
-      A blog powered by markdown2
+      bloglib
   </description>
 
   <property file="build.properties"/>
 
-  <target name="ivy-new-version" unless="ivy.new.revision">
+  <target name="new-version" unless="ivy.new.revision">
     <!-- default module version prefix value -->
     <property name="module.version.prefix" value="${module.version.target}-dev" />
 
@@ -14,31 +14,23 @@
     <ivy:buildnumber organisation="${ivy.organisation}"
       module="${ivy.module}" 
       revision="${module.version.prefix}"
-      defaultBuildNumber="1" revSep=""/>
-  </target>
-
-  <target name="version" depends="ivy-new-version">
+      defaultBuildNumber="1" />
     <echo message="version=${ivy.new.revision}" />
-
-    <property name="version" value="${ivy.new.revision}" />
   </target>
 
-  <target name="local-version" depends="version">
+  <target name="publish"
+    depends="new-version"
+    description="publish this project in the ivy local repository">
     <tstamp>
-      <format property="now" pattern="yyyyMMddHHmmss"/>
+      <format property="now" pattern="yyyyMMddHHmmss" />
     </tstamp>
-    <property name="ivy.new.revision" value="${module.version.target}-local-${now}"/>
-  </target>
 
-  <target name="publish" depends="local-version" description="--> publish this project in the ivy repository">
-    <ivy:retrieve conf="lib" />
     <ivy:publish artifactspattern="src/[module]/[artifact].[ext]" 
       resolver="local"
-      pubrevision="${version}"
+      pubrevision="${ivy.new.revision}"
       pubdate="${now}"
-      status="integration"
-    />
-    <echo message="project ${ant.project.name} released with version ${version}" />
+      status="integration" />
+    <echo message="project ${ant.project.name} released with version ${ivy.new.revision}" />
   </target>
 
   <target name="test"
