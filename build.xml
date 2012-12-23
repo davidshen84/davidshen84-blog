@@ -89,7 +89,7 @@
     </copy>
 
     <!-- Copy lib -->
-    <copy todir="${build}/app">
+    <copy todir="${build}/app/bloglib">
       <fileset dir="lib/bloglib"/>
     </copy>
 
