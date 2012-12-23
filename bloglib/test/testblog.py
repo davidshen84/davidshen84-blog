@@ -14,7 +14,7 @@ if len(sys.argv) > 1:
   gaesdk_path = sys.argv[1]
 
   sys.path.insert(0, gaesdk_path)
-  sys.path.insert(0, proj_path)
+  sys.path.insert(0, proj_path + '/src')
 else:
   print 'gae sdk is required'
   sys.exit(-1)
@@ -23,7 +23,7 @@ import dev_appserver
 dev_appserver.fix_sys_path()
 
 # real test code
-from app.blog import Blog
+from bloglib import Blog
 from google.appengine.ext import testbed
 from datetime import datetime, date
 

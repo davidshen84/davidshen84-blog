@@ -32,12 +32,26 @@
 
   <target name="publish" depends="local-version" description="--> publish this project in the ivy repository">
     <ivy:retrieve conf="lib" />
-    <ivy:publish artifactspattern="src/[artifact].[ext]" 
+    <ivy:publish artifactspattern="src/[module]/[artifact].[ext]" 
       resolver="local"
       pubrevision="${version}"
       pubdate="${now}"
       status="integration"
     />
     <echo message="project ${ant.project.name} released with version ${version}" />
+  </target>
+
+  <target name="test"
+          description="unit test">
+    <!-- Execute the unittest -->
+    <exec executable="python" dir="test">
+      <arg value="testblog.py"/>
+      <arg value="${gaesdk}"/>
+    </exec>
+
+    <exec executable="python" dir="test">
+      <arg value="testcomment.py"/>
+      <arg value="${gaesdk}"/>
+    </exec>
   </target>
 </project>

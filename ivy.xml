@@ -13,9 +13,6 @@
     <dependency org="googlecode.com" name="lesscss" rev="1.3.0" e:suffix=".min" conf="source->default">
       <artifact name="less" type="javascript" ext="js"/>
     </dependency>
-    <dependency name="bloglib" rev="latest.interation" conf="lib">
-      <artifact name="blog" type="py"/>
-      <artifact name="blogcomment" type="py"/>
-    </dependency>
+    <dependency name="bloglib" rev="latest.interation" conf="lib"/>
   </dependencies>
 </ivy-module>
