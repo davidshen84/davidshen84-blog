@@ -3,8 +3,7 @@
 import logging
 
 from flask import Flask, request, jsonify
-from blog import Blog
-from blogcomment import BlogComment
+from bloglib import Blog, BlogComment
 from apidecorator import login_admin
 
 MSG_OK = 'ok'
@@ -15,7 +14,6 @@ route_base = '/blog/comment/api/'
 
 @app.route(route_base + 'sync/<title>')
 def query(title):
-  #title = request.values['title']
   blog = Blog.getByTitle(title)
   
   if blog:

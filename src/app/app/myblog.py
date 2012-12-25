@@ -6,8 +6,7 @@ import json
 
 from flask import Flask, render_template, request, jsonify, abort, redirect, url_for
 from markdown2 import markdown
-from blog import Blog
-from blogcomment import BlogComment
+from bloglib import Blog, BlogComment
 
 BAD_SP = unichr(0xa0)
 app = Flask(__name__)

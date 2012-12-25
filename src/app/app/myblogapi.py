@@ -6,7 +6,7 @@ import re
 from apidecorator import login_admin, simpleauth
 from google.appengine.api import users
 from flask import Flask, render_template, request, make_response, jsonify, abort, redirect, json
-from blog import Blog
+from bloglib import Blog, BlogComment
 from datetime import datetime
 
 MSG_OK = 'ok'
