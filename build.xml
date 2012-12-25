@@ -162,22 +162,12 @@
   <target name="test" depends="build"
           description="unit test">
     <!-- Execute the unittest -->
-    <exec executable="python" dir="${build}\test">
-      <arg value="testblog.py"/>
-      <arg value="${gaesdk}"/>
-    </exec>
-
-    <exec executable="python" dir="${build}\test">
-      <arg value="testcomment.py"/>
-      <arg value="${gaesdk}"/>
-    </exec>
-
-    <exec executable="python" dir="${build}\test">
+    <exec executable="python" dir="${build}\test\serverside">
       <arg value="testmycommentapi.py"/>
       <arg value="${gaesdk}"/>
     </exec>
 
-    <exec executable="python" dir="${build}\test">
+    <exec executable="python" dir="${build}\test\serverside">
       <arg value="testmyblogapi.py"/>
       <arg value="${gaesdk}"/>
     </exec>

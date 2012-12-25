@@ -7,14 +7,10 @@ import sys
 import os
 
 if len(sys.argv) > 1:
-  # on Windows, import modules by relative path does not seem to work
-  # ;( use this method to get the absolute path of the project.
-  filepath = os.path.abspath(__file__)
-  proj_path = os.path.split(os.path.dirname(filepath))[0]
   gaesdk_path = sys.argv[1]
 
   sys.path.insert(0, gaesdk_path)
-  sys.path.insert(0, proj_path)
+  sys.path.insert(0, '../../')
 else:
   print 'gae sdk is required'
   sys.exit(-1)
@@ -24,8 +20,7 @@ dev_appserver.fix_sys_path()
 
 # real test code
 from app import mycommentapi
-from app.blog import Blog
-from app.blogcomment import BlogComment
+from app.bloglib import Blog, BlogComment
 from datetime import datetime
 from google.appengine.api import users
 from google.appengine.ext import testbed
