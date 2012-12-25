@@ -3,6 +3,9 @@
     <url name="epiceditor">
       <artifact pattern="http://[organization]/[module]/[artifact]-[revision].[ext]"/>
     </url>
+    <url name="angularjs">
+      <artifact pattern="http://[organization]/[revision]/[artifact][suffix].[ext]"/>
+    </url>
     <chain name="googlecode">
       <url name="url">
         <artifact pattern="http://[module].[organization]/files/[artifact]-[revision][suffix].[ext]"/>
@@ -15,5 +18,6 @@
   <modules>
     <module organisation="epiceditor.com" resolver="epiceditor"/>
     <module organisation="googlecode.com" resolver="googlecode"/>
+    <module organisation="code.angularjs.org" resolver="angularjs"/>
   </modules>
 </ivysettings>

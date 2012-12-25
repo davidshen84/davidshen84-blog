@@ -10,5 +10,14 @@
     <dependency org="googlecode.com" name="lesscss" rev="1.3.0" e:suffix=".min" conf="source->default">
       <artifact name="less" type="javascript" ext="js"/>
     </dependency>
+    <dependency org="code.angularjs.org" name="main" rev="1.0.3" e:suffix=".min" conf="source->default">
+      <artifact name="angular" type="javascript" ext="js"/>
+    </dependency>
+    <dependency org="code.angularjs.org" name="resource" rev="1.0.3" e:suffix=".min" conf="source->default">
+      <artifact name="angular-resource" type="javascript" ext="js"/>
+    </dependency>
+    <dependency org="code.angularjs.org" name="mocks" rev="1.0.3" e:suffix="" conf="source->default">
+      <artifact name="angular-mocks" type="javascript" ext="js"/>
+    </dependency>
   </dependencies>
 </ivy-module>

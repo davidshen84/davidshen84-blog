@@ -8,7 +8,7 @@
   <property name="dist" location="dist"/>
   <property name="src" location="src"/>
   <property name="main" location="${src}/main"/>
-  <property name="test" location="${src}/test"/>
+  <property name="test" location="${src}/test/serverside"/>
   <property name="gaesdk" location="/home/xi/google_appengine/"/>
   <property name="py27" location="/usr/lib64/python2.7/site-packages"/>
 
