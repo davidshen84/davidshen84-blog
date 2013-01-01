@@ -10,26 +10,33 @@ handlers:
   upload: favicon\.ico
 
 - url: /blog/static
-  static_dir: app/static
-
-- url: /blog/api.*
-  script: app.myblogapi.app
-  login: admin
-
-- url: /blog/comment/api.*
-  script: app.mycommentapi.app
+  static_dir: blog/static
 
 - url: /blog/admin
-  static_files: app/admin/admin.html
-  upload: app/admin/admin.html
+  static_files: blog/admin/admin.html
+  upload: blog/admin/admin.html
   login: admin
 
 - url: /blog/admin/
-  static_dir: app/admin
+  static_dir: blog/admin
   login: admin
 
+- url: /blog/api.*
+  script: blog.myblogapi.app
+  login: admin
+
+- url: /blog/comment/api.*
+  script: blog.mycommentapi.app
+
 - url: /blog.*
-  script: app.myblog.app
+  script: blog.myblog.app
+
+- url: /util/
+  static_files: util/main.html
+  upload: util/main.html
+
+- url: /util/
+  static_dir: util/
 
 libraries:
 - name: jinja2

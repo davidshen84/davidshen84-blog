@@ -57,19 +57,23 @@
   </target>
 
   <target name="run-jslint">
-    <property name="src.js" location="${app}/app/static/js"/>
+    <property name="src.js" location="${blogapp}/static/js"/>
     <delete file="jslint.out"/>
     <antcall target="jslint">
-      <param name="in" value="${app}/app/admin/admin.js"/>
+      <param name="in" value="${blogapp}/admin/admin.js"/>
     </antcall>
     <antcall target="jslint">
-      <param name="in" value="${app}/app/admin/ng.js"/>
+      <param name="in" value="${blogapp}/admin/ng.js"/>
     </antcall>
     <antcall target="jslint">
       <param name="in" value="${src.js}/blog.js"/>
     </antcall>
     <antcall target="jslint">
       <param name="in" value="${src.js}/ng.js"/>
+    </antcall>
+
+    <antcall target="jslint">
+      <param name="in" value="${utilapp}/ngModules.js"/>
     </antcall>
   </target>
 
@@ -89,7 +93,7 @@
     </copy>
 
     <!-- Copy lib -->
-    <copy todir="${build}/app/bloglib">
+    <copy todir="${build}/blog/bloglib">
       <fileset dir="lib/bloglib"/>
     </copy>
 
