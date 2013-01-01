@@ -26,9 +26,16 @@ function ListCtrl($scope, Blog) {
   };
 }
 
-function CreateEditCtrl($scope, $routeParams, Blog, BlogComment, editor) {
+function CreateEditCtrl($scope, $routeParams, $interpolate, Blog, BlogComment, editor) {
   var titlePattern = /^#.*$/m,
-    isNew = true;
+    isNew = true,
+    msgTmpl = $interpolate(
+      '<div class="alert alert-{{type}}">\
+      <button type="button" class="close" data-dismiss="alert">&times;</button>\
+      {{msg}}</div>'
+    );
+
+  $scope.isDirty = false;
 
   if ($routeParams.title) {
     isNew = false;
@@ -58,17 +65,28 @@ function CreateEditCtrl($scope, $routeParams, Blog, BlogComment, editor) {
       return;
     }
 
+    function updateSuccess(data) {
+      $scope.lastAction = {
+        "msg": data.msg,
+        "type": "success"
+      };
+
+      $scope.isDirty = false;
+    }
+
     if (isNew) {
-      Blog.save({
-        "title": title,
-        "content": content,
-        "tags": tags.length ? $scope.tags.split(',') : []
-      });
+      Blog.save(
+        { "title": title,
+          "content": content,
+          "tags": tags.length ? $scope.tags.split(',') : [] },
+        updateSuccess
+      );
     } else {
       Blog.update(
         { "title": title },
         { "content": content,
-          "tags": tags.length ? $scope.tags.split(',') : [] }
+          "tags": tags.length ? $scope.tags.split(',') : [] },
+        updateSuccess
       );
     }
   };
@@ -78,5 +96,11 @@ function CreateEditCtrl($scope, $routeParams, Blog, BlogComment, editor) {
       function () {
         $scope.comments = BlogComment.get({ "title_id": $routeParams.title });
       });
+  };
+
+  $scope.showMsg = function () {
+    if ($scope.lastAction) {
+      return msgTmpl($scope.lastAction);
+    }
   };
 }

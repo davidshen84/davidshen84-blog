@@ -44,9 +44,19 @@ angular.module('blog', ['blogapi']).
           container: $element[0],
           basePath: '/blog/static/epiceditor',
           clientSideStorage: false
-        };
+        },
+          ctx = angular.element($element.context),
+          _e;
 
-        editor(opt).load();
+        _e = editor(opt).load();
+
+        // bind events
+        if (ctx.attr('onupdate')) {
+          _e.on('update', function () {
+            // apply the expression to the directive's parent controller
+            $scope.$parent.$apply(ctx.attr('onupdate'));
+          });
+        }
       },
       template: '<div></div>',
       replace: true
