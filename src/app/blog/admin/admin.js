@@ -35,7 +35,7 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, Blog, BlogComment, e
       {{msg}}</div>'
     );
 
-  $scope.isDirty = false;
+  $scope.isClean = true;
 
   if ($routeParams.title) {
     isNew = false;
@@ -71,7 +71,7 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, Blog, BlogComment, e
         "type": "success"
       };
 
-      $scope.isDirty = false;
+      $scope.isClean = true;
     }
 
     if (isNew) {

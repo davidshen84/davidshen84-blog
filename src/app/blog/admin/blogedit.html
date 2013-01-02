@@ -1,7 +1,7 @@
 <div class="span8 well">
-  <eeditor onupdate="isDirty=true" />
+  <eeditor onupdate="isClean=false" />
   <input type="text" ng-model="tags" placeholder="Tags"/>
-  <button ng-click="save()" class="btn btn-mini btn-primary pull-right" ng-disabled="!isDirty"><i class="icon-ok"></i></button>
+  <button ng-click="save()" class="btn btn-mini btn-primary pull-right" ng-disabled="isClean"><i class="icon-ok"></i></button>
   <a href="/blog/admin" class="btn btn-mini pull-right"><i class="icon-off"></i></a>
   <span ng-bind-html-unsafe="showMsg()"></span>
 </div>
