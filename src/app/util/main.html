@@ -17,9 +17,7 @@
     })();
   </script>
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-  <!-- // <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> -->
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
-  <!-- // <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular-resource.min.js"></script> -->
   <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
 
   <script src="ngModules.js"></script>
@@ -29,24 +27,21 @@
     </header>
     <div class="row" ng-controller="RdnGenCtrl">
       <div class="span7 well">
-        <h5>Randam String Generator</h5>
+        <h5>Random String Generator</h5>
         <form class="form-horizontal" ng-submit="generate()">
           <div class="control-group">
             <div class="controls">
-              <label class="text">#. of chars: 
+              <label class="text">Number of chars: 
                 <input type="number" ng-model="charCount" min="1" max="50" />
               </label>
               <label class="checkbox"><input type="checkbox" ng-model="hasDigits" />Digit</label>
               <label class="checkbox"><input type="checkbox" ng-model="hasSepcials" />Special</label>
-<!--               <label class="checkbox"><input id="hasNum" type="checkbox" />Number</label>
-              <label class="checkbox"><input id="hasNum" type="checkbox" />Number</label>
-              <label class="checkbox"><input id="hasNum" type="checkbox" />Number</label> -->
-              <input type="submit" value="go" />
+              <input type="submit" value="Generate" />
             </div>
           </div>
         </form>
       </div>
-      <div class="span4 well">
+      <div class="span4">
         <h5>Result:</h5>
         <div>{{generatedChars}}</div>
       </div>
@@ -60,7 +55,7 @@
       <div class="span7 well">
         <h5>Coming...</h5>
       </div>
-      <div class="span4 well">
+      <div class="span4">
         <h5>Result:</h5>
       </div>
     </div>
@@ -72,3 +67,4 @@
     </footer>
   </body>
 </html>
+
