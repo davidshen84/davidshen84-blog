@@ -115,7 +115,7 @@
           <div class="well sidebar-nav">
               <ul class="nav nav-list">
                 <li class="nav-header">Tags</li>
-                {% for t, titles in tags.iteritems() %}
+                {% for t, titles in tagstats.iteritems() %}
                   <li><a href="/blog/tag/{{ t }}/">{{ t }} ({{ titles|length }})</a></li>
                 {% endfor %}
               </ul>

@@ -6,6 +6,10 @@
 <title>{{ title|title }}</title>
 {% endblock %}
 
+{% block meta %}
+<meta name="keywords" content="{{ tags }}" />
+{% endblock %}
+
 {% block nav %}
 <ul id="nav" class="breadcrumb">
 {% for i in breadcrumbs %}
