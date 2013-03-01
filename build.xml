@@ -15,7 +15,7 @@
 
   <target name="yuicompressor">
     <echo message="compressing: ${in}" />
-    <exec executable="yuicompressor">
+    <exec executable="${yuicompressor}">
       <arg value="--nomunge"/>
       <arg value="--type"/>
       <arg value="${type}"/>
@@ -54,6 +54,24 @@
   <target name="init" depends="resolve, run-jslint">
     <!-- create the time stamp -->
     <tstamp/>
+
+    <!-- get werkzeug package directory -->
+    <exec executable="python" outputproperty="werkzeug">
+      <arg value="-c"/>
+      <arg value="import werkzeug; print '/'.join(werkzeug.__file__.split('/')[0:-2])"/>
+    </exec>
+
+    <!-- get flask package directory -->
+    <exec executable="python" outputproperty="flask">
+      <arg value="-c"/>
+      <arg value="import flask; print '/'.join(flask.__file__.split('/')[0:-2])"/>
+    </exec>
+
+    <!-- get markdown2 package directory -->
+    <exec executable="python" outputproperty="markdown2">
+      <arg value="-c"/>
+      <arg value="import markdown2; print markdown2.__file__[0:-1]"/>
+    </exec>
   </target>
 
   <target name="run-jslint">
@@ -105,15 +123,15 @@
       <fileset dir="/home/xi/github/EpicEditor"/>
 -->
     </copy>
-    <copy file="${py27}/markdown2.py" todir="${build}"/>
+    <copy file="${markdown2}" todir="${build}"/>
 
     <zip destfile="${build}/werkzeug.zip"
-      basedir="${py27}"
+      basedir="${werkzeug}"
       includes="werkzeug/"
       excludes="**/testsuite/**, **/debug/**, **/*.pyc, **/*.pyo"/>
 
     <zip destfile="${build}/flask.zip"
-      basedir="${py27}"
+      basedir="${flask}"
       includes="flask/"
       excludes="**/testsuite/**, **/debug/**, **/*.pyc, **/*.pyo"/>
   </target>

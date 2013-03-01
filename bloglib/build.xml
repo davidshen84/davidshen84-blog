@@ -26,6 +26,7 @@
     </tstamp>
 
     <ivy:publish artifactspattern="src/[module]/[artifact].[ext]" 
+      update="true"
       resolver="local"
       pubrevision="${ivy.new.revision}"
       pubdate="${now}"
