@@ -1,0 +1,42 @@
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="build lib" default="build" basedir=".">
+  <description>
+    Build libraries
+  </description>
+
+  <property file="../build.properties"/>
+
+  <target name="init"
+          description="initialize variables">
+    <!-- get werkzeug package directory -->
+    <exec executable="python" outputproperty="werkzeug">
+      <arg value="-c"/>
+      <arg value="import werkzeug; print '/'.join(werkzeug.__file__.split('/')[0:-2])"/>
+    </exec>
+
+    <!-- get flask package directory -->
+    <exec executable="python" outputproperty="flask">
+      <arg value="-c"/>
+      <arg value="import flask; print '/'.join(flask.__file__.split('/')[0:-2])"/>
+    </exec>
+  </target>
+
+  <target name="build" depends="init"
+          description="build libraries">
+
+    <zip destfile="werkzeug.zip"
+      basedir="${werkzeug}"
+      includes="werkzeug/"
+      excludes="**/testsuite/**, **/debug/**, **/*.pyc, **/*.pyo"/>
+    <zip destfile="flask.zip"
+      basedir="${flask}"
+      includes="flask/"
+      excludes="**/testsuite/**, **/debug/**, **/*.pyc, **/*.pyo"/>
+  </target>
+
+  <target name="clean"
+          description="clean the directory">
+    <delete includeemptydirs="true">
+      <fileset dir="." excludes="build.xml"/>
+    </delete>
+  </target>
+</project>

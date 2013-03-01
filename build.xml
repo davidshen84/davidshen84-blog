@@ -2,15 +2,15 @@
   <description>
       A blog powered by markdown2
   </description>
-
   <property file="build.properties"/>
 
   <target name="resolve"
           description="Resolve ivy">
     <ivy:retrieve conf="source"/>
-    <ivy:retrieve conf="lib" pattern="lib/[module]/[artifact].[ext]" />
-
-    <unzip src="lib/${epiceditor}.zip" dest="lib"/>
+    <ivy:retrieve conf="lib"
+                  pattern="lib/[module]/[artifact].[ext]" />
+    <unzip src="lib/${epiceditor}.zip"
+           dest="lib"/>
   </target>
 
   <target name="yuicompressor">
@@ -54,19 +54,6 @@
   <target name="init" depends="resolve, run-jslint">
     <!-- create the time stamp -->
     <tstamp/>
-
-    <!-- get werkzeug package directory -->
-    <exec executable="python" outputproperty="werkzeug">
-      <arg value="-c"/>
-      <arg value="import werkzeug; print '/'.join(werkzeug.__file__.split('/')[0:-2])"/>
-    </exec>
-
-    <!-- get flask package directory -->
-    <exec executable="python" outputproperty="flask">
-      <arg value="-c"/>
-      <arg value="import flask; print '/'.join(flask.__file__.split('/')[0:-2])"/>
-    </exec>
-
     <!-- get markdown2 package directory -->
     <exec executable="python" outputproperty="markdown2">
       <arg value="-c"/>
@@ -89,15 +76,19 @@
     <antcall target="jslint">
       <param name="in" value="${src.js}/ng.js"/>
     </antcall>
-
     <antcall target="jslint">
       <param name="in" value="${utilapp}/ngModules.js"/>
     </antcall>
   </target>
 
-  <target name="build" depends="init"
-          description="generate the distribution" >
+  <target name="build-libs">
+    <subant target="">
+      <fileset file="lib/build.xml"/>
+    </subant>
+  </target>
 
+  <target name="build" depends="init, build-libs"
+          description="generate the distribution" >
     <!-- Create the distribution directory -->
     <mkdir dir="${build}"/>
 
@@ -114,31 +105,17 @@
     <copy todir="${build}/blog/bloglib">
       <fileset dir="lib/bloglib"/>
     </copy>
-
     <copy file="lib/${lesscss}" tofile="${build.js}/less.js"/>
-
     <copy todir="${build.static}" force="true">
       <fileset dir="lib/${epiceditor}"/>
-<!--
-      <fileset dir="/home/xi/github/EpicEditor"/>
--->
     </copy>
     <copy file="${markdown2}" todir="${build}"/>
-
-    <zip destfile="${build}/werkzeug.zip"
-      basedir="${werkzeug}"
-      includes="werkzeug/"
-      excludes="**/testsuite/**, **/debug/**, **/*.pyc, **/*.pyo"/>
-
-    <zip destfile="${build}/flask.zip"
-      basedir="${flask}"
-      includes="flask/"
-      excludes="**/testsuite/**, **/debug/**, **/*.pyc, **/*.pyo"/>
+    <copy file="lib/werkzeug.zip" todir="${build}"/>
+    <copy file="lib/flask.zip" todir="${build}"/>
   </target>
 
   <target name="dist" depends="build"
           description="generate the distribution" >
-
     <!-- create the distribution directory -->
     <mkdir dir="${dist}"/>
 
@@ -200,7 +177,9 @@
     <!-- Delete the ${build} and ${dist} directory trees -->
     <delete dir="${build}"/>
     <delete dir="${dist}"/>
-    <delete dir="lib"/>
+    <subant target="clean">
+      <fileset file="lib/build.xml"/>
+    </subant>
   </target>
 
   <target name="cleanivy"
