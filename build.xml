@@ -83,7 +83,7 @@
 
   <target name="build-libs">
     <subant target="">
-      <fileset file="lib/build.xml"/>
+      <fileset file="build.libs.xml"/>
     </subant>
   </target>
 
@@ -177,9 +177,7 @@
     <!-- Delete the ${build} and ${dist} directory trees -->
     <delete dir="${build}"/>
     <delete dir="${dist}"/>
-    <subant target="clean">
-      <fileset file="lib/build.xml"/>
-    </subant>
+    <delete dir="lib"/>
   </target>
 
   <target name="cleanivy"

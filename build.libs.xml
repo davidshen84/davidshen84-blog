@@ -3,7 +3,7 @@
     Build libraries
   </description>
 
-  <property file="../build.properties"/>
+  <property file="build.properties"/>
 
   <target name="init"
           description="initialize variables">
@@ -23,20 +23,13 @@
   <target name="build" depends="init"
           description="build libraries">
 
-    <zip destfile="werkzeug.zip"
+    <zip destfile="lib/werkzeug.zip"
       basedir="${werkzeug}"
       includes="werkzeug/"
       excludes="**/testsuite/**, **/debug/**, **/*.pyc, **/*.pyo"/>
-    <zip destfile="flask.zip"
+    <zip destfile="lib/flask.zip"
       basedir="${flask}"
       includes="flask/"
       excludes="**/testsuite/**, **/debug/**, **/*.pyc, **/*.pyo"/>
-  </target>
-
-  <target name="clean"
-          description="clean the directory">
-    <delete includeemptydirs="true">
-      <fileset dir="." excludes="build.xml"/>
-    </delete>
   </target>
 </project>
