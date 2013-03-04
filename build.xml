@@ -14,17 +14,14 @@
   </target>
 
   <target name="yuicompressor">
-    <echo message="compressing: ${in}" />
-    <exec executable="${yuicompressor}">
-      <arg value="--nomunge"/>
-      <arg value="--type"/>
-      <arg value="${type}"/>
-      <arg value="--charset"/>
-      <arg value="utf-8"/>
+    <echo message="compressing: ${in}"/>
+    <java jar="${yuijar}"
+          fork="true"
+          failonerror="true">
       <arg value="-o"/>
       <arg value="${out}"/>
       <arg value="${in}"/>
-    </exec>
+    </java>
   </target>
 
   <target name="jshint">
@@ -117,27 +114,23 @@
 
   <target name="compress">
     <antcall target="yuicompressor">
-      <param name="in" value="${dist}/app/admin/admin.js"/>
-      <param name="out" value="${dist}/app/admin/admin.js"/>
-      <param name="type" value="js"/>
+      <param name="in" value="${dist}/blog/admin/admin.js"/>
+      <param name="out" value="${dist}/blog/admin/admin.js"/>
     </antcall>
 
     <antcall target="yuicompressor">
-      <param name="in" value="${dist}/app/admin/ng.js"/>
-      <param name="out" value="${dist}/app/admin/ng.js"/>
-      <param name="type" value="js"/>
+      <param name="in" value="${dist}/blog/admin/ng.js"/>
+      <param name="out" value="${dist}/blog/admin/ng.js"/>
     </antcall>
 
     <antcall target="yuicompressor">
-      <param name="in" value="${dist}/app/static/js/blog.js"/>
-      <param name="out" value="${dist}/app/static/js/blog.js"/>
-      <param name="type" value="js"/>
+      <param name="in" value="${dist.js}js/blog.js"/>
+      <param name="out" value="${dist.js}/blog.js"/>
     </antcall>
 
     <antcall target="yuicompressor">
-      <param name="in" value="${dist}/app/static/js/ng.js"/>
-      <param name="out" value="${dist}/app/static/js/ng.js"/>
-      <param name="type" value="js"/>
+      <param name="in" value="${dist.js}/ng.js"/>
+      <param name="out" value="${dist.js}/ng.js"/>
     </antcall>
   </target>
 
