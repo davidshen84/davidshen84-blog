@@ -27,31 +27,34 @@
     </exec>
   </target>
 
-  <target name="jslint">
-    <echo message="jslint: ${in}" />
-    <exec executable="jslint" output="jslint.out" append="true" failonerror="true">
-      <arg value="--indent"/>
-      <arg value="2"/>
-      <arg value="--browser"/>
-      <arg value="--plusplus"/>
-      <arg value="--regexp"/>
-      <arg value="--predef"/>
-      <arg value="angular"/>
-      <arg value="--predef"/>
-      <arg value="EpicEditor"/>
-      <arg value="--predef"/>
-      <arg value="$"/>
-      <arg value="--predef"/>
-      <arg value="ListCtrl"/>
-      <arg value="--predef"/>
-      <arg value="CreateEditCtrl"/>
-      <arg value="--nomen"/>
-      <arg value="--"/>
+  <target name="jshint">
+    <echo message="jshint: ${in}"/>
+    <exec executable="jshint" output="jshint.out" append="true" failonerror="true">
       <arg value="${in}"/>
     </exec>
   </target>
 
-  <target name="init" depends="resolve, run-jslint">
+  <target name="run-jshint">
+    <property name="src.js" location="${blogapp}/static/js"/>
+    <delete file="jshint.out"/>
+    <antcall target="jshint">
+      <param name="in" value="${blogapp}/admin/admin.js"/>
+    </antcall>
+    <antcall target="jshint">
+      <param name="in" value="${blogapp}/admin/ng.js"/>
+    </antcall>
+    <antcall target="jshint">
+      <param name="in" value="${src.js}/blog.js"/>
+    </antcall>
+    <antcall target="jshint">
+      <param name="in" value="${src.js}/ng.js"/>
+    </antcall>
+    <antcall target="jshint">
+      <param name="in" value="${utilapp}/ngModules.js"/>
+    </antcall>
+  </target>
+
+  <target name="init" depends="resolve, run-jshint">
     <!-- create the time stamp -->
     <tstamp/>
     <!-- get markdown2 package directory -->
@@ -59,26 +62,6 @@
       <arg value="-c"/>
       <arg value="import markdown2; print markdown2.__file__[0:-1]"/>
     </exec>
-  </target>
-
-  <target name="run-jslint">
-    <property name="src.js" location="${blogapp}/static/js"/>
-    <delete file="jslint.out"/>
-    <antcall target="jslint">
-      <param name="in" value="${blogapp}/admin/admin.js"/>
-    </antcall>
-    <antcall target="jslint">
-      <param name="in" value="${blogapp}/admin/ng.js"/>
-    </antcall>
-    <antcall target="jslint">
-      <param name="in" value="${src.js}/blog.js"/>
-    </antcall>
-    <antcall target="jslint">
-      <param name="in" value="${src.js}/ng.js"/>
-    </antcall>
-    <antcall target="jslint">
-      <param name="in" value="${utilapp}/ngModules.js"/>
-    </antcall>
   </target>
 
   <target name="build-libs">

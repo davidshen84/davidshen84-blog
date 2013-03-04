@@ -1,0 +1,13 @@
+{
+  "globalstrict": true,
+  "multistr": true,
+  "globals": {
+    "window": true,
+    "angular": true,
+    "ListCtrl": true,
+    "CreateEditCtrl": true,
+    "EpicEditor": true,
+    "$": true,
+    "document": true
+  }
+}
