@@ -124,7 +124,7 @@
     </antcall>
 
     <antcall target="yuicompressor">
-      <param name="in" value="${dist.js}js/blog.js"/>
+      <param name="in" value="${dist.js}/blog.js"/>
       <param name="out" value="${dist.js}/blog.js"/>
     </antcall>
 
