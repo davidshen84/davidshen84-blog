@@ -49,7 +49,7 @@
     </div>
     <div class="container">
       <header class="hero-unit">
-        <h1 id="title" keyname="{{ title }}" itemprop="name">{{ title|title }}</h1>
+        <h1 id="title" keyname="{{ title }}" itemprop="name">{{ title }}</h1>
       </header>
       <div class="row">
         <aside class="span2">
@@ -80,13 +80,13 @@
           <div class="row" id="addcommentform" style="{{ 'display: none' if not article else '' }}" >
             <div class="span7">
               <h3>Please add your comments</h3>
-              <form class="well form-horizontal" name="commentForm" ng-controller="CommentCtrl" ng-submit="submit()">
+              <form class="well form-horizontal" id="commentForm" name="commentForm" ng-controller="CommentCtrl" ng-submit="submit()">
                 <fieldset>
                   <div class="control-group">
                     <label class="control-label" for="screenname">Name*</label>
                     <div class="controls">
                       <input type="text" class="input-xlarge" name="screenname" ng-model="screenname" placeholder="screen name" required ng-minlength="2"/>
-                      <div class="error" ng-show="commentForm.screenname.$dirty && (commentForm.screenname.$error.required || commentForm.screenname.$error.minlength)">Required, minimum!</div>
+                      <div class="error" ng-show="commentForm.screenname.$dirty && (commentForm.screenname.$error.required || commentForm.screenname.$error.minlength)">Required, 2 letters minimum!</div>
                     </div>
                   </div>
                   <div class="control-group">
