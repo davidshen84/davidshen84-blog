@@ -3,7 +3,7 @@
   <head>
     {% block title %}{% endblock %}
     {% block meta %}{% endblock %}
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
 
     <script type="text/javascript">
       var _gaq = _gaq || [];
@@ -20,7 +20,7 @@
     <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular-resource.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/blog/static/js/blog.js"></script>
     <script type="text/javascript" src="/blog/static/js/ng.js"></script>
 
@@ -41,7 +41,10 @@
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="/blog/">Blog</a></li>
-              <!--<li><a href="#contact">Contact</a></li>-->
+              <li><a href="/util/">Utilities</a></li>
+            </ul>
+            <ul class="nav pull-right">
+              <li><a href="http://about.me/davidshen" target="_blank">About Me</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -136,8 +139,14 @@
       </div>
       <footer>
         <hr />
-        <a href="#contact"></a>
-        <address>E-Mail: <a href="mailto:">davidshen84 at gmail dot com</a></address>
+        <strong>Powered by</strong>
+        <ul class="inline">
+          <li>Python</li>
+          <li>GAE</li>
+          <li>markdown2</li>
+          <li>Flask</li>
+          <li>jinja2</li>
+        </ul>
       </footer>
     </div>
     {# <script src="static/js/less.js"></script> #}
