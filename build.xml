@@ -18,6 +18,7 @@
     <java jar="${yuijar}"
           fork="true"
           failonerror="true">
+      <arg value="--nomunge"/>
       <arg value="-o"/>
       <arg value="${out}"/>
       <arg value="${in}"/>
