@@ -22,7 +22,7 @@
   <!-- // <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular-resource.min.js"></script> -->
   <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
 
-  <script src="ngModules.js"></script>
+  <script src="ng.js"></script>
   <body class="container">
     <header class="hero-unit row">
       <h1 class="span12" keyname="Utilities" itemprop="name">Utilities</h1>
@@ -36,8 +36,11 @@
               <label class="text">#. of chars: 
                 <input type="number" ng-model="charCount" min="1" max="50" />
               </label>
-              <label class="checkbox"><input type="checkbox" ng-model="hasDigits" />Digit</label>
-              <label class="checkbox"><input type="checkbox" ng-model="hasSepcials" />Special</label>
+              <label class="checkbox"><input type="checkbox" ng-model="hasLowerCases" />{{lowerCases}}</label>
+              <label class="checkbox"><input type="checkbox" ng-model="hasUpperCases" />{{upperCases}}</label>
+              <label class="checkbox"><input type="checkbox" ng-model="hasDigits" />{{digits}}</label>
+              <label class="checkbox"><input type="checkbox" ng-model="hasSepcials" />{{specials}}</label>
+              <label class="checkbox"><input type="checkbox" ng-model="hasCJK" />CJK</label>
 <!--               <label class="checkbox"><input id="hasNum" type="checkbox" />Number</label>
               <label class="checkbox"><input id="hasNum" type="checkbox" />Number</label>
               <label class="checkbox"><input id="hasNum" type="checkbox" />Number</label> -->
@@ -67,7 +70,7 @@
     <footer class="row">
       <div class="span12">
         <hr />
-        Powered by: ...
+        Powered by: ...<em>some awesome stuffs</em>...
       </div>
     </footer>
   </body>
