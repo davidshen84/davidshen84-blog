@@ -114,24 +114,36 @@
   </target>
 
   <target name="compress">
+    <!-- compress js files for blog -->
     <antcall target="yuicompressor">
       <param name="in" value="${dist}/blog/admin/admin.js"/>
       <param name="out" value="${dist}/blog/admin/admin.js"/>
+      <param name="type" value="js"/>
     </antcall>
 
     <antcall target="yuicompressor">
       <param name="in" value="${dist}/blog/admin/ng.js"/>
       <param name="out" value="${dist}/blog/admin/ng.js"/>
+      <param name="type" value="js"/>
     </antcall>
 
     <antcall target="yuicompressor">
       <param name="in" value="${dist.js}/blog.js"/>
       <param name="out" value="${dist.js}/blog.js"/>
+      <param name="type" value="js"/>
     </antcall>
 
     <antcall target="yuicompressor">
       <param name="in" value="${dist.js}/ng.js"/>
       <param name="out" value="${dist.js}/ng.js"/>
+      <param name="type" value="js"/>
+    </antcall>
+
+    <!-- compress js files for util -->
+    <antcall target="yuicompressor">
+      <param name="in" value="${dist}/util/ngModules.js"/>
+      <param name="out" value="${dist}/util/ngModules.js"/>
+      <param name="type" value="js"/>
     </antcall>
   </target>
 
