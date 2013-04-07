@@ -48,7 +48,7 @@
       <param name="in" value="${src.js}/ng.js"/>
     </antcall>
     <antcall target="jshint">
-      <param name="in" value="${utilapp}/ngModules.js"/>
+      <param name="in" value="${utilapp}/ng.js"/>
     </antcall>
   </target>
 
@@ -141,8 +141,8 @@
 
     <!-- compress js files for util -->
     <antcall target="yuicompressor">
-      <param name="in" value="${dist}/util/ngModules.js"/>
-      <param name="out" value="${dist}/util/ngModules.js"/>
+      <param name="in" value="${dist}/util/ng.js"/>
+      <param name="out" value="${dist}/util/ng.js"/>
       <param name="type" value="js"/>
     </antcall>
   </target>
