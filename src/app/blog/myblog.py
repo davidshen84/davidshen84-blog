@@ -101,3 +101,4 @@ def archivesByTags(tag):
                          monthFullName=monthFullName,
                          articlePath=request.path,
                          isXhr=request.is_xhr)
+

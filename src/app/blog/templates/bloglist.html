@@ -37,7 +37,7 @@
   </ul>
 {% elif tag %}
   <ul class="nav nav-list">
-  {% for y, m, t in tags[tag] %}
+  {% for y, m, t in tagstats[tag] %}
     <li><a href="/blog/{{ y }}/{{ m }}/{{ t }}">{{ t }}</a></li>
   {% endfor %}
   </ul>
