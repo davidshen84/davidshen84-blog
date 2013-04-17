@@ -49,11 +49,13 @@ angular.module('app', [])
       }
 
       charArrLen = charArr.length;
-      $scope.generatedChars = '';
-      maxLen = $scope.charCount;
-      for (i = 0; i < maxLen; i++) {
-        rnd = parseInt(prime * Math.random(), 10);
-        $scope.generatedChars += charArr[rnd % charArrLen];
+      if (charArrLen > 0) {
+        $scope.generatedChars = '';
+        maxLen = $scope.charCount;
+        for (i = 0; i < maxLen; i++) {
+          rnd = parseInt(prime * Math.random(), 10);
+          $scope.generatedChars += charArr[rnd % charArrLen];
+        }
       }
     };
   });
