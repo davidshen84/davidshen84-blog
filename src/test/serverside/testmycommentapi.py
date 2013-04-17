@@ -19,8 +19,8 @@ import dev_appserver
 dev_appserver.fix_sys_path()
 
 # real test code
-from app import mycommentapi
-from app.bloglib import Blog, BlogComment
+from blog import mycommentapi
+from blog.bloglib import Blog, BlogComment
 from datetime import datetime
 from google.appengine.api import users
 from google.appengine.ext import testbed

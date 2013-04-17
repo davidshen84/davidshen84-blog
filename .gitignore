@@ -3,4 +3,4 @@ dist
 lib
 *.pyc
 *.pyo
-jslint.out
+jshint.out

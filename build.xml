@@ -2,84 +2,74 @@
   <description>
       A blog powered by markdown2
   </description>
-
   <property file="build.properties"/>
 
   <target name="resolve"
           description="Resolve ivy">
     <ivy:retrieve conf="source"/>
-    <ivy:retrieve conf="lib" pattern="lib/[module]/[artifact].[ext]" />
-
-    <unzip src="lib/${epiceditor}.zip" dest="lib"/>
+    <ivy:retrieve conf="lib"
+                  pattern="lib/[module]/[artifact].[ext]" />
+    <unzip src="lib/${epiceditor}.zip"
+           dest="lib"/>
   </target>
 
   <target name="yuicompressor">
-    <echo message="compressing: ${in}" />
-    <exec executable="yuicompressor">
+    <echo message="compressing: ${in}"/>
+    <java jar="${yuijar}"
+          fork="true"
+          failonerror="true">
       <arg value="--nomunge"/>
-      <arg value="--type"/>
-      <arg value="${type}"/>
-      <arg value="--charset"/>
-      <arg value="utf-8"/>
       <arg value="-o"/>
       <arg value="${out}"/>
       <arg value="${in}"/>
-    </exec>
+    </java>
   </target>
 
-  <target name="jslint">
-    <echo message="jslint: ${in}" />
-    <exec executable="jslint" output="jslint.out" append="true" failonerror="true">
-      <arg value="--indent"/>
-      <arg value="2"/>
-      <arg value="--browser"/>
-      <arg value="--plusplus"/>
-      <arg value="--regexp"/>
-      <arg value="--predef"/>
-      <arg value="angular"/>
-      <arg value="--predef"/>
-      <arg value="EpicEditor"/>
-      <arg value="--predef"/>
-      <arg value="$"/>
-      <arg value="--predef"/>
-      <arg value="ListCtrl"/>
-      <arg value="--predef"/>
-      <arg value="CreateEditCtrl"/>
-      <arg value="--nomen"/>
-      <arg value="--"/>
+  <target name="jshint">
+    <echo message="jshint: ${in}"/>
+    <exec executable="jshint" output="jshint.out" append="true" failonerror="true">
       <arg value="${in}"/>
     </exec>
   </target>
 
-  <target name="init" depends="resolve, run-jslint">
-    <!-- create the time stamp -->
-    <tstamp/>
-  </target>
-
-  <target name="run-jslint">
+  <target name="run-jshint">
     <property name="src.js" location="${blogapp}/static/js"/>
-    <delete file="jslint.out"/>
-    <antcall target="jslint">
+    <delete file="jshint.out"/>
+    <antcall target="jshint">
       <param name="in" value="${blogapp}/admin/admin.js"/>
     </antcall>
-    <antcall target="jslint">
+    <antcall target="jshint">
       <param name="in" value="${blogapp}/admin/ng.js"/>
     </antcall>
-    <antcall target="jslint">
+    <antcall target="jshint">
       <param name="in" value="${src.js}/blog.js"/>
     </antcall>
-    <antcall target="jslint">
+    <antcall target="jshint">
       <param name="in" value="${src.js}/ng.js"/>
     </antcall>
-
-    <antcall target="jslint">
-      <param name="in" value="${utilapp}/ngModules.js"/>
+    <antcall target="jshint">
+      <param name="in" value="${utilapp}/ng.js"/>
     </antcall>
   </target>
 
-  <target name="build" depends="init"
-          description="generate the distribution" >
+  <target name="init" depends="resolve, run-jshint">
+    <!-- create the time stamp -->
+    <tstamp/>
+    <!-- get markdown2 package directory -->
+    <exec executable="python" outputproperty="markdown2">
+      <arg value="-c"/>
+      <arg value="import markdown2; print markdown2.__file__[0:-1]"/>
+    </exec>
+  </target>
 
+  <target name="build-libs">
+    <subant target="">
+      <fileset file="build.libs.xml"/>
+    </subant>
+  </target>
+
+  <target name="build" depends="init, build-libs"
+          description="generate the distribution" >
     <!-- Create the distribution directory -->
     <mkdir dir="${build}"/>
 
@@ -96,31 +86,17 @@
     <copy todir="${build}/blog/bloglib">
       <fileset dir="lib/bloglib"/>
     </copy>
-
     <copy file="lib/${lesscss}" tofile="${build.js}/less.js"/>
-
     <copy todir="${build.static}" force="true">
       <fileset dir="lib/${epiceditor}"/>
-<!--
-      <fileset dir="/home/xi/github/EpicEditor"/>
--->
     </copy>
-    <copy file="${py27}/markdown2.py" todir="${build}"/>
-
-    <zip destfile="${build}/werkzeug.zip"
-      basedir="${py27}"
-      includes="werkzeug/"
-      excludes="**/testsuite/**, **/debug/**, **/*.pyc, **/*.pyo"/>
-
-    <zip destfile="${build}/flask.zip"
-      basedir="${py27}"
-      includes="flask/"
-      excludes="**/testsuite/**, **/debug/**, **/*.pyc, **/*.pyo"/>
+    <copy file="${markdown2}" todir="${build}"/>
+    <copy file="lib/werkzeug.zip" todir="${build}"/>
+    <copy file="lib/flask.zip" todir="${build}"/>
   </target>
 
   <target name="dist" depends="build"
           description="generate the distribution" >
-
     <!-- create the distribution directory -->
     <mkdir dir="${dist}"/>
 
@@ -165,8 +141,8 @@
 
     <!-- compress js files for util -->
     <antcall target="yuicompressor">
-      <param name="in" value="${dist}/util/ngModules.js"/>
-      <param name="out" value="${dist}/util/ngModules.js"/>
+      <param name="in" value="${dist}/util/ng.js"/>
+      <param name="out" value="${dist}/util/ng.js"/>
       <param name="type" value="js"/>
     </antcall>
   </target>
