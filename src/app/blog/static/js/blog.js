@@ -55,6 +55,7 @@ function CommentCtrl($scope, $route, BlogComment) {
         "email": $scope.email,
         "comment": $scope.comment },
       function () {
+        $('#commentForm').get(0).reset();
         $('#comments').append(BlogComment.createCommentHtml($scope));
       }
     );

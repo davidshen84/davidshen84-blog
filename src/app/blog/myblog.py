@@ -47,11 +47,12 @@ def blog(year, month, title):
 
   return render_template('blog.html',
                          title=blogtitle,
+                         tags=','.join(myblog.tags),
                          article=markdown(blogcontent),
                          breadcrumbs=breadcrumbs,
                          comments=comments,
                          archives=Blog.getArchiveStats(),
-                         tags=Blog.getTagStats(),
+                         tagstats=Blog.getTagStats(),
                          monthFullName=monthFullName,
                          articlePath=articlePath,
                          isXhr=request.is_xhr)
@@ -73,7 +74,7 @@ def archivesByDate(year, month=None):
                          year=year, month=month,
                          breadcrumbs=breadcrumbs,
                          archives=Blog.getArchiveStats(),
-                         tags=Blog.getTagStats(),
+                         tagstats=Blog.getTagStats(),
                          monthFullName=monthFullName,
                          articlePath=request.path,
                          isXhr=request.is_xhr)
@@ -96,7 +97,8 @@ def archivesByTags(tag):
                          tag=tag,
                          breadcrumbs=breadcrumbs,
                          archives=Blog.getArchiveStats(),
-                         tags=Blog.getTagStats(),
+                         tagstats=Blog.getTagStats(),
                          monthFullName=monthFullName,
                          articlePath=request.path,
                          isXhr=request.is_xhr)
+

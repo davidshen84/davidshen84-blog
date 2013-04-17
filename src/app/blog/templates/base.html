@@ -3,7 +3,7 @@
   <head>
     {% block title %}{% endblock %}
     {% block meta %}{% endblock %}
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
 
     <script type="text/javascript">
       var _gaq = _gaq || [];
@@ -20,7 +20,7 @@
     <script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular-resource.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/blog/static/js/blog.js"></script>
     <script type="text/javascript" src="/blog/static/js/ng.js"></script>
 
@@ -41,7 +41,10 @@
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="/blog/">Blog</a></li>
-              <!--<li><a href="#contact">Contact</a></li>-->
+              <li><a href="/util/">Utilities</a></li>
+            </ul>
+            <ul class="nav pull-right">
+              <li><a href="http://about.me/davidshen" target="_blank">About Me</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -49,7 +52,7 @@
     </div>
     <div class="container">
       <header class="hero-unit">
-        <h1 id="title" keyname="{{ title }}" itemprop="name">{{ title|title }}</h1>
+        <h1 id="title" keyname="{{ title }}" itemprop="name">{{ title }}</h1>
       </header>
       <div class="row">
         <aside class="span2">
@@ -60,6 +63,18 @@
           {% block nav %}{% endblock %}
           </nav>
           {% block article %}{% endblock %}
+          <hr />
+          <div class="socialbtn">
+            <!-- AddThis Button BEGIN -->
+            <div class="addthis_toolbox addthis_default_style ">
+              <a class="addthis_button_tweet" tw:via="addthis"></a>
+              <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+              <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+              <a class="addthis_counter addthis_pill_style"></a>
+            </div>
+            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51344a565541aa7c"></script>
+            <!-- AddThis Button END -->
+          </div>
           <div class="row">
             <div class="span7">
             {% block comments %}{% endblock %}
@@ -68,13 +83,13 @@
           <div class="row" id="addcommentform" style="{{ 'display: none' if not article else '' }}" >
             <div class="span7">
               <h3>Please add your comments</h3>
-              <form class="well form-horizontal" name="commentForm" ng-controller="CommentCtrl" ng-submit="submit()">
+              <form class="well form-horizontal" id="commentForm" name="commentForm" ng-controller="CommentCtrl" ng-submit="submit()">
                 <fieldset>
                   <div class="control-group">
                     <label class="control-label" for="screenname">Name*</label>
                     <div class="controls">
                       <input type="text" class="input-xlarge" name="screenname" ng-model="screenname" placeholder="screen name" required ng-minlength="2"/>
-                      <div class="error" ng-show="commentForm.screenname.$dirty && (commentForm.screenname.$error.required || commentForm.screenname.$error.minlength)">Required, minimum!</div>
+                      <div class="error" ng-show="commentForm.screenname.$dirty && (commentForm.screenname.$error.required || commentForm.screenname.$error.minlength)">Required, 2 letters minimum!</div>
                     </div>
                   </div>
                   <div class="control-group">
@@ -115,7 +130,7 @@
           <div class="well sidebar-nav">
               <ul class="nav nav-list">
                 <li class="nav-header">Tags</li>
-                {% for t, titles in tags.iteritems() %}
+                {% for t, titles in tagstats.iteritems() %}
                   <li><a href="/blog/tag/{{ t }}/">{{ t }} ({{ titles|length }})</a></li>
                 {% endfor %}
               </ul>
@@ -124,8 +139,14 @@
       </div>
       <footer>
         <hr />
-        <a href="#contact"></a>
-        <address>E-Mail: <a href="mailto:">davidshen84 at gmail dot com</a></address>
+        <strong>Powered by</strong>
+        <ul class="inline">
+          <li>Python</li>
+          <li>GAE</li>
+          <li>markdown2</li>
+          <li>Flask</li>
+          <li>jinja2</li>
+        </ul>
       </footer>
     </div>
     {# <script src="static/js/less.js"></script> #}

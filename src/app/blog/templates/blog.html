@@ -3,7 +3,11 @@
 {% endif %}
 
 {% block title %}
-<title>{{ title|title }}</title>
+<title>{{ title }}</title>
+{% endblock %}
+
+{% block meta %}
+<meta name="keywords" content="{{ tags }}" />
 {% endblock %}
 
 {% block nav %}
@@ -21,29 +25,6 @@
 {% block article %}
 <article id="article" class="markdown" itemprop="description">
 {{ article|safe }}
-<hr />
-{% if not isXhr %}
-<div class="row socialbtn">
-  <div class="span2">
-    <a href="https://twitter.com/share" class="twitter-share-button" data-via="davidshen84" data-hashtags="blog">Tweet</a>
-    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-  </div>
-  <div class="span2">
-    <!-- Place this tag where you want the +1 button to render. -->
-    <div class="g-plusone" data-size="small"></div>
-    <!-- Place this tag after the last +1 button tag. -->
-    <script type="text/javascript">
-      (function() {
-        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-        po.src = 'https://apis.google.com/js/plusone.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-      })();
-    </script>
-  </div>
-</div>
-{% else %}
-  <em style="font-size: smaller; color: gray;">Refresh to see the social share button!</em>
-{% endif%}
 </article>
 {% endblock %}
 
