@@ -4,3 +4,5 @@ lib
 *.pyc
 *.pyo
 jshint.out
+*.*~
+

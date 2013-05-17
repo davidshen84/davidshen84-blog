@@ -52,7 +52,7 @@
     </antcall>
   </target>
 
-  <target name="init" depends="resolve, run-jshint">
+  <target name="init" depends="">
     <!-- create the time stamp -->
     <tstamp/>
     <!-- get markdown2 package directory -->
@@ -68,14 +68,14 @@
     </subant>
   </target>
 
-  <target name="build" depends="init, build-libs"
+  <target name="build" depends="init"
           description="generate the distribution" >
     <!-- Create the distribution directory -->
     <mkdir dir="${build}"/>
 
     <!-- Copy src -->
     <copy todir="${build}">
-      <fileset dir="${app}"/>
+      <fileset dir="${main}"/>
     </copy>
 
     <copy todir="${build}/test">
@@ -83,11 +83,11 @@
     </copy>
 
     <!-- Copy lib -->
-    <copy todir="${build}/blog/bloglib">
+    <copy todir="${build}/app/blog/bloglib">
       <fileset dir="lib/bloglib"/>
     </copy>
-    <copy file="lib/${lesscss}" tofile="${build.js}/less.js"/>
-    <copy todir="${build.static}" force="true">
+    <copy file="lib/${lesscss}" tofile="${build.blog.js}/less.js"/>
+    <copy todir="${build.blog.static}" force="true">
       <fileset dir="lib/${epiceditor}"/>
     </copy>
     <copy file="${markdown2}" todir="${build}"/>
