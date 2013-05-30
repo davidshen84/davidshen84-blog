@@ -6,50 +6,91 @@
 <title>{{ title|title }}</title>
 {% endblock %}
 
-{% block nav %}
-<ul id="nav" class="breadcrumb">
-{% for i in breadcrumbs %}
-  {% if not loop.last %}
-    <li><a href="{{i['href']}}">{{i['text']}}</a><span class="divider">/</span></li>
-  {% else %}
-    <li class="active">{{i['text']}}</li>
-  {% endif %}
-{% endfor %}
-</ul>
+{% block meta %}
+<meta name="keywords" content="{{ tags }}" />
 {% endblock %}
 
-{% block article %}
-<article id="article">
-{% if month %}
-  <ul class="nav nav-list">
-  {% for t in archives[year][month] %}
-    <li><a href="/blog/{{ year }}/{{ month }}/{{ t }}">{{ t }}</a></li>
-  {% endfor %}
-  </ul>
-{% elif year %}
-  <ul class="nav nav-list">
-  {% for m, ts in archives[year].iteritems() %}
-    <li class="nav-header">{{ monthFullName[m-1] }}</li>
-    {% for t in ts %}
-      <li><a href="/blog/{{ year }}/{{ m }}/{{ t }}">{{ t }}</a></li>
-    {% endfor %}
-  {% endfor %}
-  </ul>
-{% elif tag %}
-  <ul class="nav nav-list">
-  {% for y, m, t in tagstats[tag] %}
-    <li><a href="/blog/{{ y }}/{{ m }}/{{ t }}">{{ t }}</a></li>
-  {% endfor %}
-  </ul>
-{% else %}
-  <ul class="nav nav-list">
-  {% for tag, metas in tags.iteritems() %}
-    <li class="nav-header">{{ tag }}</li>
-    {% for y, m, t in metas %}
-      <li><a href="/blog/{{ y }}/{{ m }}/{{ t }}">{{ t }}</a></li>
-    {% endfor %}
-  {% endfor %}
-  </ul>
+{% if not isXhr %}
+{% block extra_scripts %}
+<script src="/blog/static/js/ng.js"></script>
+<script src="/blog/static/js/blog.js"></script>
+
+<script type="text/javascript">
+  // bootstrap script
+  window.articlePath = '{{ articlePath }}';
+</script>
+{% endblock %}
 {% endif %}
-</article>
+
+{% block body %}
+<aside class="span2">
+  <iframe src="http://rcm.amazon.com/e/cm?t=david0a-20&o=1&p=11&l=ez&f=ifr&f=ifr" width="120" height="600" scrolling="no" marginwidth="0" marginheight="0" border="0" frameborder="0" style="border:none;"></iframe>
+</aside>
+<div class="span8">
+  <nav id="breadcrumbs" class="row">
+    <ul class="breadcrumb">
+      {% for i in breadcrumbs %}
+      {% if not loop.last %}
+      <li><a href="{{i['href']}}">{{i['text']}}</a><span class="divider">/</span></li>
+      {% else %}
+      <li class="active">{{i['text']}}</li>
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </nav>
+  <article id="article" class="row">
+    {% if month %}
+    <ul class="nav nav-list">
+      {% for t in archives[year][month] %}
+      <li><a href="/blog/{{ year }}/{{ month }}/{{ t }}">{{ t }}</a></li>
+      {% endfor %}
+    </ul>
+    {% elif year %}
+    <ul class="nav nav-list">
+      {% for m, ts in archives[year].iteritems() %}
+      <li class="nav-header">{{ monthFullName[m-1] }}</li>
+      {% for t in ts %}
+      <li><a href="/blog/{{ year }}/{{ m }}/{{ t }}">{{ t }}</a></li>
+      {% endfor %}
+      {% endfor %}
+    </ul>
+    {% elif tag %}
+    <ul class="nav nav-list">
+      {% for y, m, t in tagstats[tag] %}
+      <li><a href="/blog/{{ y }}/{{ m }}/{{ t }}">{{ t }}</a></li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <ul class="nav nav-list">
+      {% for tag, metas in tags.iteritems() %}
+      <li class="nav-header">{{ tag }}</li>
+      {% for y, m, t in metas %}
+      <li><a href="/blog/{{ y }}/{{ m }}/{{ t }}">{{ t }}</a></li>
+      {% endfor %}
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </article>
+</div>
+<aside class="span2">
+  <div class="well sidebar-nav">
+    <ul class="nav nav-list">
+      <li class="nav-header">Archives</li>
+      {% for y, mo in archives.iteritems() %}
+      <li class="nav-header">{{ y }}</li>
+      {% for m, t in mo.iteritems() %}
+      <li><a href='/blog/{{ y }}/{{ m }}/'>{{ monthFullName[m-1] }} ({{ t|length }})</a></li>
+      {% endfor %}
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="well sidebar-nav">
+    <ul class="nav nav-list">
+      <li class="nav-header">Tags</li>
+      {% for t, titles in tagstats.iteritems() %}
+      <li><a href="/blog/tag/{{ t }}/">{{ t }} ({{ titles|length }})</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</aside>
 {% endblock %}

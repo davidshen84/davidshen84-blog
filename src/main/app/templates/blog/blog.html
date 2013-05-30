@@ -10,40 +10,37 @@
 <meta name="keywords" content="{{ tags }}" />
 {% endblock %}
 
+{% if not isXhr %}
 {% block extra_scripts %}
 <script src="/blog/static/js/ng.js"></script>
 <script src="/blog/static/js/blog.js"></script>
 
-{% if not isXhr %}
 <script type="text/javascript">
   // bootstrap script
   window.articlePath = '{{ articlePath }}';
 </script>
+{% endblock %}
 {% endif %}
-{% endblock %}
-
-{% block nav %}
-<ul id="nav" class="breadcrumb">
-{% for i in breadcrumbs %}
-  {% if not loop.last %}
-    <li><a href="{{i['href']}}">{{i['text']}}</a><span class="divider">/</span></li>
-  {% else %}
-    <li class="active">{{i['text']}}</li>
-  {% endif %}
-{% endfor %}
-</ul>
-{% endblock %}
 
 {% block body %}
 <aside class="span2">
   <iframe src="http://rcm.amazon.com/e/cm?t=david0a-20&o=1&p=11&l=ez&f=ifr&f=ifr" width="120" height="600" scrolling="no" marginwidth="0" marginheight="0" border="0" frameborder="0" style="border:none;"></iframe>
 </aside>
 <div class="span8">
-  <div class="row">
-    <article id="article" class="markdown">
-      {{ article|safe }}
-    </article>
-  </div>
+  <nav id="breadcrumbs" class="row">
+    <ul class="breadcrumb">
+      {% for i in breadcrumbs %}
+      {% if not loop.last %}
+      <li><a href="{{i['href']}}">{{i['text']}}</a><span class="divider">/</span></li>
+      {% else %}
+      <li class="active">{{i['text']}}</li>
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </nav>
+  <article id="article" class="row markdown">
+    {{ article|safe }}
+  </article>
   <div class="row">
     <dl id="comments">
       {% for c in comments %}

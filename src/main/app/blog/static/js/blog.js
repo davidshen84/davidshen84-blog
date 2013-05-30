@@ -4,9 +4,9 @@
 // :showComment: control the visibility of the commants and the add comment form
 function updatePage(data, showComment) {
   var title = data.filter('title').text(),
-    nav = data.filter('#nav'),
-    article = data.filter('article'),
-    comments = data.filter('#comments');
+    breadcrumbs = data.find('#breadcrumbs').html(),
+    article = data.find('article').html(),
+    comments = data.find('#comments').html();
 
   // update page title
   $('#title').text(title);
@@ -14,13 +14,13 @@ function updatePage(data, showComment) {
   document.title = title;
 
   // update breadcrumb
-  $('#breadcrumbs').html(nav);
+  $('#breadcrumbs').html(breadcrumbs);
 
   // update article
   $('#article').html(article);
 
   // update comments
-  $('#comments').html(comments.html());
+  $('#comments').html(comments);
 
   if (showComment) {
     $('#comments').show();

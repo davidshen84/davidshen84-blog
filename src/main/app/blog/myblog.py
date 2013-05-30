@@ -71,7 +71,7 @@ def archivesByDate(year, month=None):
     if month:
       breadcrumbs.append({'href': blog_route_base + '%d/%d/' % (year, month), 'text': month})
 
-  return render_template('bloglist.html',
+  return render_template('blog/bloglist.html',
                          title='blog list',
                          year=year, month=month,
                          breadcrumbs=breadcrumbs,
@@ -94,7 +94,7 @@ def archivesByTags(tag):
   if tag:
     breadcrumbs.append({'href': blog_route_base + 'tag/%s/' % (tag), 'text': tag})
 
-  return render_template('bloglist.html',
+  return render_template('blog/bloglist.html',
                          title='blog list',
                          tag=tag,
                          breadcrumbs=breadcrumbs,
