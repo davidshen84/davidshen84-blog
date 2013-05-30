@@ -3,10 +3,9 @@
 import logging
 import re
 
-from flask import Flask, render_template, redirect
+from flask import redirect
 from google.appengine.api import users
-
-app = Flask(__name__)
+from app import app
 
 @app.route('/blog/admin/logout')
 def logout():

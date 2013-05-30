@@ -2,18 +2,20 @@
 
 import logging
 
-from flask import Flask, request, jsonify
-from bloglib import Blog, BlogComment
+from flask import request, jsonify
+from app import app
+from ..bloglib.blog import Blog
+from ..bloglib.blogcomment import BlogComment
+
 from apidecorator import login_admin
 
 MSG_OK = 'ok'
 MSG_SAVE_ERROR = 'failed to save comment'
 
-app = Flask(__name__)
-route_base = '/blog/comment/api/'
+commentapi_route_base = '/blog/comment/api/'
 
-@app.route(route_base + 'sync/<title>')
-def query(title):
+@app.route(commentapi_route_base + 'sync/<title>')
+def query_comment(title):
   blog = Blog.getByTitle(title)
   
   if blog:
@@ -24,7 +26,7 @@ def query(title):
 
   return jsonify(comments=comments)
 
-@app.route(route_base + 'sync/<title>', methods=['POST'])
+@app.route(commentapi_route_base + 'sync/<title>', methods=['POST'])
 def create(title):
   comment = request.json
   blog = Blog.getByTitle(title)
@@ -35,7 +37,7 @@ def create(title):
   else:
     return MSG_SAVE_ERROR, 500
 
-@app.route(route_base + 'sync/<int:id>', methods=['DELETE'])
+@app.route(commentapi_route_base + 'sync/<int:id>', methods=['DELETE'])
 @login_admin
 def destroy(id):
   BlogComment.destroy(id)

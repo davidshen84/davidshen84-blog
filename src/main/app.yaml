@@ -22,14 +22,14 @@ handlers:
   login: admin
 
 - url: /blog/api.*
-  script: app.blog.myblogapi.app
+  script: app.app
   login: admin
 
 - url: /blog/comment/api.*
-  script: app.blog.mycommentapi.app
+  script: app.app
 
 - url: /blog.*
-  script: app.blog.myblog.app
+  script: app.app
 
 - url: /util/
   static_files: app/util/main.html

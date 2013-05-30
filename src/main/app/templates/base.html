@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="app">
+<html lang="en" ng-app="blog">
   <head>
     <title>{{ title }}</title>
 
@@ -24,6 +24,8 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.2/angular-resource.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+
+    {% block extra_scripts %}{% endblock %}
   </head>
   <body>
     <div class="navbar navbar-fixed-top">
@@ -53,6 +55,7 @@
       <header class="hero-unit">
         <h1>{{ title }}</h1>
       </header>
+      {#
       <div class="row socialbtn">
         <!-- AddThis Button BEGIN -->
         <div class="addthis_toolbox addthis_default_style ">
@@ -64,7 +67,7 @@
         <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-51344a565541aa7c"></script>
         <!-- AddThis Button END -->
       </div>
-
+      #}
       <div class="row" ng-controller="RootCtrl">
         {% block body %}{% endblock %}
       </div>

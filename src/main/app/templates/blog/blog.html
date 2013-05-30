@@ -1,0 +1,111 @@
+{% if not isXhr %}
+{% extends "base.html" %}
+{% endif %}
+
+{% block title %}
+<title>{{ title }}</title>
+{% endblock %}
+
+{% block meta %}
+<meta name="keywords" content="{{ tags }}" />
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/blog/static/js/ng.js"></script>
+<script src="/blog/static/js/blog.js"></script>
+
+{% if not isXhr %}
+<script type="text/javascript">
+  // bootstrap script
+  window.articlePath = '{{ articlePath }}';
+</script>
+{% endif %}
+{% endblock %}
+
+{% block nav %}
+<ul id="nav" class="breadcrumb">
+{% for i in breadcrumbs %}
+  {% if not loop.last %}
+    <li><a href="{{i['href']}}">{{i['text']}}</a><span class="divider">/</span></li>
+  {% else %}
+    <li class="active">{{i['text']}}</li>
+  {% endif %}
+{% endfor %}
+</ul>
+{% endblock %}
+
+{% block body %}
+<aside class="span2">
+  <iframe src="http://rcm.amazon.com/e/cm?t=david0a-20&o=1&p=11&l=ez&f=ifr&f=ifr" width="120" height="600" scrolling="no" marginwidth="0" marginheight="0" border="0" frameborder="0" style="border:none;"></iframe>
+</aside>
+<div class="span8">
+  <div class="row">
+    <article id="article" class="markdown">
+      {{ article|safe }}
+    </article>
+  </div>
+  <div class="row">
+    <dl id="comments">
+      {% for c in comments %}
+      <dt><em>{{ c.screenname }}</em> on {{ c.created }}:</dt>
+      <dd  class="well">{{ c.comment }}</dd>
+      {% endfor %}
+    </dl>
+  </div>
+  <div class="row" id="addcommentform">
+    <div class="span6">
+      <h3>Please add your comments</h3>
+      <form class="well form-horizontal" id="commentForm" name="commentForm" ng-controller="CommentCtrl" ng-submit="submit()">
+        <fieldset>
+          <div class="control-group">
+            <label class="control-label" for="screenname">Name*</label>
+            <div class="controls">
+              <input type="text" class="input-xlarge" name="screenname" ng-model="screenname" placeholder="screen name" required ng-minlength="2"/>
+              <div class="error" ng-show="commentForm.screenname.$dirty && (commentForm.screenname.$error.required || commentForm.screenname.$error.minlength)">Required, 2 letters minimum!</div>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="emailaddr">Email*</label>
+            <div class="controls">
+              <input type="email" class="input-xlarge" name="email" ng-model="email" placeholder="email...it will NOT appear publicly" required/>
+              <div class="error" ng-show="commentForm.email.$dirty && commentForm.email.$invalid">Invalid email address!</div>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="comment">Comments*</label>
+            <div class="controls">
+              <textarea class="input-xlarge" name="comment" ng-model="comment" placeholder="please input your comments here..." required ng-minlength="5"></textarea>
+              <div class="error" ng-show="commentForm.comment.$dirty && (commentForm.comment.$error.required || commentForm.comment.$error.minlength)">At least 5 letters!</div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary submit" ng-disabled="commentForm.$invalid">Submit</button>
+            <button type="reset" class="btn btn-danger clear">Clear</button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
+<aside class="span2">
+  <div class="well sidebar-nav">
+    <ul class="nav nav-list">
+      <li class="nav-header">Archives</li>
+      {% for y, mo in archives.iteritems() %}
+      <li class="nav-header">{{ y }}</li>
+      {% for m, t in mo.iteritems() %}
+      <li><a href='/blog/{{ y }}/{{ m }}/'>{{ monthFullName[m-1] }} ({{ t|length }})</a></li>
+      {% endfor %}
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="well sidebar-nav">
+    <ul class="nav nav-list">
+      <li class="nav-header">Tags</li>
+      {% for t, titles in tagstats.iteritems() %}
+      <li><a href="/blog/tag/{{ t }}/">{{ t }} ({{ titles|length }})</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</aside>
+{% endblock %}

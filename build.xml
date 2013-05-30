@@ -52,7 +52,7 @@
     </antcall>
   </target>
 
-  <target name="init" depends="">
+  <target name="init" depends="run-jshint">
     <!-- create the time stamp -->
     <tstamp/>
     <!-- get markdown2 package directory -->
@@ -68,7 +68,7 @@
     </subant>
   </target>
 
-  <target name="build" depends="init"
+  <target name="build" depends="init, build-libs"
           description="generate the distribution" >
     <!-- Create the distribution directory -->
     <mkdir dir="${build}"/>
@@ -83,7 +83,7 @@
     </copy>
 
     <!-- Copy lib -->
-    <copy todir="${build}/app/blog/bloglib">
+    <copy todir="${build}/app/bloglib">
       <fileset dir="lib/bloglib"/>
     </copy>
     <copy file="lib/${lesscss}" tofile="${build.blog.js}/less.js"/>
