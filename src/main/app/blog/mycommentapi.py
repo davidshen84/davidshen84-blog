@@ -27,7 +27,7 @@ def query_comment(title):
   return jsonify(comments=comments)
 
 @app.route(commentapi_route_base + 'sync/<title>', methods=['POST'])
-def create(title):
+def create_comment(title):
   comment = request.json
   blog = Blog.getByTitle(title)
 
@@ -39,7 +39,7 @@ def create(title):
 
 @app.route(commentapi_route_base + 'sync/<int:id>', methods=['DELETE'])
 @login_admin
-def destroy(id):
+def destroy_comment(id):
   BlogComment.destroy(id)
 
   return MSG_OK
