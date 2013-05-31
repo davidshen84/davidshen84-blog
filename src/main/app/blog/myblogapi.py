@@ -6,7 +6,7 @@ import re
 from apidecorator import login_admin, simpleauth
 from google.appengine.api import users
 from flask import render_template, request, make_response, jsonify, abort, redirect, json
-from app import app
+
 from ..bloglib.blog import Blog
 from ..bloglib.blogcomment import BlogComment
 from datetime import datetime
@@ -19,14 +19,10 @@ MSG_UPDATE_FAIL = 'update blog failed'
 MSG_NO_CONTENT = 'content is required'
 MSG_SAVE_DUP = 'duplicate title'
 
-api_route_base = '/blog/api/'
-
-@app.route(api_route_base)
 @login_admin
 def index():
   return jsonify(msg=users.get_current_user().nickname(), logout=users.create_logout_url('/blog/api/'))
 
-@app.route(api_route_base + 'sync')
 def query():
   blogs = Blog.getBlogStatus(False)
   # apply filters if provided
@@ -40,7 +36,6 @@ def query():
 
   return jsonify(blogs=blogs)
 
-@app.route(api_route_base + 'sync/<title>')
 def fetch(title):
   blog = Blog.getByTitle(title, False)
 
@@ -54,7 +49,6 @@ def fetch(title):
   else:
     return MSG_NOT_EXIST, 404
 
-@app.route(api_route_base + 'sync', methods=['POST'])
 def create():
   blog = request.json
 
@@ -70,7 +64,6 @@ def create():
   else:
     return MSG_SAVE_ERROR, 500
 
-@app.route(api_route_base + 'sync/<title>', methods=['PUT'])
 def update(title):
   updateData = {}
   blog = request.json
@@ -98,13 +91,11 @@ def update(title):
   else:
     return MSG_UPDATE_FAIL, 404
 
-@app.route(api_route_base + 'sync/<title>', methods=['DELETE'])
 def destroy(title):
   Blog.destroy(title)
 
   return ''
 
-@app.route(api_route_base + 'syncpub/<title>', methods=['PUT'])
 def publish(title):
   published = request.values['published'].lower() == 'true'
   blogkey = Blog.publish(title, published=published)
@@ -114,7 +105,6 @@ def publish(title):
   else:
     return MSG_UPDATE_FAIL, 404
 
-@app.route(api_route_base + 'archives')
 @simpleauth
 def archives(publishedOnly):
   return jsonify(archives=Blog.getArchiveStats(publishedOnly))

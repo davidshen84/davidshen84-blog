@@ -7,7 +7,6 @@ import json
 from flask import render_template, request, jsonify, abort, redirect, url_for
 from markdown2 import markdown
 
-from app import app
 from ..bloglib.blog import Blog
 from ..bloglib.blogcomment import BlogComment
 
@@ -18,7 +17,6 @@ monthFullName = ['January', 'February', 'March', 'April',
                   'May', 'June', 'July', 'August',
                   'September', 'October', 'November', 'December']
 
-@app.route(blog_route_base)
 def default():
   myblog = Blog.getLatest()
   if myblog:
@@ -27,7 +25,6 @@ def default():
   else:
     return abort(404)
 
-@app.route(blog_route_base + '<int:year>/<int:month>/<title>')
 def blog(year, month, title):
   myblog = Blog.getByTitle(title)
 
@@ -59,8 +56,6 @@ def blog(year, month, title):
                          articlePath=articlePath,
                          isXhr=request.is_xhr)
 
-@app.route(blog_route_base + '<int:year>/')
-@app.route(blog_route_base + '<int:year>/<int:month>/')
 def archivesByDate(year, month=None):
   breadcrumbs = []
   myblogs = Blog.getArchiveStats(True)
@@ -81,8 +76,6 @@ def archivesByDate(year, month=None):
                          articlePath=request.path,
                          isXhr=request.is_xhr)
 
-@app.route(blog_route_base + 'tag/', defaults={'tag': None})
-@app.route(blog_route_base + 'tag/<tag>/')
 def archivesByTags(tag):
   breadcrumbs = []
   myblogs = Blog.getArchiveStats(True)
