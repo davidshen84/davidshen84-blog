@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Admin Page</title>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="../static/epiceditor/js/epiceditor.js"></script>
+<script src="static/admin.js"></script>
+<script src="static/ng.js"></script>
+{% endblock %}
+
+{% block body %}
+<ng-view></ng-view>
+{% endblock %}
+

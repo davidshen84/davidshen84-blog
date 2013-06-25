@@ -1,6 +1,7 @@
 # coding=utf-8
 
 from blog import myblog, myblogadmin, myblogapi, mycommentapi
+import util
 
 def add_url_rule(app):
   # blog route
@@ -10,6 +11,7 @@ def add_url_rule(app):
   app.add_url_rule('/blog/<int:year>/<int:month>/', 'archive by year month', myblog.archivesByDate)
   app.add_url_rule('/blog/tag/', 'tag default', myblog.archivesByTags, defaults={'tag': None})
   app.add_url_rule('/blog/tag/<tag>/', 'tag', myblog.archivesByTags)
+
   #blog api route
   app.add_url_rule('/blog/api/', 'index', myblogapi.index)
   app.add_url_rule('/blog/api/sync', 'query', myblogapi.query)
@@ -26,4 +28,8 @@ def add_url_rule(app):
   app.add_url_rule('/blog/comment/api/sync/<int:id>', 'destroy comment', mycommentapi.destroy, methods=['DELETE'])
 
   #admin
-  app.add_url_rule('/blog/admin/logout', 'admin logout', myblogadmin.logout)
+  #app.add_url_rule('/blog/admin/logout', 'admin logout', myblogadmin.logout)
+  app.add_url_rule('/blog/admin/', 'admin', myblogadmin.default)
+
+  #util
+  app.add_url_rule('/util/', 'util', util.default)

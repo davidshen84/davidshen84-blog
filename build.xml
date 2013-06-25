@@ -36,10 +36,10 @@
     <property name="src.js" location="${blogapp}/static/js"/>
     <delete file="jshint.out"/>
     <antcall target="jshint">
-      <param name="in" value="${blogapp}/admin/admin.js"/>
+      <param name="in" value="${blogapp}/admin/static/admin.js"/>
     </antcall>
     <antcall target="jshint">
-      <param name="in" value="${blogapp}/admin/ng.js"/>
+      <param name="in" value="${blogapp}/admin/static/ng.js"/>
     </antcall>
     <antcall target="jshint">
       <param name="in" value="${src.js}/blog.js"/>

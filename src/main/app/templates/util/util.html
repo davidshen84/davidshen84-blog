@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block scripts %}
+  <script src="ng.js"></script>
+{% endblock %}
+
+{% block body %}
+  <div class="row" ng-controller="RdnGenCtrl">
+    <form class="form-horizontal span6" ng-submit="generate()">
+      <div class="control-group">
+        <div class="controls">
+          <label class="text">Number of chars: 
+            <input type="number" ng-model="charCount" min="1" max="50" />
+          </label>
+          <label class="checkbox"><input type="checkbox" ng-model="hasLowerCases" />{{"{{lowerCases}}"}}</label>
+          <label class="checkbox"><input type="checkbox" ng-model="hasUpperCases" />{{"{{upperCases}}"}}</label>
+          <label class="checkbox"><input type="checkbox" ng-model="hasDigits" />{{"{{digits}}"}}</label>
+          <label class="checkbox"><input type="checkbox" ng-model="hasSepcials" />{{"{{specials}}"}}</label>
+          <label class="checkbox"><input type="checkbox" ng-model="hasCJK" />CJK</label>
+          <input type="submit" value="Generate" />
+        </div>
+      </div>
+    </form>
+
+    <div class="span4">
+      <h5>Result:</h5>
+      <div>{{"{{generatedChars}}"}}</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="offset2 span8">
+      <iframe src="http://rcm.amazon.com/e/cm?t=david0a-20&o=1&p=48&l=ur1&category=music&banner=0V2BZ4DRFD905XWVCVR2&f=ifr" width="728" height="90" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <div class="row">
+    <h5 style="text-align: center;"><em>Coming soon...</em></h5>
+  </div>
+{% endblock %}

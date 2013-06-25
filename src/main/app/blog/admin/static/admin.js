@@ -1,5 +1,9 @@
 'use strict';
 
+function RootCtrl() {
+  // empty
+}
+
 function ListCtrl($scope, Blog) {
   $scope.blogs = Blog.get();
 

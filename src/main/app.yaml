@@ -12,15 +12,6 @@ handlers:
 - url: /blog/static
   static_dir: app/blog/static
 
-- url: /blog/admin
-  static_files: app/blog/admin/admin.html
-  upload: app/blog/admin/admin.html
-  login: admin
-
-- url: /blog/admin/
-  static_dir: app/blog/admin
-  login: admin
-
 - url: /blog/api.*
   script: app.app
   login: admin
@@ -28,15 +19,26 @@ handlers:
 - url: /blog/comment/api.*
   script: app.app
 
-- url: /blog.*
+- url: /blog/admin/
+  script: app.app
+  login: admin
+
+- url: /blog/admin/static
+  static_dir: app/blog/admin/static
+  login: admin
+
+- url: /blog/admin/templates
+  static_dir: app/templates/admin/static
+  login: admin
+
+- url: /util/
   script: app.app
 
 - url: /util/
-  static_files: app/util/main.html
-  upload: app/util/main.html
-
-- url: /util/
   static_dir: app/util/
+
+- url: /blog.*
+  script: app.app
 
 libraries:
 - name: jinja2

@@ -15,7 +15,7 @@ angular.module('blogapi', ['ngResource'])
     return BlogComment;
   });
 
-angular.module('blog', ['blogapi'])
+angular.module('ngapp', ['blogapi'])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/blog/')
