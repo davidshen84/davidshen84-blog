@@ -132,7 +132,7 @@
 
     <!-- compress js files for util -->
     <antcall target="run-minify-js">
-      <param name="in" value="${dist}/app/util/ng.js"/>
+      <param name="in" value="${dist}/app/myutils/ng.js"/>
     </antcall>
   </target>
 

@@ -1,7 +1,7 @@
 # coding=utf-8
 
 from blog import myblog, myblogadmin, myblogapi, mycommentapi
-import util
+import myutils
 
 def add_url_rule(app):
   # blog route
@@ -31,5 +31,5 @@ def add_url_rule(app):
   #app.add_url_rule('/blog/admin/logout', 'admin logout', myblogadmin.logout)
   app.add_url_rule('/blog/admin/', 'admin', myblogadmin.default)
 
-  #util
-  app.add_url_rule('/util/', 'util', util.default)
+  #myutils
+  app.add_url_rule('/util/', 'util', myutils.default)
