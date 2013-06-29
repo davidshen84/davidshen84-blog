@@ -13,7 +13,7 @@
            dest="lib"/>
   </target>
 
-  <target name="minify-js">
+  <target name="run-minify-js">
     <echo message="compressing: ${in}"/>
     <exec executable="uglifyjs" failonerror="true">
       <arg value="-nm"/>
@@ -113,25 +113,25 @@
 
   <target name="minify-js">
     <!-- compress js files for blog -->
-    <antcall target="minify-js">
+    <antcall target="run-minify-js">
       <param name="in" value="${dist}/app/blog/admin/static/admin.js"/>
     </antcall>
 
-    <antcall target="minify-js">
+    <antcall target="run-minify-js">
       <param name="in" value="${dist}/app/blog/admin/static/ng.js"/>
     </antcall>
 
-    <antcall target="minify-js">
+    <antcall target="run-minify-js">
       <param name="in" value="${dist.blog.js}/blog.js"/>
     </antcall>
 
-    <antcall target="minify-js">
+    <antcall target="run-minify-js">
 
       <param name="in" value="${dist.blog.js}/ng.js"/>
     </antcall>
 
     <!-- compress js files for util -->
-    <antcall target="minify-js">
+    <antcall target="run-minify-js">
       <param name="in" value="${dist}/app/util/ng.js"/>
     </antcall>
   </target>
