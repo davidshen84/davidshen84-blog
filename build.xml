@@ -13,16 +13,13 @@
            dest="lib"/>
   </target>
 
-  <target name="yuicompressor">
+  <target name="minify-js">
     <echo message="compressing: ${in}"/>
-    <java jar="${yuijar}"
-          fork="true"
-          failonerror="true">
-      <arg value="--nomunge"/>
-      <arg value="-o"/>
-      <arg value="${out}"/>
+    <exec executable="uglifyjs" failonerror="true">
+      <arg value="-nm"/>
+      <arg value="--overwrite"/>
       <arg value="${in}"/>
-    </java>
+    </exec>
   </target>
 
   <target name="jshint">
@@ -70,10 +67,10 @@
 
   <target name="build" depends="init, build-libs"
           description="generate the distribution" >
-    <!-- Create the distribution directory -->
+    <!-- create the distribution directory -->
     <mkdir dir="${build}"/>
 
-    <!-- Copy src -->
+    <!-- copy src -->
     <copy todir="${build}">
       <fileset dir="${main}"/>
     </copy>
@@ -82,7 +79,7 @@
       <fileset dir="${test}"/>
     </copy>
 
-    <!-- Copy lib -->
+    <!-- copy lib -->
     <copy todir="${build}/app/bloglib">
       <fileset dir="lib/bloglib"/>
     </copy>
@@ -108,42 +105,34 @@
     </copy>
 
     <!-- copy/move lib -->
-    <move file="${dist.static}/epiceditor/js/epiceditor.min.js"
-          tofile="${dist.static}/epiceditor/js/epiceditor.js" force="true"/>
-    <antcall target="compress"/>
+    <move file="${dist.blog.static}/epiceditor/js/epiceditor.min.js"
+          tofile="${dist.blog.static}/epiceditor/js/epiceditor.js" force="true"/>
+
+    <antcall target="minify-js"/>
   </target>
 
-  <target name="compress">
+  <target name="minify-js">
     <!-- compress js files for blog -->
-    <antcall target="yuicompressor">
-      <param name="in" value="${dist}/blog/admin/admin.js"/>
-      <param name="out" value="${dist}/blog/admin/admin.js"/>
-      <param name="type" value="js"/>
+    <antcall target="minify-js">
+      <param name="in" value="${dist}/app/blog/admin/static/admin.js"/>
     </antcall>
 
-    <antcall target="yuicompressor">
-      <param name="in" value="${dist}/blog/admin/ng.js"/>
-      <param name="out" value="${dist}/blog/admin/ng.js"/>
-      <param name="type" value="js"/>
+    <antcall target="minify-js">
+      <param name="in" value="${dist}/app/blog/admin/static/ng.js"/>
     </antcall>
 
-    <antcall target="yuicompressor">
-      <param name="in" value="${dist.js}/blog.js"/>
-      <param name="out" value="${dist.js}/blog.js"/>
-      <param name="type" value="js"/>
+    <antcall target="minify-js">
+      <param name="in" value="${dist.blog.js}/blog.js"/>
     </antcall>
 
-    <antcall target="yuicompressor">
-      <param name="in" value="${dist.js}/ng.js"/>
-      <param name="out" value="${dist.js}/ng.js"/>
-      <param name="type" value="js"/>
+    <antcall target="minify-js">
+
+      <param name="in" value="${dist.blog.js}/ng.js"/>
     </antcall>
 
     <!-- compress js files for util -->
-    <antcall target="yuicompressor">
-      <param name="in" value="${dist}/util/ng.js"/>
-      <param name="out" value="${dist}/util/ng.js"/>
-      <param name="type" value="js"/>
+    <antcall target="minify-js">
+      <param name="in" value="${dist}/app/util/ng.js"/>
     </antcall>
   </target>
 
