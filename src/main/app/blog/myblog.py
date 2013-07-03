@@ -6,6 +6,7 @@ import json
 
 from flask import render_template, request, jsonify, abort, redirect, url_for
 from markdown2 import markdown
+from . import is_admin
 
 from ..bloglib.blog import Blog
 from ..bloglib.blogcomment import BlogComment
@@ -54,7 +55,9 @@ def blog(year, month, title):
                          tagstats=Blog.getTagStats(),
                          monthFullName=monthFullName,
                          articlePath=articlePath,
-                         isXhr=request.is_xhr)
+                         isXhr=request.is_xhr,
+                         isAdmin=is_admin(),
+                         activePill="blog")
 
 def archivesByDate(year, month=None):
   breadcrumbs = []
@@ -74,7 +77,8 @@ def archivesByDate(year, month=None):
                          tagstats=Blog.getTagStats(),
                          monthFullName=monthFullName,
                          articlePath=request.path,
-                         isXhr=request.is_xhr)
+                         isXhr=request.is_xhr,
+                         isAdmin=is_admin())
 
 def archivesByTags(tag):
   breadcrumbs = []
@@ -95,5 +99,6 @@ def archivesByTags(tag):
                          tagstats=Blog.getTagStats(),
                          monthFullName=monthFullName,
                          articlePath=request.path,
-                         isXhr=request.is_xhr)
+                         isXhr=request.is_xhr,
+                         isAdmin=is_admin())
 

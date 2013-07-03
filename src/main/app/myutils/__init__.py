@@ -3,4 +3,6 @@
 from flask import render_template
 
 def default():
-  return render_template("util/util.html", title="Utilities")
+  return render_template("util/util.html",
+                         title="Utilities",
+                         activePill="myutil")
