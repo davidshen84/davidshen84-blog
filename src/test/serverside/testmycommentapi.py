@@ -19,13 +19,13 @@ import dev_appserver
 dev_appserver.fix_sys_path()
 
 # real test code
-from blog import mycommentapi
-from blog.bloglib import Blog, BlogComment
+from app import app
+from app.bloglib.blog import Blog
+from app.bloglib.blogcomment  import BlogComment
 from datetime import datetime
 from google.appengine.api import users
 from google.appengine.ext import testbed
 import json
-
 
 class MyCommentApiTestCase(unittest.TestCase):
 
@@ -38,8 +38,8 @@ class MyCommentApiTestCase(unittest.TestCase):
     self.testbed.init_datastore_v3_stub()
     self.testbed.init_user_stub()
 
-    self.app = mycommentapi.app.test_client()
-    self.base = mycommentapi.route_base
+    self.app = app.test_client()
+    self.base = '/blog/comment/api/'
 
     self.blogkey1 = Blog.create('test1', 'content 1', published=True)
 

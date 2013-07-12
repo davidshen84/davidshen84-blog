@@ -19,8 +19,9 @@ import dev_appserver
 dev_appserver.fix_sys_path()
 
 # real test code
-from blog import myblogapi
-from blog.bloglib import Blog, BlogComment
+from app import app
+from app.bloglib.blog import Blog
+from app.bloglib.blogcomment import BlogComment
 from datetime import datetime
 from google.appengine.api import users
 from google.appengine.ext import testbed
@@ -37,8 +38,8 @@ class MyBlogApiTestCase(unittest.TestCase):
     self.testbed.init_datastore_v3_stub()
     self.testbed.init_user_stub()
 
-    self.app = myblogapi.app.test_client()
-    self.base = myblogapi.route_base
+    self.app = app.test_client()
+    self.base = '/blog/api/'
 
     self.blog1 = Blog.create('test1', 'content 1')
 
@@ -103,14 +104,7 @@ class MyBlogApiTestCase(unittest.TestCase):
     self.assertEqual(200, r.status_code)
     self.assertIsNone(Blog.get_by_key_name('test1'))
 
-  @unittest.skip('outdated')
   def testPublish(self):
-    self.assertEqual(False, Blog.get_by_key_name('test1').published)
-    r = self.app.put(self.base + 'syncpub/test1', data={'published': 'true'})
-    self.assertEqual(200, r.status_code)
-    self.assertEqual(True, Blog.get_by_key_name('test1').published)
-
-  def testPublish_new(self):
     self.assertEqual(False, Blog.get_by_key_name('test1').published)
     r = self.app.put(self.base + 'sync/test1',
       data=json.dumps({'published': True}),
@@ -118,12 +112,7 @@ class MyBlogApiTestCase(unittest.TestCase):
     self.assertEqual(200, r.status_code)
     self.assertEqual(True, Blog.get_by_key_name('test1').published)
 
-  @unittest.skip('outdated')
   def testPublish_notexist(self):
-    r = self.app.put(self.base + 'syncpub/test_notexist', data={'published': 'true'})
-    self.assertEqual(404, r.status_code)
-
-  def testPublish_notexist_new(self):
     r = self.app.put(self.base + 'sync/test_notexist',
       data=json.dumps({'published': 'true'}),
       content_type='application/json')
