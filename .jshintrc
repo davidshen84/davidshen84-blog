@@ -8,6 +8,7 @@
     "CreateEditCtrl": true,
     "EpicEditor": true,
     "$": true,
-    "document": true
+    "document": true,
+    "console": true
   }
 }

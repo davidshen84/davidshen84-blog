@@ -39,7 +39,7 @@ function RootCtrl($scope, $location, $http) {
       // force load the content
       changed = true;
 
-      $http.get($location.path())
+      $http.get($location.url())
         .success(function (data) {
           updatePage($(data), current.pathParams.title !== undefined);
         });

@@ -100,7 +100,7 @@
     <ul class="nav nav-list">
       <li class="nav-header">Tags</li>
       {% for t, titles in tagstats.iteritems() %}
-      <li><a href="/blog/tag/{{ t }}/">{{ t }} ({{ titles|length }})</a></li>
+      <li><a href="/blog/tag/{{ t|replace('#', '%23') }}/">{{ t }} ({{ titles|length }})</a></li>
       {% endfor %}
     </ul>
   </div>
