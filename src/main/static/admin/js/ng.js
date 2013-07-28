@@ -14,9 +14,9 @@ angular.module('blogapi', ['ngResource']).
 angular.module('ngapp', ['blogapi']).
   config(function ($routeProvider, $locationProvider) {
     $routeProvider.
-      when('/blog/admin/', { "controller": ListCtrl, "templateUrl": '/blog/admin/templates/bloglist.html' }).
-      when('/blog/admin/edit/:title', { "controller": CreateEditCtrl, "templateUrl": '/blog/admin/templates/blogedit.html' }).
-      when('/blog/admin/new', { "controller": CreateEditCtrl, "templateUrl": '/blog/admin/templates/blogedit.html' }).
+      when('/blog/admin/', { "controller": ListCtrl, "templateUrl": '/blog/admin/static/bloglist.html' }).
+      when('/blog/admin/edit/:title', { "controller": CreateEditCtrl, "templateUrl": '/blog/admin/static/blogedit.html' }).
+      when('/blog/admin/new', { "controller": CreateEditCtrl, "templateUrl": '/blog/admin/static/blogedit.html' }).
       otherwise({ "redirectTo": '/blog/admin/' });
 
     $locationProvider.html5Mode(true);
@@ -42,7 +42,7 @@ angular.module('ngapp', ['blogapi']).
       controller: function ($scope, $element, editor) {
         var opt = {
           container: $element[0],
-          basePath: '/blog/static/epiceditor',
+          basePath: '/blog/admin/static/epiceditor',
           clientSideStorage: false
         },
           ctx = angular.element($element.context),

@@ -10,7 +10,7 @@ handlers:
   upload: favicon\.ico
 
 - url: /blog/static
-  static_dir: app/blog/static
+  static_dir: static/blog/
 
 - url: /blog/api.*
   script: app.app
@@ -23,19 +23,15 @@ handlers:
   script: app.app
   login: admin
 
-- url: /blog/admin/static
-  static_dir: app/blog/admin/static
+- url: /blog/admin/static/
+  static_dir: static/admin/
   login: admin
 
-- url: /blog/admin/templates
-  static_dir: app/templates/admin/static
-  login: admin
-
-- url: /utils/
+- url: /mytools/
   script: app.app
 
-- url: /utils/
-  static_dir: app/myutils/
+- url: /mytools/static
+  static_dir: static/mytools/
 
 - url: /blog.*
   script: app.app

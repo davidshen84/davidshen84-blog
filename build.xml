@@ -30,13 +30,13 @@
   </target>
 
   <target name="run-jshint">
-    <property name="src.js" location="${blogapp}/static/js"/>
+    <property name="src.js" location="${blog.static}/js"/>
     <delete file="jshint.out"/>
     <antcall target="jshint">
-      <param name="in" value="${blogapp}/admin/static/admin.js"/>
+      <param name="in" value="${admin.static}/admin.js"/>
     </antcall>
     <antcall target="jshint">
-      <param name="in" value="${blogapp}/admin/static/ng.js"/>
+      <param name="in" value="${admin.static}/ng.js"/>
     </antcall>
     <antcall target="jshint">
       <param name="in" value="${src.js}/blog.js"/>
@@ -45,7 +45,7 @@
       <param name="in" value="${src.js}/ng.js"/>
     </antcall>
     <antcall target="jshint">
-      <param name="in" value="${utilapp}/ng.js"/>
+      <param name="in" value="${util.static}/ng.js"/>
     </antcall>
   </target>
 
@@ -83,8 +83,8 @@
     <copy todir="${build}/app/bloglib">
       <fileset dir="lib/bloglib"/>
     </copy>
-    <copy file="lib/${lesscss}" tofile="${build.blog.js}/less.js"/>
-    <copy todir="${build.blog.static}" force="true">
+    <copy file="lib/${lesscss}" tofile="${build}/${admin.static}/js/less.js"/>
+    <copy todir="${build}/${admin.static}" force="true">
       <fileset dir="lib/${epiceditor}"/>
     </copy>
     <copy file="${markdown2}" todir="${build}"/>
@@ -105,8 +105,8 @@
     </copy>
 
     <!-- copy/move lib -->
-    <move file="${dist.blog.static}/epiceditor/js/epiceditor.min.js"
-          tofile="${dist.blog.static}/epiceditor/js/epiceditor.js" force="true"/>
+    <move file="${build}/${admin.static}/epiceditor/js/epiceditor.min.js"
+          tofile="${dist}/${admin.static}/epiceditor/js/epiceditor.js" force="true"/>
 
     <antcall target="minify-js"/>
   </target>
@@ -114,25 +114,24 @@
   <target name="minify-js">
     <!-- compress js files for blog -->
     <antcall target="run-minify-js">
-      <param name="in" value="${dist}/app/blog/admin/static/admin.js"/>
+      <param name="in" value="${dist}/${admin.static}/js/admin.js"/>
     </antcall>
 
     <antcall target="run-minify-js">
-      <param name="in" value="${dist}/app/blog/admin/static/ng.js"/>
+      <param name="in" value="${dist}/${admin.static}/js/ng.js"/>
     </antcall>
 
     <antcall target="run-minify-js">
-      <param name="in" value="${dist.blog.js}/blog.js"/>
+      <param name="in" value="${dist}/${blog.static}/js/blog.js"/>
     </antcall>
 
     <antcall target="run-minify-js">
-
-      <param name="in" value="${dist.blog.js}/ng.js"/>
+      <param name="in" value="${dist}/${blog.static}/js/ng.js"/>
     </antcall>
 
     <!-- compress js files for util -->
     <antcall target="run-minify-js">
-      <param name="in" value="${dist}/app/myutils/ng.js"/>
+      <param name="in" value="${dist}/${util.static}/js/ng.js"/>
     </antcall>
   </target>
 
