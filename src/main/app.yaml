@@ -31,11 +31,11 @@ handlers:
   static_dir: app/templates/admin/static
   login: admin
 
-- url: /util/
+- url: /utils/
   script: app.app
 
-- url: /util/
-  static_dir: app/util/
+- url: /utils/
+  static_dir: app/myutils/
 
 - url: /blog.*
   script: app.app

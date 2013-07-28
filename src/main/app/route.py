@@ -32,4 +32,4 @@ def add_url_rule(app):
   app.add_url_rule('/blog/admin/', 'admin', myblogadmin.default)
 
   #myutils
-  app.add_url_rule('/util/', 'util', myutils.default)
+  app.add_url_rule('/utils/', 'my utils', myutils.default)
