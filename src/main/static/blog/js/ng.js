@@ -18,7 +18,9 @@ angular.module('blogapi', ['ngResource'])
 angular.module('ngapp', ['blogapi'])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
-      .when('/blog/')
+      .when('/blog/', { "redirectTo": function (routePath, path) {
+        return window.articlePath || path;
+      }})
       .when('/blog/:year/')
       .when('/blog/:year/:month/')
       .when('/blog/tag/:tag/')
