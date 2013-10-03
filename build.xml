@@ -90,6 +90,7 @@
     <copy file="${markdown2}" todir="${build}"/>
     <copy file="lib/werkzeug.zip" todir="${build}"/>
     <copy file="lib/flask.zip" todir="${build}"/>
+    <copy file="lib/itsdangerous.py" todir="${build}"/>
   </target>
 
   <target name="dist" depends="build"

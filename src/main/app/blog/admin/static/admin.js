@@ -76,6 +76,7 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, Blog, BlogComment, e
       };
 
       $scope.isClean = true;
+      isNew = false;
     }
 
     if (isNew) {
@@ -104,7 +105,12 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, Blog, BlogComment, e
 
   $scope.showMsg = function () {
     if ($scope.lastAction) {
-      return msgTmpl($scope.lastAction);
+      var msg = msgTmpl($scope.lastAction);
+
+      //$scope.lastAction = null;
+
+
+      return msg;
     }
   };
 }
