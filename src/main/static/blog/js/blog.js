@@ -1,6 +1,6 @@
 'use strict';
 
-// :data: a jQuery object containing the html pieces
+// :data: a jQuery object containing the html fragments
 // :showComment: control the visibility of the commants and the add comment form
 function updatePage(data, showComment) {
   var title = data.filter('title').text(),

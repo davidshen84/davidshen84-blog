@@ -18,6 +18,12 @@
       <arg value="-c"/>
       <arg value="import flask; print '/'.join(flask.__file__.split('/')[0:-2])"/>
     </exec>
+
+    <!-- get itsdangerous package directory -->
+    <exec executable="python" outputproperty="itsdangerous">
+      <arg value="-c"/>
+      <arg value="import itsdangerous; print itsdangerous.__file__[0:-1]"/>
+    </exec>
   </target>
 
   <target name="build" depends="init"
@@ -31,6 +37,9 @@
       basedir="${flask}"
       includes="flask/"
       excludes="**/testsuite/**, **/debug/**, **/*.pyc, **/*.pyo"/>
+
+    <copy file="${itsdangerous}"
+          tofile="lib/itsdangerous.py"/>
   </target>
 </project>
 
