@@ -17,7 +17,7 @@
           <label class="checkbox"><input type="checkbox" ng-model="hasDigits" />{{"{{digits}}"}}</label>
           <label class="checkbox"><input type="checkbox" ng-model="hasSepcials" />{{"{{specials}}"}}</label>
           <label class="checkbox"><input type="checkbox" ng-model="hasCJK" />CJK</label>
-          <input type="submit" value="Generate" />
+          <input type="submit" value="Generate" ng-disabled="!(hasLowerCases || hasUpperCases || hasDigits || hasSpecials || hasCJK)"/>
         </div>
       </div>
     </form>
