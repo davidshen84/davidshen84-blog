@@ -34,7 +34,7 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, Blog, BlogComment, e
   var titlePattern = /^#.*$/m,
     isNew = true,
     msgTmpl = $interpolate(
-      '<div class="alert alert-{{type}}">\
+      '<div class="alert alert-{{type}}" data-timestamp={{timestamp}}>\
       <button type="button" class="close" data-dismiss="alert">&times;</button>\
       {{msg}}</div>'
     );
@@ -69,10 +69,12 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, Blog, BlogComment, e
       return;
     }
 
+
     function updateSuccess(data) {
       $scope.lastAction = {
         "msg": data.msg,
-        "type": "success"
+        "type": "success",
+        "timestamp": +new Date()
       };
 
       $scope.isClean = true;
@@ -105,12 +107,8 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, Blog, BlogComment, e
 
   $scope.showMsg = function () {
     if ($scope.lastAction) {
-      var msg = msgTmpl($scope.lastAction);
-
-      //$scope.lastAction = null;
-
-
-      return msg;
+      return msgTmpl($scope.lastAction);
     }
   };
 }
+
