@@ -83,33 +83,5 @@
   </div>
 </div>
 
-<div class="col-md-2">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="panel-title">Archives</div>
-    </div>
-    {% for y, mo in archives.iteritems() %}
-    <div class="panel-heading">{{ y }}</div>
-    <ul class="list-group">
-      {% for m, t in mo.iteritems() %}
-      <li class="list-group-item">
-        <span class="badge">{{ t|length }}</span>
-        <a href='/blog/{{ y }}/{{ m }}/'>{{ monthFullName[m-1] }}</a>
-      </li>
-      {% endfor %}
-    </ul>
-    {% endfor %}
-  </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">Tags</div>
-    <ul class="list-group">
-      {% for t, titles in tagstats.iteritems() %}
-      <li class="list-group-item">
-        <span class="badge">{{ titles|length }}</span>
-        <a href="/blog/tag/{{ t|urlencode }}/">{{ t }}</a>
-      </li>
-      {% endfor %}
-    </li>
-  </div>
-</div>
+{% include "blog/right_side.html" %}
 {% endblock %}
