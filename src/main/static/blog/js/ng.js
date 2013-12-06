@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('blogapi', ['ngResource'])
+angular.module('blogapi', [ 'ngResource' ])
   .factory('BlogComment', function ($resource, $interpolate) {
     var BlogComment = $resource('/blog/comment/api/sync/:title'),
       commentTempl = $interpolate(
@@ -15,16 +15,16 @@ angular.module('blogapi', ['ngResource'])
     return BlogComment;
   });
 
-angular.module('ngapp', ['blogapi'])
+angular.module('ngapp', [ 'ngRoute', 'blogapi' ])
   .config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/blog/', { "redirectTo": function (routePath, path) {
         return window.articlePath || path;
       }})
-      .when('/blog/:year/')
-      .when('/blog/:year/:month/')
-      .when('/blog/tag/:tag/')
-      .when('/blog/:year/:month/:title');
+      .when('/blog/:year/', {})
+      .when('/blog/:year/:month/', {})
+      .when('/blog/tag/:tag/', {})
+      .when('/blog/:year/:month/:title', {});
 
     $locationProvider.html5Mode(true);
   });

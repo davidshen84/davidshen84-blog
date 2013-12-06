@@ -31,7 +31,7 @@ function updatePage(data, showComment) {
   }
 }
 
-function RootCtrl($scope, $location, $http) {
+function RootCtrl($scope, $location, $http, $route) {
   var changed = false;
 
   $scope.$on('$routeChangeSuccess', function ($event, current) {

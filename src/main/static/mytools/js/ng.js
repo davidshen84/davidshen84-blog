@@ -15,7 +15,7 @@ angular.module('ngapp', [])
 function RootCtrl() {}
 
 function RdnGenCtrl($scope, prime, lowerCases, upperCases, digits, specials, cjkutf8base, cjkutf8range) {
-  $scope.charCount = 6;
+  $scope.charCount = 16;
   $scope.generatedChars = '';
   $scope.lowerCases = lowerCases;
   $scope.upperCases = upperCases;
@@ -63,4 +63,3 @@ function RdnGenCtrl($scope, prime, lowerCases, upperCases, digits, specials, cjk
     }
   };
 }
-

@@ -23,15 +23,15 @@
 {% endif %}
 
 {% block body %}
-<aside class="span2">
+<aside class="col-md-2">
   <iframe src="http://rcm.amazon.com/e/cm?t=david0a-20&o=1&p=11&l=ez&f=ifr&f=ifr" width="120" height="600" scrolling="no" marginwidth="0" marginheight="0" border="0" frameborder="0" style="border:none;"></iframe>
 </aside>
-<div class="span8">
+<div class="col-md-8">
   <nav id="breadcrumbs" class="row">
     <ul class="breadcrumb">
       {% for i in breadcrumbs %}
       {% if not loop.last %}
-      <li><a href="{{i['href']}}">{{i['text']}}</a><span class="divider">/</span></li>
+      <li><a href="{{i['href']}}">{{i['text']}}</a></li>
       {% else %}
       <li class="active">{{i['text']}}</li>
       {% endif %}
@@ -72,25 +72,38 @@
     {% endif %}
   </article>
 </div>
-<aside class="span2">
-  <div class="well sidebar-nav">
-    <ul class="nav nav-list">
-      <li class="nav-header">Archives</li>
+
+<aside class="col-md-2">
+  <div class="well">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">Archives</div>
+      </div>
       {% for y, mo in archives.iteritems() %}
-      <li class="nav-header">{{ y }}</li>
-      {% for m, t in mo.iteritems() %}
-      <li><a href='/blog/{{ y }}/{{ m }}/'>{{ monthFullName[m-1] }} ({{ t|length }})</a></li>
+      <div class="panel-heading">{{ y }}</div>
+      <ul class="list-group">
+        {% for m, t in mo.iteritems() %}
+        <li class="list-group-item">
+          <span class="badge">{{ t|length }}</span>
+          <a href='/blog/{{ y }}/{{ m }}/'>{{ monthFullName[m-1] }}</a>
+        </li>
+        {% endfor %}
+      </ul>
       {% endfor %}
-      {% endfor %}
-    </ul>
+    </div>
   </div>
-  <div class="well sidebar-nav">
-    <ul class="nav nav-list">
-      <li class="nav-header">Tags</li>
-      {% for t, titles in tagstats.iteritems() %}
-      <li><a href="/blog/tag/{{ t|urlencode }}/">{{ t }} ({{ titles|length }})</a></li>
-      {% endfor %}
-    </ul>
+  <div class="well">
+    <div class="panel panel-default">
+      <div class="panel-heading">Tags</div>
+      <ul class="list-group">
+        {% for t, titles in tagstats.iteritems() %}
+        <li class="list-group-item">
+          <span class="badge">{{ t|length }}</span>
+          <a href="/blog/tag/{{ t|urlencode }}/">{{ t }}</a>
+        </li>
+        {% endfor %}
+      </li>
+    </div>
   </div>
 </aside>
 {% endblock %}

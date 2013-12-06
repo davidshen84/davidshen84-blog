@@ -23,15 +23,15 @@
 {% endif %}
 
 {% block body %}
-<aside class="span2">
+<div class="col-md-2">
   <iframe src="http://rcm.amazon.com/e/cm?t=david0a-20&o=1&p=11&l=ez&f=ifr&f=ifr" width="120" height="600" scrolling="no" marginwidth="0" marginheight="0" border="0" frameborder="0" style="border:none;"></iframe>
-</aside>
-<div class="span8">
+</div>
+<div class="col-md-8">
   <nav id="breadcrumbs" class="row">
     <ul class="breadcrumb">
       {% for i in breadcrumbs %}
       {% if not loop.last %}
-      <li><a href="{{i['href']}}">{{i['text']}}</a><span class="divider">/</span></li>
+      <li><a href="{{i['href']}}">{{i['text']}}</a></li>
       {% else %}
       <li class="active">{{i['text']}}</li>
       {% endif %}
@@ -50,59 +50,70 @@
     </dl>
   </div>
   <div class="row" id="addcommentform">
-    <div class="span6">
-      <h3>Please add your comments</h3>
-      <form class="well form-horizontal" id="commentForm" name="commentForm" ng-controller="CommentCtrl" ng-submit="submit()">
-        <fieldset>
-          <div class="control-group">
-            <label class="control-label" for="screenname">Name*</label>
-            <div class="controls">
-              <input type="text" class="input-xlarge" name="screenname" ng-model="screenname" placeholder="screen name" required ng-minlength="2"/>
-              <div class="error" ng-show="commentForm.screenname.$dirty && (commentForm.screenname.$error.required || commentForm.screenname.$error.minlength)">Required, 2 letters minimum!</div>
-            </div>
-          </div>
-          <div class="control-group">
-            <label class="control-label" for="emailaddr">Email*</label>
-            <div class="controls">
-              <input type="email" class="input-xlarge" name="email" ng-model="email" placeholder="email...it will NOT appear publicly" required/>
-              <div class="error" ng-show="commentForm.email.$dirty && commentForm.email.$invalid">Invalid email address!</div>
-            </div>
-          </div>
-          <div class="control-group">
-            <label class="control-label" for="comment">Comments*</label>
-            <div class="controls">
-              <textarea class="input-xlarge" name="comment" ng-model="comment" placeholder="please input your comments here..." required ng-minlength="5"></textarea>
-              <div class="error" ng-show="commentForm.comment.$dirty && (commentForm.comment.$error.required || commentForm.comment.$error.minlength)">At least 5 letters!</div>
-            </div>
-          </div>
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary submit" ng-disabled="commentForm.$invalid">Submit</button>
-            <button type="reset" class="btn btn-danger clear">Clear</button>
-          </div>
-        </fieldset>
-      </form>
+    <h3>Please add your comments</h3>
+    <form class="well form-horizontal" id="commentForm" name="commentForm" ng-controller="CommentCtrl" ng-submit="submit()">
+      <div class="form-group">
+        <label class="control-label col-md-2" for="screenname">Name*</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control input-lg" name="screenname" ng-model="screenname" placeholder="screen name" required ng-minlength="2"/>
+          <div class="error" ng-show="commentForm.screenname.$dirty && (commentForm.screenname.$error.required || commentForm.screenname.$error.minlength)">Required, 2 letters minimum!</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-2" for="emailaddr">Email*</label>
+        <div class="col-sm-5">
+          <input type="email" class="form-control input-lg" name="email" ng-model="email" placeholder="email...it will NOT appear publicly" required/>
+          <div class="error" ng-show="commentForm.email.$dirty && commentForm.email.$invalid">Invalid email address!</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label col-md-2" for="comment">Comments*</label>
+        <div class="col-sm-5">
+          <textarea class="form-control input-lg" name="comment" ng-model="comment" placeholder="please input your comments here..." required ng-minlength="5"></textarea>
+          <div class="error" ng-show="commentForm.comment.$dirty && (commentForm.comment.$error.required || commentForm.comment.$error.minlength)">At least 5 letters!</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-md-offset-2 col-sm-5">
+          <button type="submit" class="btn btn-primary submit" ng-disabled="commentForm.$invalid">Submit</button>
+          <button type="reset" class="btn btn-danger clear">Clear</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="col-md-2">
+  <div class="well">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">Archives</div>
+      </div>
+      {% for y, mo in archives.iteritems() %}
+      <div class="panel-heading">{{ y }}</div>
+      <ul class="list-group">
+        {% for m, t in mo.iteritems() %}
+        <li class="list-group-item">
+          <span class="badge">{{ t|length }}</span>
+          <a href='/blog/{{ y }}/{{ m }}/'>{{ monthFullName[m-1] }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="well">
+    <div class="panel panel-default">
+      <div class="panel-heading">Tags</div>
+      <ul class="list-group">
+        {% for t, titles in tagstats.iteritems() %}
+        <li class="list-group-item">
+          <span class="badge">{{ t|length }}</span>
+          <a href="/blog/tag/{{ t|urlencode }}/">{{ t }}</a>
+        </li>
+        {% endfor %}
+      </li>
     </div>
   </div>
 </div>
-<aside class="span2">
-  <div class="well sidebar-nav">
-    <ul class="nav nav-list">
-      <li class="nav-header">Archives</li>
-      {% for y, mo in archives.iteritems() %}
-      <li class="nav-header">{{ y }}</li>
-      {% for m, t in mo.iteritems() %}
-      <li><a href='/blog/{{ y }}/{{ m }}/'>{{ monthFullName[m-1] }} ({{ t|length }})</a></li>
-      {% endfor %}
-      {% endfor %}
-    </ul>
-  </div>
-  <div class="well sidebar-nav">
-    <ul class="nav nav-list">
-      <li class="nav-header">Tags</li>
-      {% for t, titles in tagstats.iteritems() %}
-      <li><a href="/blog/tag/{{ t|urlencode }}/">{{ t }} ({{ titles|length }})</a></li>
-      {% endfor %}
-    </ul>
-  </div>
-</aside>
 {% endblock %}

@@ -55,7 +55,7 @@ def blog(year, month, title):
                          tagstats=Blog.getTagStats(),
                          monthFullName=monthFullName,
                          articlePath=articlePath,
-                         isXhr=request.is_xhr,
+                         isXhr=request.is_xhr or request.args.has_key('xhr'),
                          isAdmin=is_admin(),
                          activePill="blog")
 
@@ -77,7 +77,7 @@ def archivesByDate(year, month=None):
                          tagstats=Blog.getTagStats(),
                          monthFullName=monthFullName,
                          articlePath=request.path,
-                         isXhr=request.is_xhr,
+                         isXhr=request.is_xhr or request.args.has_key('xhr'),
                          isAdmin=is_admin())
 
 def archivesByTags(tag):
@@ -99,6 +99,6 @@ def archivesByTags(tag):
                          tagstats=Blog.getTagStats(),
                          monthFullName=monthFullName,
                          articlePath=request.path,
-                         isXhr=request.is_xhr,
+                         isXhr=request.is_xhr or request.args.has_key('xhr'),
                          isAdmin=is_admin())
 

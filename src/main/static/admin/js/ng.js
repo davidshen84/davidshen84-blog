@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('blogapi', ['ngResource']).
+angular.module('blogapi', [ 'ngRoute', 'ngResource' ]).
   factory('Blog', function ($resource) {
     var Blog = $resource('/blog/api/sync/:title', {},
       { "update": { "method": "PUT" } });
