@@ -1,15 +1,21 @@
-<div class="span8 well">
+<div class="well col-md-9">
   <eeditor onupdate="isClean=false" />
-  <input type="text" ng-model="tags" ng-change="isClean=false" placeholder="Tags"/>
-  <button ng-click="save()" class="btn btn-mini btn-primary pull-right" ng-disabled="isClean"><i class="icon-ok"></i></button>
-  <a href="/blog/admin" class="btn btn-mini pull-right"><i class="icon-off"></i></a>
-  <span ng-bind-html-unsafe="showMsg()"></span>
+  <form class="form-inline" role="form">
+    <div class="form-group">
+      <input type="text" class="form-control col-md-3" ng-model="tags" ng-change="isClean=false" placeholder="tags"/>
+    </div>
+    <div class="btn-group pull-right">
+      <button ng-click="save()" class="btn btn-sm btn-primary" ng-disabled="isClean"><i class="glyphicon glyphicon-ok"></i></button>
+      <a href="/blog/admin" class="btn btn-sm"><i class="glyphicon glyphicon-off"></i></a>
+    </div>
+  </form>
+  <div ng-bind-html="notifyMessage"></div>
 </div>
-<div class="span3" id="commentsview">
+<div class="col-md-3" id="commentsview">
   Comments:
   <ul>
     <li ng-repeat="comment in comments.comments">
-      <a href="#" ng-click="deleteComment(comment.id)"><i class="icon-remove"></i></a>
+      <a href="#" ng-click="deleteComment(comment.id)"><i class="glyphicon glyphicon-remove"></i></a>
       <a href="mailto:{{comment.email}}">{{comment.screenname}}</a>:<span class="pull-right">{{comment.created}}</span>
       <div>{{comment.comment}}</div>
     </li>

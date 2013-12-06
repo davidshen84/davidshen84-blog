@@ -30,16 +30,17 @@ function ListCtrl($scope, Blog) {
   };
 }
 
-function CreateEditCtrl($scope, $routeParams, $interpolate, Blog, BlogComment, editor) {
+function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, Blog, BlogComment, editor) {
   var titlePattern = /^#.*$/m,
     isNew = true,
-    msgTmpl = $interpolate(
+    notificationTemplate = $interpolate(
       '<div class="alert alert-{{type}}" data-timestamp={{timestamp}}>\
       <button type="button" class="close" data-dismiss="alert">&times;</button>\
       {{msg}}</div>'
     );
 
   $scope.isClean = true;
+  $scope.notifyMessage = '';
 
   if ($routeParams.title) {
     isNew = false;
@@ -69,16 +70,14 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, Blog, BlogComment, e
       return;
     }
 
-
     function updateSuccess(data) {
-      $scope.lastAction = {
+      $scope.isClean = true;
+      isNew = false;
+      $scope.notifyMessage = $sce.trustAsHtml(notificationTemplate({
         "msg": data.msg,
         "type": "success",
         "timestamp": +new Date()
-      };
-
-      $scope.isClean = true;
-      isNew = false;
+      }));
     }
 
     if (isNew) {
@@ -107,8 +106,7 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, Blog, BlogComment, e
 
   $scope.showMsg = function () {
     if ($scope.lastAction) {
-      return msgTmpl($scope.lastAction);
+      return notificationTemplate($scope.lastAction);
     }
   };
 }
-
