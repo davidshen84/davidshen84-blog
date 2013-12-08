@@ -54,27 +54,27 @@
     <form class="well form-horizontal" role="form" id="commentForm" name="commentForm" ng-controller="CommentCtrl" ng-submit="submit()">
       <div class="form-group">
         <label class="control-label col-md-2" for="screenname">Name*</label>
-        <div class="col-sm-5">
+        <div class="col-md-6">
           <input type="text" class="form-control input-lg" name="screenname" ng-model="screenname" placeholder="screen name" required ng-minlength="2"/>
           <div class="error" ng-show="commentForm.screenname.$dirty && (commentForm.screenname.$error.required || commentForm.screenname.$error.minlength)">Required, 2 letters minimum!</div>
         </div>
       </div>
       <div class="form-group">
         <label class="control-label col-md-2" for="emailaddr">Email*</label>
-        <div class="col-sm-5">
+        <div class="col-md-6">
           <input type="email" class="form-control input-lg" name="email" ng-model="email" placeholder="email...it will NOT appear publicly" required/>
           <div class="error" ng-show="commentForm.email.$dirty && commentForm.email.$invalid">Invalid email address!</div>
         </div>
       </div>
       <div class="form-group">
         <label class="control-label col-md-2" for="comment">Comments*</label>
-        <div class="col-sm-5">
+        <div class="col-md-8">
           <textarea class="form-control input-lg" name="comment" ng-model="comment" placeholder="please input your comments here..." required ng-minlength="5"></textarea>
           <div class="error" ng-show="commentForm.comment.$dirty && (commentForm.comment.$error.required || commentForm.comment.$error.minlength)">At least 5 letters!</div>
         </div>
       </div>
       <div class="form-group">
-        <div class="col-md-offset-2 col-sm-5">
+        <div class="col-md-offset-2 col-md-5">
           <button type="submit" class="btn btn-primary submit" ng-disabled="commentForm.$invalid">Submit</button>
           <button type="reset" class="btn btn-danger clear">Clear</button>
         </div>
