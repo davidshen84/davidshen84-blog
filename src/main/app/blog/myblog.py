@@ -81,6 +81,10 @@ def archivesByDate(year, month=None):
                          isAdmin=is_admin())
 
 def archivesByTags(tag):
+
+  if not tag:
+    return abort(403)
+
   breadcrumbs = []
   myblogs = Blog.getArchiveStats(True)
 
@@ -93,7 +97,7 @@ def archivesByTags(tag):
 
   return render_template('blog/bloglist.html',
                          title='blog list',
-                         tag=tag,
+                         tag=tag or '',
                          breadcrumbs=breadcrumbs,
                          archives=Blog.getArchiveStats(),
                          tagstats=Blog.getTagStats(),
