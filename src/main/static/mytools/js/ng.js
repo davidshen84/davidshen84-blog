@@ -39,7 +39,7 @@ function RdnGenCtrl($scope, prime, lowerCases, upperCases, digits, specials, cjk
       charArr += digits;
     }
 
-    if ($scope.hasSepcials) {
+    if ($scope.hasSpecials) {
       charArr += specials;
     }
 
