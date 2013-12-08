@@ -8,7 +8,7 @@ function ListCtrl($scope, Blog) {
   $scope.blogs = Blog.get();
 
   $scope.pubIcon = function (published) {
-    return published ? 'icon-eye-open' : 'icon-eye-close';
+    return 'glyphicon' + (published ? ' glyphicon-eye-open' : ' glyphicon-eye-close');
   };
 
   $scope.setPubStat = function (title, publish) {
