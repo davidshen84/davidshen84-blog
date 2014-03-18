@@ -4,17 +4,21 @@ function RootCtrl() {
   // empty
 }
 
-function ListCtrl($scope, Blog) {
+function ListCtrl($scope, $timeout, Blog) {
   $scope.blogs = Blog.get();
 
   $scope.pubIcon = function (published) {
-    return 'glyphicon' + (published ? ' glyphicon-eye-open' : ' glyphicon-eye-close');
+    return 'glyphicon ' + (published ? 'glyphicon-eye-open' : 'glyphicon-eye-close');
   };
 
-  $scope.setPubStat = function (title, publish) {
+  $scope.setPubStat = function (index, title, publish) {
     Blog.update({ "title": title }, { "published": publish },
-      function () {
-        $scope.blogs = Blog.get();
+      function (response) {
+        if(response.msg == 'ok') {
+          $timeout(function () {
+            $scope.$apply('blogs.blogs[' + index + '].published=' + publish);
+          }, 100);
+        }
       });
   };
 
@@ -38,11 +42,12 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, $location, Blo
   }
 
   function extractTitleFromURLFragment(l) {
-    var splits = $location.url().split('#');
+    var url = $location.url(),
+      splits = url.split('#');
 
     return splits.length == 2
       ? decodeURIComponent(splits[1])
-      : url;
+      : false;
   }
 
   var titlePattern = /^#.*$/m,

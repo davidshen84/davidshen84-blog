@@ -31,7 +31,6 @@ def default():
 
 @auto_unquote('title')
 def blog(year, month, title):
-  logging.debug(title)
   myblog = Blog.getByTitle(title)
 
   if myblog:

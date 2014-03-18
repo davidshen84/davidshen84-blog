@@ -39,7 +39,6 @@ def query():
 
 @auto_unquote('title')
 def fetch(title):
-  logging.debug(title)
   blog = Blog.getByTitle(title, False)
 
   if blog:

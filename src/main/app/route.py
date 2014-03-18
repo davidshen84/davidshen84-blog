@@ -33,3 +33,4 @@ def add_url_rule(app):
 
   #my tools
   app.add_url_rule('/mytools/', 'my tools', mytools.default)
+
