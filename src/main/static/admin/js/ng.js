@@ -15,7 +15,7 @@ angular.module('ngapp', ['blogapi']).
   config(function ($routeProvider, $locationProvider) {
     $routeProvider.
       when('/blog/admin/', { "controller": ListCtrl, "templateUrl": '/blog/admin/static/bloglist.html' }).
-      when('/blog/admin/edit/:title', { "controller": CreateEditCtrl, "templateUrl": '/blog/admin/static/blogedit.html' }).
+      when('/blog/admin/edit', { "controller": CreateEditCtrl, "templateUrl": '/blog/admin/static/blogedit.html' }).
       when('/blog/admin/new', { "controller": CreateEditCtrl, "templateUrl": '/blog/admin/static/blogedit.html' }).
       otherwise({ "redirectTo": '/blog/admin/' });
 

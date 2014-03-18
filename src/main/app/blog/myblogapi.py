@@ -3,9 +3,10 @@
 import logging
 import re
 
-from apidecorator import login_admin, simpleauth
+from apidecorator import login_admin, simpleauth, auto_unquote
 from google.appengine.api import users
 from flask import render_template, request, make_response, jsonify, abort, redirect, json
+from urllib import unquote
 
 from ..bloglib.blog import Blog
 from ..bloglib.blogcomment import BlogComment
@@ -36,7 +37,9 @@ def query():
 
   return jsonify(blogs=blogs)
 
+@auto_unquote('title')
 def fetch(title):
+  logging.debug(title)
   blog = Blog.getByTitle(title, False)
 
   if blog:
@@ -64,7 +67,9 @@ def create():
   else:
     return MSG_SAVE_ERROR, 500
 
+@auto_unquote('title')
 def update(title):
+  title = unquote(title)
   updateData = {}
   blog = request.json
 
@@ -91,11 +96,13 @@ def update(title):
   else:
     return MSG_UPDATE_FAIL, 404
 
+@auto_unquote('title')
 def destroy(title):
   Blog.destroy(title)
 
   return ''
 
+@auto_unquote('title')
 def publish(title):
   published = request.values['published'].lower() == 'true'
   blogkey = Blog.publish(title, published=published)

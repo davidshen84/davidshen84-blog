@@ -30,9 +30,24 @@ function ListCtrl($scope, Blog) {
   };
 }
 
-function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, Blog, BlogComment, editor) {
+function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, $location, Blog, BlogComment, editor) {
+  function extractTitleFromContent(content) {
+    var title = titlePattern.exec(content);
+
+    return title && title.length > 0 ? title[0].substr(1) : null;
+  }
+
+  function extractTitleFromURLFragment(l) {
+    var splits = $location.url().split('#');
+
+    return splits.length == 2
+      ? decodeURIComponent(splits[1])
+      : url;
+  }
+
   var titlePattern = /^#.*$/m,
     isNew = true,
+    title = extractTitleFromURLFragment(),
     notificationTemplate = $interpolate(
       '<div class="alert alert-{{type}}" data-timestamp={{timestamp}}>\
       <button type="button" class="close" data-dismiss="alert">&times;</button>\
@@ -42,22 +57,16 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, Blog, BlogComm
   $scope.isClean = true;
   $scope.notifyMessage = '';
 
-  if ($routeParams.title) {
+  if(title) {
     isNew = false;
 
-    Blog.get({title: $routeParams.title}, function (blog) {
+    Blog.get({title: title}, function (blog) {
       editor().importFile(blog.title, blog.content);
       $scope.tags = blog.tags.join(', ');
     });
 
     // try to get comments
-    $scope.comments = BlogComment.get({ "title_id": $routeParams.title });
-  }
-
-  function extractTitleFromContent(content) {
-    var title = titlePattern.exec(content);
-
-    return title && title.length > 0 ? title[0].substr(1) : null;
+    $scope.comments = BlogComment.get({ "title_id": title });
   }
 
   $scope.save = function () {
@@ -65,7 +74,7 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, Blog, BlogComm
       title = extractTitleFromContent(content),
       tags = $scope.tags || '';
 
-    if (title === null) {
+    if(title === null) {
       window.alert('blog needs a title');
       return;
     }
@@ -80,7 +89,7 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, Blog, BlogComm
       }));
     }
 
-    if (isNew) {
+    if(isNew) {
       Blog.save(
         { "title": title,
           "content": content,
@@ -100,13 +109,14 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, Blog, BlogComm
   $scope.deleteComment = function (id) {
     BlogComment.remove({ "title_id": id }, null,
       function () {
-        $scope.comments = BlogComment.get({ "title_id": $routeParams.title });
+        $scope.comments = BlogComment.get({ "title_id": title });
       });
   };
 
   $scope.showMsg = function () {
-    if ($scope.lastAction) {
+    if($scope.lastAction) {
       return notificationTemplate($scope.lastAction);
     }
   };
 }
+

@@ -7,9 +7,12 @@ import json
 from flask import render_template, request, jsonify, abort, redirect, url_for
 from markdown2 import markdown
 from . import is_admin
+from apidecorator import auto_unquote
+from urllib import quote
 
 from ..bloglib.blog import Blog
 from ..bloglib.blogcomment import BlogComment
+
 
 BAD_SP = unichr(0xa0)
 blog_route_base = '/blog/'
@@ -22,11 +25,13 @@ def default():
   myblog = Blog.getLatest()
   if myblog:
     created = myblog.created
-    return redirect(url_for('blog', year=created.year, month=created.month, title=myblog.title))
+    return redirect(url_for('blog', year=created.year, month=created.month, title=quote(myblog.title, '')))
   else:
     return abort(404)
 
+@auto_unquote('title')
 def blog(year, month, title):
+  logging.debug(title)
   myblog = Blog.getByTitle(title)
 
   if myblog:

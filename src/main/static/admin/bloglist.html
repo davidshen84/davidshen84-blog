@@ -19,7 +19,7 @@
       <tr ng-repeat="blog in blogs.blogs | filter:search">
         <td>{{blog.title}}</td>
         <td><a href="/blog/admin" ng-class="pubCls(blog.published)" class="btn btn-xs" ng-click="setPubStat(blog.title, !blog.published)"><i ng-class="pubIcon(blog.published)"></i></a></td>
-        <td><a href="/blog/admin/edit/{{blog.title}}" class="btn btn-xs"><i class="glyphicon glyphicon-edit"></i></a></td>
+        <td><a href="/blog/admin/edit#{{blog.title}}" class="btn btn-xs"><i class="glyphicon glyphicon-edit"></i></a></td>
         <td><button ng-click="deleteBlog(blog.title)" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i></button></td>
       </tr>
     </tbody>

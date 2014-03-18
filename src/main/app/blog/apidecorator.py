@@ -1,8 +1,9 @@
 # coding=utf-8
 
 from flask import abort
-from functools import partial, wraps
+from functools import wraps
 from google.appengine.api import users
+from urllib import unquote
 
 def login_admin(f):
   @wraps(f)
@@ -21,3 +22,16 @@ def simpleauth(f):
     else:
       return f(publishedOnly=True)
   return func
+
+def auto_unquote(unquotee):
+  def decorated(f):
+    @wraps(f)
+    def func(*args, **kwargs):
+      '''automatically unquote argument *unquotee*'''
+      if kwargs.has_key(unquotee):
+        kwargs[unquotee] = unquote(kwargs[unquotee])
+
+      return f(*args, **kwargs)
+    return func
+  return decorated
+
