@@ -36,6 +36,10 @@ handlers:
 - url: /blog.*
   script: app.app
 
+- url: /robots.txt
+  static_files: robots.txt
+  upload: robots.txt
+
 libraries:
 - name: jinja2
   version: "2.6"
