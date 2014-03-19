@@ -12,7 +12,7 @@ function ListCtrl($scope, $timeout, $filter, Blog) {
   };
 
   $scope.setPubStat = function (index, title, publish) {
-    Blog.update({ "title": title }, { "published": publish },
+    Blog.update({ "title": encodeURIComponent(title) }, { "published": publish },
       function (response) {
         if(response.msg == 'ok') {
           $timeout(function () {
@@ -27,7 +27,7 @@ function ListCtrl($scope, $timeout, $filter, Blog) {
   };
 
   $scope.deleteBlog = function (title) {
-    Blog.remove({ "title": title },
+    Blog.remove({ "title": encodeURIComponent(title) },
       function () {
         $timeout(function () {
           $scope.$apply(function () {
@@ -38,16 +38,16 @@ function ListCtrl($scope, $timeout, $filter, Blog) {
   };
 }
 
-function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, $location, Blog, BlogComment, editor) {
+function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, Blog, BlogComment, editor) {
   function extractTitleFromContent(content) {
-    var title = titlePattern.exec(content);
+    var match = titlePattern.exec(content);
 
-    return title && title.length > 0 ? title[0].substr(1) : null;
+    return match && match.length > 0 ? match[0].substr(1) : null;
   }
 
   var titlePattern = /^#.*$/m,
     isNew = true,
-    title = $routeParams.title,
+    title = $routeParams.title !== undefined ? encodeURIComponent($routeParams.title) : null,
     notificationTemplate = $interpolate(
       '<div class="alert alert-{{type}}" data-timestamp={{timestamp}}>\
       <button type="button" class="close" data-dismiss="alert">&times;</button>\
@@ -60,7 +60,7 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, $location, Blo
   if(title) {
     isNew = false;
 
-    Blog.get({title: title}, function (blog) {
+    Blog.get({"title": title}, function (blog) {
       editor().importFile(blog.title, blog.content);
       $scope.tags = blog.tags.join(', ');
     });
