@@ -99,7 +99,7 @@ def update(title):
 def destroy(title):
   Blog.destroy(title)
 
-  return ''
+  return MSG_OK
 
 @auto_unquote('title')
 def publish(title):

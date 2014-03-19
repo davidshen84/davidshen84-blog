@@ -4,7 +4,7 @@ function RootCtrl() {
   // empty
 }
 
-function ListCtrl($scope, $timeout, Blog) {
+function ListCtrl($scope, $timeout, $filter, Blog) {
   $scope.blogs = Blog.get();
 
   $scope.pubIcon = function (published) {
@@ -29,7 +29,11 @@ function ListCtrl($scope, $timeout, Blog) {
   $scope.deleteBlog = function (title) {
     Blog.remove({ "title": title },
       function () {
-        $scope.blogs = Blog.get();
+        $timeout(function () {
+          $scope.$apply(function () {
+            $scope.blogs.blogs = $filter('filter')($scope.blogs.blogs, {'title': '!' + title});
+          });
+        }, 500);
       });
   };
 }
@@ -41,18 +45,9 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, $location, Blo
     return title && title.length > 0 ? title[0].substr(1) : null;
   }
 
-  function extractTitleFromURLFragment(l) {
-    var url = $location.url(),
-      splits = url.split('#');
-
-    return splits.length == 2
-      ? decodeURIComponent(splits[1])
-      : false;
-  }
-
   var titlePattern = /^#.*$/m,
     isNew = true,
-    title = extractTitleFromURLFragment(),
+    title = $routeParams.title,
     notificationTemplate = $interpolate(
       '<div class="alert alert-{{type}}" data-timestamp={{timestamp}}>\
       <button type="button" class="close" data-dismiss="alert">&times;</button>\
@@ -71,7 +66,7 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, $location, Blo
     });
 
     // try to get comments
-    $scope.comments = BlogComment.get({ "title_id": title });
+    $scope.comments = BlogComment.get({ "title": title });
   }
 
   $scope.save = function () {
@@ -112,9 +107,9 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, $location, Blo
   };
 
   $scope.deleteComment = function (id) {
-    BlogComment.remove({ "title_id": id }, null,
+    BlogComment.remove({ "title": id }, null,
       function () {
-        $scope.comments = BlogComment.get({ "title_id": title });
+        $scope.comments = BlogComment.get({ "title": title });
       });
   };
 
