@@ -2,10 +2,9 @@
 
 import logging
 
-from google.appengine.ext import db
-from datetime import date, datetime
+from google.appengine.ext import ndb
 
-class Blog(db.Model):
+class Blog(ndb.Model):
   """GAE Blog Model
 
   :title: blog title
@@ -15,12 +14,16 @@ class Blog(db.Model):
   :published: indicate if the blog is published to public
   :tags: a list of tags associated with the blog"""
 
-  title = db.StringProperty(required=True)
-  content = db.TextProperty(required=True)
-  created = db.DateProperty(auto_now_add=True)
-  lastmodified = db.DateTimeProperty(auto_now=True)
-  published = db.BooleanProperty(default=False)
-  tags = db.StringListProperty()
+  title = ndb.StringProperty(required=True)
+  content = ndb.TextProperty(required=True)
+  created = ndb.DateProperty(auto_now_add=True)
+  lastmodified = ndb.DateTimeProperty(auto_now=True)
+  published = ndb.BooleanProperty(default=False)
+  tags = ndb.StringProperty(repeated=True)
+
+  @staticmethod
+  def keyForTitle(title):
+    return ndb.Key(Blog, title)
 
   @staticmethod
   def getByTitle(title, publishedOnly=True):
@@ -28,7 +31,7 @@ class Blog(db.Model):
 
     **if multiple entries have the same title, only the 1st one will be returned.**"""
 
-    blog = Blog.get_by_key_name(title)
+    blog = Blog.get_by_id(title)
     if blog and publishedOnly and not blog.published:
       blog = None
 
@@ -36,12 +39,16 @@ class Blog(db.Model):
 
   @staticmethod
   def create(title, content, tags=[], **kws):
-    if not Blog.get_by_key_name(title):
-      return Blog(key_name=title, title=title, content=content, tags=tags, **kws).put()
+    if not Blog.get_by_id(title):
+      return Blog(key=Blog.keyForTitle(title),
+                  title=title,
+                  content=content,
+                  tags=tags,
+                  **kws).put()
 
   @staticmethod
   def update(title, **kw):
-    blog = Blog.get_by_key_name(title)
+    blog = Blog.get_by_id(title)
     if not blog:
       return None
     else:
@@ -57,31 +64,31 @@ class Blog(db.Model):
 
   @staticmethod
   def destroy(title):
-    blog = Blog.get_by_key_name(title)
+    blog = Blog.get_by_id(title)
     if blog:
-      blog.delete()
+      blog.key.delete()
 
   @staticmethod
   def allTitles(publishedOnly=True):
-    q = db.Query(Blog)
     if publishedOnly:
-      q.filter('published =', True)
+      query = Blog.query(Blog.published == True)
+    else:
+      query = Blog.query()
 
-    return [ b.title for b in q ]
+    return query.fetch(projection=[Blog.title])
 
   @staticmethod
   def getBlogStatus(publishedOnly=True):
-    q = db.Query(Blog)
     if publishedOnly:
-      q.filter('published =', True)
+      query = Blog.query(Blog.published == True)
+    else:
+      query = Blog.query()
 
-    return [ { 'title': b.title,
-              'published': b.published,
-              'lastmodified': str(b.lastmodified) } for b in q ]
+    return query.fetch(projection=[Blog.title, Blog.published, Blog.lastmodified])
 
   @staticmethod
   def publish(title, published=True):
-    blog = Blog.get_by_key_name(title)
+    blog = Blog.get_by_id(title)
     if blog:
       blog.published = published
       return blog.put()
@@ -100,13 +107,14 @@ class Blog(db.Model):
     if not type(tags) is list:
       tags = [ tags ]
 
-    query = db.Query(Blog)
     if publishedOnly:
-      query = query.filter('published = ', True)
+      query = Blog.query(Blog.published == True, Blog.tags.IN(tags)).order(-Blog.lastmodified)
+    else:
+      query = Blog.query(Blog.tags.IN(tags)).order(-Blog.lastmodified)
 
     return sorted(set([ b.title
                         for t in tags
-                        for b in query.filter('tags = ', t).order('-lastmodified') ]))
+                        for b in query ]))
 
   @staticmethod
   def getArchiveStats(publishedOnly=True):
@@ -123,11 +131,14 @@ class Blog(db.Model):
 
       - February (3)"""
 
-    q = db.Query(Blog)
     if publishedOnly:
-      q = q.filter('published =', True)
+      q = Blog.query(Blog.published == True)
+    else:
+      q = Blog.query()
 
-    blogMetas = [ (b.created.year, b.created.month, b.title) for b in q ]
+    blogMetas = [ (b.created.year, b.created.month, b.title) for
+                  b in q.fetch(projection=[Blog.title, Blog.created]) ]
+
     def func(data, blogMetas):
       year, month, title = blogMetas
       if data.has_key(year):
@@ -149,11 +160,13 @@ class Blog(db.Model):
       tag: (year, month, title)
     """
 
-    q = db.Query(Blog)
     if publishedOnly:
-      q = q.filter('published =', True)
+      q = Blog.query(Blog.published == True)
+    else:
+      q = Blog.query()
 
-    blogMetas = [ (b.tags, b.created.year, b.created.month, b.title) for b in q ]
+    blogMetas = [ (b.tags, b.created.year, b.created.month, b.title)
+                  for b in q.fetch(projection=[Blog.title, Blog.tags, Blog.created]) ]
     def func(data, blogMetas):
       tags, year, month, title = blogMetas
       for tag in tags:

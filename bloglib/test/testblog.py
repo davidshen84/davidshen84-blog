@@ -10,7 +10,7 @@ if len(sys.argv) > 1:
   gaesdk_path = sys.argv[1]
 
   sys.path.insert(0, gaesdk_path)
-  sys.path.insert(0, '../src')
+  sys.path.insert(0, '../src/')
 else:
   print 'gae sdk is required'
   sys.exit(-1)
@@ -19,7 +19,7 @@ import dev_appserver
 dev_appserver.fix_sys_path()
 
 # real test code
-from bloglib import Blog
+from bloglib.blog import Blog
 from google.appengine.ext import testbed
 from datetime import datetime, date
 
@@ -32,6 +32,7 @@ class BlogTestCase(unittest.TestCase):
     self.testbed.activate()
     # Next, declare which service stubs you want to use.
     self.testbed.init_datastore_v3_stub()
+    self.testbed.init_memcache_stub()
 
     self.title1 = 'test title1'
     self.content1 = 'test content1'
@@ -44,14 +45,6 @@ class BlogTestCase(unittest.TestCase):
   def tearDown(self):
     self.testbed.deactivate()
 
-  def testGet(self):
-    blog = Blog(title=self.title1, content=self.content1)
-    key = blog.put()
-
-    blog2 = Blog.get(key)
-    self.assertIsNotNone(blog2)
-
-  #@unittest.skip('skip')
   def testGetBlogByTitle(self):
     Blog.create(self.title1, self.content1)
     Blog.create(self.title1, self.content1)
@@ -60,27 +53,14 @@ class BlogTestCase(unittest.TestCase):
     self.assertIsNotNone(blog)
     self.assertIsInstance(blog, Blog)
 
-  #@unittest.skip('skip')
   def testPublish(self):
     key1 = Blog.create(self.title1, self.content1)
     key2 = Blog.create(self.title2, self.content2)
-    
-    Blog.publish(self.title1)
 
-    blog1 = Blog.get(key1)
-    blog2 = Blog.get(key2)
-
-    self.assertTrue(blog1.published)
-    self.assertFalse(blog2.published)
-
-  def testPublish_new(self):
-    key1 = Blog.create(self.title1, self.content1)
-    key2 = Blog.create(self.title2, self.content2)
-    
     Blog.update(self.title1, published=True)
 
-    blog1 = Blog.get(key1)
-    blog2 = Blog.get(key2)
+    blog1 = Blog.keyForTitle(self.title1).get()
+    blog2 = Blog.keyForTitle(self.title2).get()
 
     self.assertTrue(blog1.published)
     self.assertFalse(blog2.published)
@@ -89,22 +69,10 @@ class BlogTestCase(unittest.TestCase):
     key1 = Blog.create(self.title1, self.content1, published=True)
     key2 = Blog.create(self.title2, self.content2, published=True)
 
-    Blog.publish(self.title1, False)
-
-    blog1 = Blog.get(key1)
-    blog2 = Blog.get(key2)
-
-    self.assertFalse(blog1.published)
-    self.assertTrue(blog2.published)
-
-  def testUnpublish_new(self):
-    key1 = Blog.create(self.title1, self.content1, published=True)
-    key2 = Blog.create(self.title2, self.content2, published=True)
-
     Blog.update(self.title1, published=False)
 
-    blog1 = Blog.get(key1)
-    blog2 = Blog.get(key2)
+    blog1 = Blog.keyForTitle(self.title1).get()
+    blog2 = Blog.keyForTitle(self.title2).get()
 
     self.assertFalse(blog1.published)
     self.assertTrue(blog2.published)
@@ -122,7 +90,8 @@ class BlogTestCase(unittest.TestCase):
     # test by giving a partial match set
     Blog(title='t3', content='c3', published=True, tags=[ self.tags1[0] ]).put()
     Blog(title='t33', content='c3', published=False, tags=[ self.tags1[0] ]).put()
-    blogs = [ b for b in Blog.getByTags([self.tags1[0]]) ]
+
+    blogs = [ b for b in Blog.getByTags(self.tags1[0]) ]
     self.assertEqual(len(blogs), 2)
 
   def testGetAllByTags(self):
@@ -158,7 +127,8 @@ class BlogTestCase(unittest.TestCase):
     updateData = {'content': 'new', 'tags': newtags}
     # Blog.update(self.title1, content='new', tags=newtags)
     Blog.update(self.title1, **updateData)
-    blog = Blog.get_by_key_name(self.title1)
+    blog = Blog.get_by_id(self.title1)
+
     self.assertIsNotNone(blog)
     self.assertEqual(blog.title, self.title1)
     self.assertEqual(blog.content, 'new')
@@ -168,26 +138,54 @@ class BlogTestCase(unittest.TestCase):
   def testDestroy(self):
     Blog.create(self.title1, self.content1, self.tags1)
     # verify the data exists
-    self.assertIsNotNone(Blog.get_by_key_name(self.title1))
+    self.assertIsNotNone(Blog.get_by_id(self.title1))
     Blog.destroy(self.title1)
     # verify the data is destroyed
-    self.assertIsNone(Blog.get_by_key_name(self.title1))
+    self.assertIsNone(Blog.get_by_id(self.title1))
 
-  def testCreate(self):
+  def testCanCreate(self):
     Blog.create(self.title1, self.content1, self.tags1)
 
-    self.assertIsNotNone(Blog.get_by_key_name(self.title1))
+    self.assertIsNotNone(Blog.get_by_id(self.title1))
 
-  def testCreate2(self):
+  def testCreateWithCorrectValue(self):
     Blog.create(self.title1, self.content1, self.tags1)
-    now = datetime.now()
 
-    blog = Blog.all().get()
+    blog = Blog.get_by_id(self.title1)
     self.assertEqual(blog.title, self.title1)
     self.assertEqual(blog.content, self.content1)
     self.assertEqual(blog.tags, self.tags1)
     self.assertFalse(blog.published)
-    
+
+  def testCreateKey(self):
+    key = Blog.keyForTitle('test')
+
+    self.assertEqual('Blog', key.kind())
+    self.assertEqual('test', key.id())
+
+  def testAllTitles(self):
+    Blog.create(self.title1, self.content1, self.tags1)
+    titles = Blog.allTitles(False)
+
+    self.assertGreater(len(titles), 0)
+
+  def testGetArchiveStats(self):
+    Blog.create(self.title1, self.content1, self.tags1, created=date(2014, 3, 21))
+    Blog.create(self.title2, self.content2, self.tags2, created=date(2014, 3, 21))
+
+    stats = Blog.getArchiveStats(False)
+
+    self.assertIsNotNone(stats[2014])
+    self.assertIsNotNone(stats[2014][3])
+    self.assertEqual(2, len(stats[2014][3]))
+
+  def testGetTagStats(self):
+    Blog.create(self.title1, self.content1, self.tags1, created=date(2014, 3, 21))
+    Blog.create(self.title2, self.content2, self.tags2, created=date(2014, 3, 21))
+
+    stats = Blog.getTagStats(False)
+    self.assertIsNotNone(stats['tag11'])
+
 if __name__ == '__main__':
   suite = unittest.TestLoader().loadTestsFromTestCase(BlogTestCase)
   unittest.TextTestRunner().run(suite)
