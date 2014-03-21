@@ -42,10 +42,10 @@
       <arg value="${gaesdk}"/>
     </exec>
 
-    <!--
     <exec executable="python" dir="test">
       <arg value="testcomment.py"/>
       <arg value="${gaesdk}"/>
-    </exec>-->
+    </exec>
   </target>
 </project>
+

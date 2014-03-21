@@ -3,31 +3,30 @@
 import logging
 
 from blog import Blog
-from google.appengine.ext import db
+from google.appengine.ext import ndb
 from datetime import date, datetime
 
-class BlogComment(db.Model):
-  refblog = db.ReferenceProperty(reference_class=Blog, collection_name='comments', required=True)
-  screenname = db.StringProperty(required=True)
-  email = db.EmailProperty(required=True)
-  created = db.DateProperty(auto_now_add=True)
-  comment = db.TextProperty(required=True)
+class BlogComment(ndb.Model):
+  screenname = ndb.StringProperty(required=True)
+  email = ndb.StringProperty(required=True)
+  created = ndb.DateProperty(auto_now_add=True)
+  comment = ndb.TextProperty(required=True)
 
   @staticmethod
-  def create(blogkey, screenname, email, comment):
-    #blogkey = db.Key.from_path(BlogComment, '__key__')
-    comment = BlogComment(refblog=blogkey, screenname=screenname, email=email, comment=comment)
+  def create(blogKey, screenname, email, comment):
+    comment = BlogComment(parent=blogKey, screenname=screenname, email=email, comment=comment)
 
     return comment.put()
 
   @staticmethod
   def getComments(blogkey):
-    blog = Blog.get(blogkey)
+    comments = BlogComment.query(ancestor=blogkey)
 
-    return blog.comments
+    return comments
 
   @staticmethod
-  def destroy(commentid):
-    comment = BlogComment.get_by_id(commentid)
+  def destroy(blogKey, commentid):
+    comment = BlogComment.get_by_id(commentid, parent=blogKey)
     if comment:
-      comment.delete()
+      comment.key.delete()
+

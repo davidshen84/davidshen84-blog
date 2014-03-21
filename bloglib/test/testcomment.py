@@ -10,7 +10,7 @@ if len(sys.argv) > 1:
   gaesdk_path = sys.argv[1]
 
   sys.path.insert(0, gaesdk_path)
-  sys.path.insert(0, '../src')
+  sys.path.insert(0, '../src/')
 else:
   print 'gae sdk is required'
   sys.exit(-1)
@@ -19,7 +19,8 @@ import dev_appserver
 dev_appserver.fix_sys_path()
 
 # real test code
-from bloglib import Blog, BlogComment
+from bloglib.blog import Blog
+from bloglib.blogcomment import BlogComment
 from datetime import datetime, date
 from google.appengine.ext import testbed
 
@@ -32,6 +33,7 @@ class BlogCommentTestCase(unittest.TestCase):
     self.testbed.activate()
     # Next, declare which service stubs you want to use.
     self.testbed.init_datastore_v3_stub()
+    self.testbed.init_memcache_stub()
 
     self.title1 = 'test title1'
     self.content1 = 'test content1'
@@ -43,7 +45,7 @@ class BlogCommentTestCase(unittest.TestCase):
 
     Blog.create('test', 'test content')
     self.blog = Blog.getByTitle('test', publishedOnly=False)
-    self.blog_key = self.blog.key()
+    self.blog_key = self.blog.key
 
   def tearDown(self):
     self.testbed.deactivate()
@@ -63,13 +65,12 @@ class BlogCommentTestCase(unittest.TestCase):
     self.assertEqual(reduce(lambda x, y: x+1, comments, 0), 2)
 
   def testDestroy(self):
-    BlogComment.create(self.blog_key, "test user", "test@test.com", "test comment1")
+    key = BlogComment.create(self.blog_key, "test user", "test@test.com", "test comment1")
     BlogComment.create(self.blog_key, "test user", "test@test.com", "test comment2")
 
-    commentId = BlogComment.getComments(self.blog_key).get().key().id()
-    BlogComment.destroy(commentId)
-    comments = BlogComment.getComments(self.blog_key)
-    self.assertEqual(reduce(lambda x, y: x+1, comments, 0), 1)    
+    BlogComment.destroy(self.blog_key, key.id())
+    comments = BlogComment.getComments(self.blog_key).fetch()
+    self.assertEqual(len(comments), 1)
 
 if __name__ == '__main__':
   suite = unittest.TestLoader().loadTestsFromTestCase(BlogCommentTestCase)
