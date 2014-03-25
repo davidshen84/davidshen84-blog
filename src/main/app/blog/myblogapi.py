@@ -35,8 +35,6 @@ def query():
     titles={}
     blogs = filter(lambda b: not titles.has_key(b.title) and not titles.update({b.title: 1}), reduce(lambda x, y: x + y, blogs))
 
-
-
   return jsonify(blogs=[ {'title': b.title, 'published': b.published, 'lastmodified': b.lastmodified} for b in blogs ])
   
 @auto_unquote('title')
