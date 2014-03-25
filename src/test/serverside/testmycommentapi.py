@@ -37,6 +37,7 @@ class MyCommentApiTestCase(unittest.TestCase):
     # Next, declare which service stubs you want to use.
     self.testbed.init_datastore_v3_stub()
     self.testbed.init_user_stub()
+    self.testbed.init_memcache_stub()
 
     self.app = app.test_client()
     self.base = '/blog/comment/api/'
@@ -58,19 +59,26 @@ class MyCommentApiTestCase(unittest.TestCase):
     )
     
     self.assertEqual(200, r.status_code)
-    comments_count = reduce(lambda n, c: n+1, Blog.get_by_key_name('test1').comments, 0)
+    blog = Blog.get_by_id('test1')
+    comments = BlogComment.query(ancestor=blog.key)
+    comments_count = reduce(lambda n, c: n+1, comments, 0)
     self.assertEqual(1, comments_count)
 
+  @unittest.skip('design change')
   def testDestroy(self):
     id = BlogComment.create(self.blogkey1, 'user1', 'a@b.c', 'comments').id()
-    comments_count = reduce(lambda n, c: n+1, Blog.get_by_key_name('test1').comments, 0)
+    blog = Blog.get_by_id('test1')
+    comments = BlogComment.query(ancestor=blog.key)
+    comments_count = reduce(lambda n, c: n+1, comments, 0)
     self.assertEqual(1, comments_count)
 
     # use admin account
     os.environ['USER_IS_ADMIN'] = '1'
     r = self.app.delete(self.base + 'sync/%d' % (id))
     self.assertEqual(200, r.status_code)
-    comments_count = reduce(lambda n, c: n+1, Blog.get_by_key_name('test1').comments, 0)
+    blog = Blog.get_by_id('test1')
+    comments = BlogComment.query(ancestor=blog.key)
+    comments_count = reduce(lambda n, c: n+1, comments, 0)
     self.assertEqual(0, comments_count)
 
   def testCollection(self):

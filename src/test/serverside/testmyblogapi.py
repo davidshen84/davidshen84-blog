@@ -37,6 +37,7 @@ class MyBlogApiTestCase(unittest.TestCase):
     # Next, declare which service stubs you want to use.
     self.testbed.init_datastore_v3_stub()
     self.testbed.init_user_stub()
+    self.testbed.init_memcache_stub()
 
     self.app = app.test_client()
     self.base = '/blog/api/'
@@ -69,7 +70,7 @@ class MyBlogApiTestCase(unittest.TestCase):
       }),
       content_type='application/json')
     self.assertEqual(200, r.status_code)
-    self.assertIsNotNone(Blog.get_by_key_name(title))
+    self.assertIsNotNone(Blog.get_by_id(title))
 
   def testCreate_badFormat(self):
     r = self.app.post(self.base + 'sync', data='bad data')
@@ -84,16 +85,7 @@ class MyBlogApiTestCase(unittest.TestCase):
       }),
       content_type='application/json')
     self.assertEqual(200, r.status_code)
-    self.assertEqual(content, Blog.get_by_key_name('test1').content)
-
-  @unittest.skip('outdated')
-  def testPut_notexist(self):
-    r = self.app.put(self.base + 'sync/test_notexist',
-      data={
-        'content': 'content',
-        'tags': ['test']
-      })
-    self.assertEqual(404, r.status_code)
+    self.assertEqual(content, Blog.get_by_id('test1').content)
 
   def testPut_badFormat(self):
     r = self.app.put(self.base + 'sync/test1', data='bad data')
@@ -102,15 +94,15 @@ class MyBlogApiTestCase(unittest.TestCase):
   def testDestroy(self):
     r = self.app.delete(self.base + 'sync/test1')
     self.assertEqual(200, r.status_code)
-    self.assertIsNone(Blog.get_by_key_name('test1'))
+    self.assertIsNone(Blog.get_by_id('test1'))
 
   def testPublish(self):
-    self.assertEqual(False, Blog.get_by_key_name('test1').published)
+    self.assertEqual(False, Blog.get_by_id('test1').published)
     r = self.app.put(self.base + 'sync/test1',
       data=json.dumps({'published': True}),
       content_type='application/json')
     self.assertEqual(200, r.status_code)
-    self.assertEqual(True, Blog.get_by_key_name('test1').published)
+    self.assertEqual(True, Blog.get_by_id('test1').published)
 
   def testPublish_notexist(self):
     r = self.app.put(self.base + 'sync/test_notexist',

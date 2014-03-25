@@ -30,36 +30,38 @@ def query():
   f = request.values.get('f')
   if f:
     # filter the titles by each char
-    blogs = map(lambda c: filter(lambda b: b['title'].find(c) > -1, blogs), f)
+    blogs = map(lambda c: filter(lambda b: b.title.find(c) > -1, blogs), f)
     # reduce multiple lists into one, and get unique
     titles={}
-    blogs = filter(lambda b: not titles.has_key(b['title']) and not titles.update({b['title']: 1}), reduce(lambda x, y: x + y, blogs))
+    blogs = filter(lambda b: not titles.has_key(b.title) and not titles.update({b.title: 1}), reduce(lambda x, y: x + y, blogs))
 
-  return jsonify(blogs=blogs)
 
+
+  return jsonify(blogs=[ {'title': b.title, 'published': b.published, 'lastmodified': b.lastmodified} for b in blogs ])
+  
 @auto_unquote('title')
 def fetch(title):
   blog = Blog.getByTitle(title, False)
 
   if blog:
+    comments = [ {'screenname': c.screenname, 'email': c.email, 'comment': c.comment}
+                 for c in BlogComment.query(ancestor=blog.key) ]
     return jsonify(
       title=blog.title,
       content=blog.content,
       tags=blog.tags,
       published=blog.published,
-      comments=[ {'screenname': c.screenname, 'email': c.email, 'comment': c.comment} for c in blog.comments ])
+      comments=comments)
   else:
     return MSG_NOT_EXIST, 404
 
 def create():
   blog = request.json
-
   tags = blog['tags']
   # clean tags
   tags = [ t.strip() for t in tags ]
   tags = filter(lambda t: len(t) > 0, tags)
-  blogcontent = blog['content']
-  blogkey = Blog.create(blog['title'], blogcontent, tags)
+  blogkey = Blog.create(blog['title'], blog['content'], tags)
 
   if blogkey:
     return jsonify(msg=MSG_OK)
