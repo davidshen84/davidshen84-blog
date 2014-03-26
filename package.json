@@ -1,0 +1,10 @@
+{
+  "name": "my-blog",
+  "version": "0.1.0",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-jshint": "~0.6.3",
+    "grunt-shell": "~0.6.4",
+    "grunt-zip": "~0.13.0"
+  }
+}
