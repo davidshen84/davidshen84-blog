@@ -8,18 +8,43 @@ module.exports = function(grunt) {
     "gaeDir": '~/google_appengine/',
     "jshint": {
       "options": {
-        "globalstrict": true,
-        "multistr": true,
-        "globals": {
-          "window": true,
-          "angular": true,
-          "EpicEditor": true,
-          "$": true,
-          "document": true,
-          "console": true
+        "multistr": true
+      },
+      "main": {
+        "options": {
+          "globalstrict": true,
+          "globals": {
+            "window": true,
+            "angular": true,
+            "EpicEditor": true,
+            "$": true,
+            "document": true,
+            "console": true
+          }
+        },
+        "files":{
+          "src": ['src/main/static/*/js/*.js']
         }
       },
-      "all": ['src/main/static/*/js/*.js']
+      "test": {
+        "options": {
+          "globalstrict": false,
+          "globals": {
+            "afterEach": true,
+            "angular": true,
+            "beforeEach": true,
+            "describe": true,
+            "expect": true,
+            "inject": true,
+            "it": true,
+            "module": true,
+            "sinon": true            
+          }
+        },
+        "files": {
+          src: ['src/test/clientside/**/*.js']
+        }
+      }
     },
     "copy": {
       "main": {
@@ -84,11 +109,18 @@ module.exports = function(grunt) {
     "pythonmodule": {
       "markdown2": 'build',
       "itsdangerous": 'build'
+    },
+    "curl": {
+      "lib/angular/angular.js": 'http://code.angularjs.org/1.2.15/angular.js',
+      "lib/angular/angular-route.js": 'http://code.angularjs.org/1.2.15/angular-route.js',
+      "lib/angular/angular-resource.js": 'http://code.angularjs.org/1.2.15/angular-resource.js',
+      "lib/angular/angular-mocks.js": 'http://code.angularjs.org/1.2.15/angular-mocks.js'
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-curl');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-zip');
 
@@ -117,5 +149,6 @@ module.exports = function(grunt) {
                                  'zip', 'pythonmodule']);
   grunt.registerTask('test', ['copy:test', 'shell:test']);
 
+  grunt.registerTask('setup-test', ['curl']);
 };
 
