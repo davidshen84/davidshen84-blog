@@ -8,7 +8,8 @@ module.exports = function(grunt) {
     "gaeDir": '~/google_appengine/',
     "jshint": {
       "options": {
-        "multistr": true
+        "multistr": true,
+        "expr": true
       },
       "main": {
         "options": {
@@ -106,15 +107,31 @@ module.exports = function(grunt) {
         "dest": "build/flask.zip"
       }
     },
+    "unzip":{
+      "epiceditor": {
+        "src": 'lib/EpicEditor-v0.2.2.zip',
+        "dest": 'lib/'
+      }
+    },
     "pythonmodule": {
       "markdown2": 'build',
       "itsdangerous": 'build'
     },
     "curl": {
-      "lib/angular/angular.js": 'http://code.angularjs.org/1.2.15/angular.js',
-      "lib/angular/angular-route.js": 'http://code.angularjs.org/1.2.15/angular-route.js',
-      "lib/angular/angular-resource.js": 'http://code.angularjs.org/1.2.15/angular-resource.js',
-      "lib/angular/angular-mocks.js": 'http://code.angularjs.org/1.2.15/angular-mocks.js'
+      "angular": {
+        "src": [
+          'http://code.angularjs.org/1.2.15/angular.js',
+          'http://code.angularjs.org/1.2.15/angular-route.js',
+          'http://code.angularjs.org/1.2.15/angular-resource.js',
+          'http://code.angularjs.org/1.2.15/angular-mocks.js'
+        ],
+        "dest": 'lib/angular/'
+
+      },
+      "epiceditor":{
+        "src": 'http://epiceditor.com/docs/downloads/EpicEditor-v0.2.2.zip',
+        "dest": 'lib/EpicEditor-v0.2.2.zip'
+      }
     }
   });
 
@@ -148,7 +165,7 @@ module.exports = function(grunt) {
                                  'shell:clean', 'copy:main', 'copy:bloglib', 'copy:static',
                                  'zip', 'pythonmodule']);
   grunt.registerTask('test', ['copy:test', 'shell:test']);
-
-  grunt.registerTask('setup-test', ['curl']);
+  grunt.registerTask('resolve', ['curl:epiceditor', 'unzip:epiceditor']);
+  grunt.registerTask('setup-test', ['curl:angular']);
 };
 
