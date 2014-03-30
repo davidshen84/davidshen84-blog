@@ -1,6 +1,8 @@
 angular.module('ngapp.controller', [])
   .controller('RootCtrl', function() {})
   .controller('ListCtrl', ['$scope', '$timeout', '$filter', 'Blog', function($scope, $timeout, $filter, Blog) {
+    'use strict';
+
     $scope.blogs = Blog.get();
 
     $scope.pubIcon = function (published) {
@@ -36,6 +38,8 @@ angular.module('ngapp.controller', [])
   .controller('CreateEditCtrl',
     ['$scope', '$routeParams', '$interpolate', '$sce', 'Blog', 'BlogComment', 'editor',
      function($scope, $routeParams, $interpolate, $sce, Blog, BlogComment, editor) {
+       'use strict';
+
        function extractTitleFromContent(content) {
          var match = titlePattern.exec(content);
 

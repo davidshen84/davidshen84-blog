@@ -16,7 +16,7 @@ module.exports = function(config) {
     files: [
       '../../../lib/angular/angular.js',
       '../../../lib/angular/angular-*.js',
-      '../../../lib/EpicEditor-v0.1.1.1/epiceditor/js/epiceditor.js',
+      '../../../lib/EpicEditor-v0.2.2/js/epiceditor.js',
       '../../main/static/admin/js/*.js',
       'specs/*.js'
     ],
