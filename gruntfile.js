@@ -3,6 +3,7 @@ var formats = require('util').format,
 
 module.exports = function(grunt) {
  
+  require('load-grunt-config')(grunt);
   grunt.initConfig({
     "pkg": 'my-blog',
     "gaeDir": '~/google_appengine/',
@@ -84,14 +85,23 @@ module.exports = function(grunt) {
                      'mkdir build/static',
                      'mkdir build/static/admin' ].join(' && ')
       },
-      "test": {
+      "testapp": {
         "options": {
           "stdout": true,
           "execOptions": {
             "cwd": 'build/test/serverside/'
           }
         },
-        "command": 'python testmyblogapi.py <%= gaeDir %>'
+        "command": ['python testmyblogapi.py <%= gaeDir %>', 'python testmycommentapi.py <%= gaeDir %>'].join(' && ')
+      },
+      "testapi": {
+        "options": {
+          "stdout": true,
+          "execOptions": {
+            "cwd": 'bloglib/test'
+          }
+        },
+        "command": ['python testblog.py <%= gaeDir %>', 'python testcomment.py <%= gaeDir %>'].join(' && ')
       }
     },
     "zip": {
@@ -105,6 +115,11 @@ module.exports = function(grunt) {
         "cwd": '/usr/lib/python2.7/dist-packages/',
         "src": '/usr/lib/python2.7/dist-packages/flask/**/*.py',
         "dest": "build/flask.zip"
+      },
+      "bloglib": {
+        "cwd": "bloglib/src/",
+        "src": "bloglib/src/bloglib/*.py",
+        "dest": "lib/bloglib.zip"
       }
     },
     "unzip":{
@@ -164,7 +179,8 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['jshint',
                                  'shell:clean', 'copy:main', 'copy:bloglib', 'copy:static',
                                  'zip', 'pythonmodule']);
-  grunt.registerTask('test', ['copy:test', 'shell:test']);
+  grunt.registerTask('test', ['copy:test', 'shell:testapi', 'shell:testapp']);
+  grunt.registerTask('bloglib', ['zip:bloglib'])
   grunt.registerTask('resolve', ['curl:epiceditor', 'unzip:epiceditor']);
   grunt.registerTask('setup-test', ['curl:angular']);
 };
