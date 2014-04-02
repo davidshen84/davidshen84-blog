@@ -4,6 +4,7 @@ var formats = require('util').format,
 module.exports = function(grunt) {
  
   require('load-grunt-config')(grunt);
+  // TODO: js-minify
   grunt.initConfig({
     "pkg": 'my-blog',
     "gaeDir": '~/google_appengine/',
