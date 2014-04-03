@@ -10,8 +10,8 @@ from . import is_admin
 from apidecorator import auto_unquote
 from urllib import quote
 
-from ..bloglib.blog import Blog
-from ..bloglib.blogcomment import BlogComment
+from bloglib.blog import Blog
+from bloglib.blogcomment import BlogComment
 
 
 BAD_SP = unichr(0xa0)

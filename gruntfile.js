@@ -21,7 +21,7 @@ module.exports = function(grunt) {
 
   grunt.loadTasks('grunt_tasks');
   grunt.registerTask('default', ['jshint',
-                                 'shell:clean', 'copy:main', 'copy:bloglib', 'copy:static',
+                                 'shell:clean', 'copy:main', 'copy:static',
                                  'zip', 'pythonmodule']);
   grunt.registerTask('test', ['copy:test', 'shell:testapi', 'shell:testapp']);
   grunt.registerTask('bloglib', ['zip:bloglib'])

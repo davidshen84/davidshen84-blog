@@ -13,6 +13,6 @@ module.exports = {
   "bloglib": {
     "cwd": "bloglib/src/",
     "src": "bloglib/src/bloglib/*.py",
-    "dest": "lib/bloglib.zip"
+    "dest": "build/bloglib.zip"
   }
 };
