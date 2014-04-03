@@ -5,12 +5,6 @@ module.exports = {
     "src": '**',
     "dest": 'build/'
   },
-  "bloglib": {
-    "expand": true,
-    "cwd": 'lib/',
-    "src": 'bloglib/**',
-    "dest": 'build/app/'
-  },
   "static": {
     "expand": true,
     "cwd": 'lib/EpicEditor-v0.1.1.1/',

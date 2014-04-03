@@ -4,6 +4,7 @@ import sys
 
 sys.path.insert(0, 'werkzeug.zip')
 sys.path.insert(0, 'flask.zip')
+sys.path.insert(0, 'bloglib.zip')
 
 from flask import Flask
 from google.appengine.ext.webapp import util
