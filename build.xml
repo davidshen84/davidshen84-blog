@@ -49,7 +49,7 @@
     </antcall>
   </target>
 
-  <target name="init" depends="run-jshint">
+  <target name="init">
     <!-- create the time stamp -->
     <tstamp/>
     <!-- get markdown2 package directory -->
@@ -83,7 +83,6 @@
     <copy todir="${build}/app/bloglib">
       <fileset dir="lib/bloglib"/>
     </copy>
-    <copy file="lib/${lesscss}" tofile="${build}/${admin.static}/js/less.js"/>
     <copy todir="${build}/${admin.static}" force="true">
       <fileset dir="lib/${epiceditor}"/>
     </copy>

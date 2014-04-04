@@ -24,8 +24,9 @@ MSG_SAVE_DUP = 'duplicate title'
 def index():
   return jsonify(msg=users.get_current_user().nickname(), logout=users.create_logout_url('/blog/api/'))
 
-def query():
-  blogs = Blog.getBlogStatus(False)
+@simpleauth
+def query(publishedOnly):
+  blogs = Blog.getBlogStatus(publishedOnly)
   # apply filters if provided
   f = request.values.get('f')
   if f:
@@ -35,11 +36,11 @@ def query():
     titles={}
     blogs = filter(lambda b: not titles.has_key(b.title) and not titles.update({b.title: 1}), reduce(lambda x, y: x + y, blogs))
 
-  return jsonify(blogs=[ {'title': b.title, 'published': b.published, 'lastmodified': b.lastmodified} for b in blogs ])
-  
-@auto_unquote('title')
-def fetch(title):
-  blog = Blog.getByTitle(title, False)
+  return jsonify(blogs=[ {'title': b.title, 'urlsafe': b.key.urlsafe(), 'published': b.published, 'lastmodified': b.lastmodified} for b in blogs ])
+
+@simpleauth  
+def fetch(urlsafe, publishedOnly):
+  blog = Blog.getByUrlsafe(urlsafe, publishedOnly)
 
   if blog:
     comments = [ {'screenname': c.screenname, 'email': c.email, 'comment': c.comment}
@@ -53,6 +54,7 @@ def fetch(title):
   else:
     return MSG_NOT_EXIST, 404
 
+@login_admin
 def create():
   blog = request.json
   tags = blog['tags']
@@ -66,9 +68,8 @@ def create():
   else:
     return MSG_SAVE_ERROR, 500
 
-@auto_unquote('title')
-def update(title):
-  title = unquote(title)
+@login_admin
+def update(urlsafe):
   updateData = {}
   blog = request.json
 
@@ -88,23 +89,21 @@ def update(title):
   if blog.has_key('published'):
     updateData['published'] = blog['published']
 
-  blogkey = Blog.update(title, **updateData)
-
-  if blogkey:
+  if Blog.update(urlsafe, **updateData):
     return jsonify(msg=MSG_OK)
   else:
     return MSG_UPDATE_FAIL, 404
 
-@auto_unquote('title')
-def destroy(title):
-  Blog.destroy(title)
+@login_admin
+def destroy(urlsafe):
+  Blog.destroy(urlsafe)
 
   return MSG_OK
 
-@auto_unquote('title')
-def publish(title):
+@login_admin
+def publish(urlsafe):
   published = request.values['published'].lower() == 'true'
-  blogkey = Blog.publish(title, published=published)
+  blogkey = Blog.publish(urlsafe, published)
 
   if blogkey:
     return jsonify(msg=MSG_OK)

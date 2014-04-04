@@ -25,8 +25,5 @@ class BlogComment(ndb.Model):
     return comments
 
   @staticmethod
-  def destroy(blogKey, commentid):
-    comment = BlogComment.get_by_id(commentid, parent=blogKey)
-    if comment:
-      comment.key.delete()
-
+  def destroy(urlsafe):
+    ndb.Key(urlsafe=urlsafe).delete()

@@ -25,13 +25,12 @@ def default():
   myblog = Blog.getLatest()
   if myblog:
     created = myblog.created
-    return redirect(url_for('blog', year=created.year, month=created.month, title=quote(myblog.title, '')))
+    return redirect(url_for('blog', year=created.year, month=created.month, urlsafe=myblog.key.urlsafe()))
   else:
     return abort(404)
 
-@auto_unquote('title')
-def blog(year, month, title):
-  myblog = Blog.getByTitle(title)
+def blog(year, month, urlsafe):
+  myblog = Blog.getByUrlsafe(urlsafe)
 
   if myblog:
     created = myblog.created

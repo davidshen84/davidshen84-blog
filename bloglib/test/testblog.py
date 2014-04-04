@@ -186,6 +186,20 @@ class BlogTestCase(unittest.TestCase):
     stats = Blog.getTagStats(False)
     self.assertIsNotNone(stats['tag11'])
 
+  def testCanGetByUrlsafe(self):
+    urlsafe = Blog.create(self.title1, self.content1).urlsafe()
+    blog = Blog.getByUrlsafe(urlsafe, False)
+
+    self.assertIsNotNone(blog)
+
+  def testGetTagStatsReturnTupes(self):
+    Blog.create(self.title1, self.content1, self.tags1, created=date(2014, 3, 21))
+    Blog.create(self.title2, self.content2, self.tags2, created=date(2014, 3, 21))
+
+    stats = Blog.getTagStats(False)
+    tagStats = stats['tag11'][0]
+    self.assertIsInstance(tagStats[2], type(()))
+
 if __name__ == '__main__':
   suite = unittest.TestLoader().loadTestsFromTestCase(BlogTestCase)
   unittest.TextTestRunner().run(suite)

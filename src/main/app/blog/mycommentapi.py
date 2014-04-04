@@ -12,20 +12,20 @@ from apidecorator import login_admin
 MSG_OK = 'ok'
 MSG_SAVE_ERROR = 'failed to save comment'
 
-def query(title):
-  blog = Blog.getByTitle(title)
-  
+def query(urlsafe):
+  blog = Blog.getByUrlsafe(urlsafe)
+
   if blog:
-    comments = [ {'id': c.key().id(), 'screenname': c.screenname, 'email': c.email, 'comment': c.comment, 'created': str(c.created)}
-                for c in blog.comments ]
+    comments = [ {'urlsafe': c.key.urlsafe(), 'screenname': c.screenname, 'email': c.email, 'comment': c.comment, 'created': str(c.created)}
+                for c in BlogComment.getComments(blog.key) ]
   else:
     comments = []
 
   return jsonify(comments=comments)
 
-def create(title):
+def create(urlsafe):
   comment = request.json
-  blog = Blog.getByTitle(title)
+  blog = Blog.getByUrlsafe(urlsafe)
 
   if blog:
     commentKey = BlogComment.create(blog.key, comment['screenname'], comment['email'], comment['comment'])
@@ -34,7 +34,6 @@ def create(title):
     return MSG_SAVE_ERROR, 500
 
 @login_admin
-def destroy(id):
-
-  return 'disabled', 403
-
+def destroy(urlsafe):
+  BlogComment.destroy(urlsafe)
+  return MSG_OK, 200

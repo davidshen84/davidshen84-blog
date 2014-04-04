@@ -17,10 +17,8 @@ def login_admin(f):
 def simpleauth(f):
   @wraps(f)
   def func(*args, **kwargs):
-    if users.is_current_user_admin():
-      return f(publishedOnly=False)
-    else:
-      return f(publishedOnly=True)
+      kwargs["publishedOnly"] = not users.is_current_user_admin()
+      return f(*args, **kwargs)
   return func
 
 def auto_unquote(unquotee):

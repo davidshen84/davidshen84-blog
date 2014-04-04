@@ -11,8 +11,8 @@ function ListCtrl($scope, $timeout, $filter, Blog) {
     return 'glyphicon ' + (published ? 'glyphicon-eye-open' : 'glyphicon-eye-close');
   };
 
-  $scope.setPubStat = function (index, title, publish) {
-    Blog.update({ "title": encodeURIComponent(title) }, { "published": publish },
+  $scope.setPubStat = function (index, urlsafe, publish) {
+    Blog.update({ "urlsafe": urlsafe }, { "published": publish },
       function (response) {
         if(response.msg == 'ok') {
           $timeout(function () {
@@ -26,19 +26,19 @@ function ListCtrl($scope, $timeout, $filter, Blog) {
     return published ? 'Unpublish' : 'Publish';
   };
 
-  $scope.deleteBlog = function (title) {
-    Blog.remove({ "title": encodeURIComponent(title) },
+  $scope.deleteBlog = function (urlsafe) {
+    Blog.remove({ "urlsafe": urlsafe },
       function () {
         $timeout(function () {
           $scope.$apply(function () {
-            $scope.blogs.blogs = $filter('filter')($scope.blogs.blogs, {'title': '!' + title});
+            $scope.blogs.blogs = $filter('filter')($scope.blogs.blogs, {"urlsafe": '!' + urlsafe});
           });
         }, 500);
       });
   };
 }
 
-function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, Blog, BlogComment, editor) {
+function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, $timeout, $filter, Blog, BlogComment, editor) {
   function extractTitleFromContent(content) {
     var match = titlePattern.exec(content);
 
@@ -47,7 +47,7 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, Blog, BlogComm
 
   var titlePattern = /^#.*$/m,
     isNew = true,
-    title = $routeParams.title !== undefined ? encodeURIComponent($routeParams.title) : null,
+    urlsafe = $routeParams.urlsafe,
     notificationTemplate = $interpolate(
       '<div class="alert alert-{{type}}" data-timestamp={{timestamp}}>\
       <button type="button" class="close" data-dismiss="alert">&times;</button>\
@@ -57,16 +57,16 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, Blog, BlogComm
   $scope.isClean = true;
   $scope.notifyMessage = '';
 
-  if(title) {
+  if(urlsafe) {
     isNew = false;
 
-    Blog.get({"title": title}, function (blog) {
+    Blog.get({"urlsafe": urlsafe}, function (blog) {
       editor().importFile(blog.title, blog.content);
       $scope.tags = blog.tags.join(', ');
     });
 
     // try to get comments
-    $scope.comments = BlogComment.get({ "title": title });
+    $scope.comments = BlogComment.get({ "urlsafe": urlsafe });
   }
 
   $scope.save = function () {
@@ -98,7 +98,7 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, Blog, BlogComm
       );
     } else {
       Blog.update(
-        { "title": title },
+        { "urlsafe": urlsafe },
         { "content": content,
           "tags": tags.length ? $scope.tags.split(',') : [] },
         updateSuccess
@@ -106,10 +106,14 @@ function CreateEditCtrl($scope, $routeParams, $interpolate, $sce, Blog, BlogComm
     }
   };
 
-  $scope.deleteComment = function (id) {
-    BlogComment.remove({ "title": id }, null,
+  $scope.deleteComment = function (urlsafe) {
+    BlogComment.remove({ "urlsafe": urlsafe }, null,
       function () {
-        $scope.comments = BlogComment.get({ "title": title });
+        $timeout(function() {
+          $scope.$apply(function() {
+            $scope.comments.comments = $filter('filter')($scope.comments.comments, {'urlsafe': '!' + urlsafe});  
+          })
+        }, 500);
       });
   };
 

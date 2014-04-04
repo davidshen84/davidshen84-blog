@@ -66,9 +66,9 @@ class BlogCommentTestCase(unittest.TestCase):
 
   def testDestroy(self):
     key = BlogComment.create(self.blog_key, "test user", "test@test.com", "test comment1")
-    BlogComment.create(self.blog_key, "test user", "test@test.com", "test comment2")
+    cmtKey = BlogComment.create(self.blog_key, "test user", "test@test.com", "test comment2")
 
-    BlogComment.destroy(self.blog_key, key.id())
+    BlogComment.destroy(cmtKey.urlsafe())
     comments = BlogComment.getComments(self.blog_key).fetch()
     self.assertEqual(len(comments), 1)
 

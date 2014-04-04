@@ -38,17 +38,26 @@ class Blog(ndb.Model):
     return blog
 
   @staticmethod
+  def getByUrlsafe(urlsafe, publishedOnly=True):
+    blog = ndb.Key(urlsafe=urlsafe).get()
+    if blog and publishedOnly and not blog.published:
+      blog = None
+
+    return blog
+
+  @staticmethod
   def create(title, content, tags=[], **kws):
-    if not Blog.get_by_id(title):
-      return Blog(key=Blog.keyForTitle(title),
+    key = Blog.keyForTitle(title)
+    if not key.get():
+      return Blog(key=key,
                   title=title,
                   content=content,
                   tags=tags,
                   **kws).put()
 
   @staticmethod
-  def update(title, **kw):
-    blog = Blog.get_by_id(title)
+  def update(urlsafe, **kw):
+    blog = Blog.getByUrlsafe(urlsafe, False)
     if not blog:
       return None
     else:
@@ -60,13 +69,11 @@ class Blog(ndb.Model):
       if kw.has_key('published'):
         blog.published = kw['published']
 
-      return blog.put()
+    return blog.put()
 
   @staticmethod
-  def destroy(title):
-    blog = Blog.get_by_id(title)
-    if blog:
-      blog.key.delete()
+  def destroy(urlsafe):
+    ndb.Key(urlsafe=urlsafe).delete()
 
   @staticmethod
   def allTitles(publishedOnly=True):
@@ -87,8 +94,8 @@ class Blog(ndb.Model):
     return query.fetch(projection=[Blog.title, Blog.published, Blog.lastmodified])
 
   @staticmethod
-  def publish(title, published=True):
-    blog = Blog.get_by_id(title)
+  def publish(urlsafe):
+    blog = Blog.getByUrlsafe(urlsafe, False)
     if blog:
       blog.published = published
       return blog.put()
@@ -102,7 +109,7 @@ class Blog(ndb.Model):
     """Return published blogs by tags
 
     tags :
-      a list of strings"""
+      a list of (title, key_urlsafe)"""
 
     if not type(tags) is list:
       tags = [ tags ]
@@ -112,9 +119,9 @@ class Blog(ndb.Model):
     else:
       query = Blog.query(Blog.tags.IN(tags)).order(-Blog.lastmodified)
 
-    return sorted(set([ b.title
+    return sorted(set([ (b.title, b.key.urlsafe())
                         for t in tags
-                        for b in query ]))
+                        for b in query.fetch(projection=[Blog.title]) ]))
 
   @staticmethod
   def getArchiveStats(publishedOnly=True):
@@ -136,19 +143,19 @@ class Blog(ndb.Model):
     else:
       q = Blog.query()
 
-    blogMetas = [ (b.created.year, b.created.month, b.title) for
+    blogMetas = [ (b.created.year, b.created.month, (b.title, b.key.urlsafe())) for
                   b in q.fetch(projection=[Blog.title, Blog.created]) ]
 
     def func(data, blogMetas):
-      year, month, title = blogMetas
+      year, month, tupe = blogMetas
       if data.has_key(year):
         if data[year].has_key(month):
-          data[year][month].append(title)
+          data[year][month].append(tupe)
         else:
-          data[year][month] = [title]
+          data[year][month] = [tupe]
       else:
         data[year] = {}
-        data[year][month] = [title]
+        data[year][month] = [tupe]
 
       return data
 
@@ -165,12 +172,12 @@ class Blog(ndb.Model):
     else:
       q = Blog.query()
 
-    blogMetas = [ (b.tags, b.created.year, b.created.month, b.title)
+    blogMetas = [ (b.tags, b.created.year, b.created.month, (b.title, b.key.urlsafe()))
                   for b in q.fetch(projection=[Blog.title, Blog.tags, Blog.created]) ]
     def func(data, blogMetas):
-      tags, year, month, title = blogMetas
+      tags, year, month, tupe = blogMetas
       for tag in tags:
-        meta = (year, month, title)
+        meta = (year, month, tupe)
         if data.has_key(tag):
           data[tag].append(meta)
         else:
