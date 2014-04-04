@@ -129,10 +129,10 @@ describe('ListCtrl', function () {
 
     ctrl('ListCtrl', { "$scope": scope, "Blog": Blog });
     scope.setPubStat(0, 'test', true);
-    updateSpy.calledWith(
+    updateSpy.should.have.been.calledWith(
       { "title": 'test' },
       { "published": true },
-      sinon.match.func).should.be.ok;
+      sinon.match.func);
   }));
 
   it('should call Blog.remove with correct parameters', inject(function (Blog) {
@@ -144,7 +144,7 @@ describe('ListCtrl', function () {
     ctrl('ListCtrl', { "$scope": scope, "Blog": Blog });
 
     scope.deleteBlog('test');
-    removeSpy.calledWith({"title": 'test'}).should.be.ok;
+    removeSpy.should.have.been.calledWith({"title": 'test'});
   }));
 });
 
@@ -168,7 +168,7 @@ describe('CreateEditCtrl', function() {
     ctrl('CreateEditCtrl',
          {"$scope": scope, "$routeParams": routeParams, "Blog": Blog,
           "BlogComment": BlogComment, "editor": editor});
-    
+
     spyBlogGet.should.have.been.calledWith(routeParams);
     spyBlogCommentGet.should.have.been.calledWith(routeParams);
   }));
@@ -193,7 +193,7 @@ describe('CreateEditCtrl', function() {
           "BlogComment": BlogComment, "editor": editor});
 
     http.flush();
-    spyImportFile.calledWith('test respond', 'content').should.be.ok;
+    spyImportFile.should.have.been.calledWith('test respond', 'content');
     scope.tags.should.be.equal('1, 2');
   }));
 });
@@ -211,7 +211,6 @@ describe.skip('ng route', function () {
     $location.path('/blog/admin/');
 
     spyCtrl.called.should.be.ok;
-
   }));
 });
 
