@@ -1,4 +1,4 @@
-angular.module('ngapp.controller', [])
+angular.module('ngapp.controller', ['blogapi'])
   .controller('RootCtrl', function() {})
   .controller('ListCtrl', ['$scope', '$timeout', '$filter', 'Blog', function($scope, $timeout, $filter, Blog) {
     'use strict';
