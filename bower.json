@@ -1,0 +1,29 @@
+{
+  "name": "myblog",
+  "version": "0.0.0",
+  "authors": [
+    "Xi Shen <davidshen84@gmail.com>"
+  ],
+  "description": "my blog",
+  "keywords": [
+    "blog"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "epiceditor": "~0.2.2"
+  },
+  "exportsOverride": {
+    "epiceditor": {
+      "js": "epiceditor/js",
+      "themes": "epiceditor/themes"
+    }
+  }
+}

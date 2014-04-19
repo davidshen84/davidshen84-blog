@@ -5,9 +5,9 @@ module.exports = {
     "src": '**',
     "dest": 'build/'
   },
-  "static": {
+  "epiceditor": {
     "expand": true,
-    "cwd": 'lib/EpicEditor-v0.1.1.1/',
+    "cwd": 'lib',
     "src": 'epiceditor/**',
     "dest": 'build/static/admin/'
   },
@@ -18,3 +18,4 @@ module.exports = {
     "dest": 'build/'
   }
 };
+
