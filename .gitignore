@@ -5,4 +5,5 @@ lib
 *.pyo
 jshint.out
 *.*~
-node_modules/
+node_modules
+bower_components
