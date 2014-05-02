@@ -1,13 +1,16 @@
+var shell = require('shelljs');
+
 module.exports = {
   "werkzeug": {
-    "cwd": '/usr/lib/python2.7/dist-packages/',
-    "src": [ '/usr/lib/python2.7/dist-packages/werkzeug/*.py',
-             '/usr/lib/python2.7/dist-packages/werkzeug/contrib/*.py' ],
+    "cwd": '<%= pythonPackageDir %>',
+    "src": [ '<%= pythonPackageDir %>/werkzeug/*.py',
+             '<%= pythonPackageDir %>/werkzeug/contrib/*.py' ],
     "dest": 'build/werkzeug.zip'
   },
   "flask": {
-    "cwd": '/usr/lib/python2.7/dist-packages/',
-    "src": '/usr/lib/python2.7/dist-packages/flask/**/*.py',
+    "cwd": '<%= pythonPackageDir %>',
+    "src": [ '<%= pythonPackageDir %>/flask/*.py',
+             '<%= pythonPackageDir %>/flask/ext/*.py' ],
     "dest": "build/flask.zip"
   },
   "bloglib": {

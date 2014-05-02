@@ -1,4 +1,5 @@
-var path = require('path');
+var path = require('path'),
+    shell = require('shelljs');
 
 module.exports = function(grunt) {
 
@@ -8,7 +9,17 @@ module.exports = function(grunt) {
   require('load-grunt-config')(grunt, {
     "configPath": path.join(process.cwd(), 'grunt_config'),
     "config": {
-      "gaeDir": '~/google_appengine/'
+      "gaeDir": '~/google_appengine/',
+      "pythonPackageDir": (function() {
+        var path = shell
+          .exec('python -c "import flask; \
+                print \'/\'.join(flask.__file__.split(\'/\')[0:-2]);"')
+          .output.trim();
+
+        grunt.log.debug(path);
+
+        return path;
+      })()
   }});
 
   grunt.registerTask('default', ['jshint',
