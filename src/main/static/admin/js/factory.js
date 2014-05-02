@@ -15,6 +15,8 @@ angular.module('app.factory', [])
     };
   })
   .directive('eeditor', function () {
+    'use strict';
+
     return {
       "restrict": 'E',
       "transclude": true,

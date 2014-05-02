@@ -52,8 +52,6 @@ describe('controllers', function() {
   });
 
   describe('CreateEditCtrl', function() {
-    'use strict';
-
     var ctrl, scope, blog, blogCmt, routeParams, editor;
 
     beforeEach(module('ngapp.controller'));
