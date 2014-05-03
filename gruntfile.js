@@ -13,7 +13,7 @@ module.exports = function(grunt) {
       "pythonPackageDir": (function() {
         var path = shell
           .exec('python -c "import flask; \
-                print \'/\'.join(flask.__file__.split(\'/\')[0:-2]);"')
+                print \'/\'.join(flask.__file__.split(\'/\')[0:-2]);"', {"silent": true})
           .output.trim();
 
         grunt.log.debug(path);
@@ -22,8 +22,8 @@ module.exports = function(grunt) {
       })()
   }});
 
-  grunt.registerTask('default', ['jshint',
-                                 'shell:clean', 'copy:main', 'copy:epiceditor',
+  grunt.registerTask('default', ['jshint', 'shell:clean',
+                                 'copy:main', 'copy:epiceditor', 'copy:angular-ui',
                                  'zip', 'pythonmodule']);
 
   grunt.registerTask('test', ['copy:test', 'shell:testapi', 'shell:testapp']);

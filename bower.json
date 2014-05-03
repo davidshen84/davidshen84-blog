@@ -18,7 +18,8 @@
     "tests"
   ],
   "dependencies": {
-    "epiceditor": "~0.2.2"
+    "epiceditor": "~0.2.2",
+    "angular-ui-bootstrap": "~0.11.0"
   },
   "exportsOverride": {
     "epiceditor": {

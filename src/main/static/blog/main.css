@@ -28,3 +28,6 @@ body {
   padding-left: 15px;
   padding-right: 15px;
 }
+
+nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+

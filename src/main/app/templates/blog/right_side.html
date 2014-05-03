@@ -3,27 +3,31 @@
     <div class="panel-heading">
       <div class="panel-title">Archives</div>
     </div>
-    {% for y, mo in archives.iteritems() %}
-    <div class="panel-heading">{{ y }}</div>
-    <ul class="list-group">
-      {% for m, t in mo.iteritems() %}
-      <li class="list-group-item">
-        <span class="badge">{{ t|length }}</span>
-        <a href='/blog/{{ y }}/{{ m }}/'>{{ monthFullName[m-1] }}</a>
-      </li>
-      {% endfor %}
-    </ul>
-    {% endfor %}
+    <div class="panel-body">
+      <accordion>
+        {% for y, mo in archives.iteritems() %}
+        <accordion-group is-open="status.open">
+          <accordion-heading>
+            {{ y }}
+            <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+          </accordion-heading>
+          {% for m, t in mo.iteritems() %}
+          <a href='/blog/{{ y }}/{{ m }}/'>{{ monthFullName[m-1] }}</a>
+          <span class="badge pull-right">{{ t|length }}</span>
+          {% endfor %}
+        </accordion-group>
+        {% endfor %}
+      </accordion>
+    </div>
   </div>
-  <div class="panel panel-default">
-    <div class="panel-heading">Tags</div>
-    <ul class="list-group">
+  <accordion>
+    <accordion-group is-open="status.open">
+      <accordion-heading>Tags<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+      </accordion-heading>
       {% for t, titles in tagstats.iteritems() %}
-      <li class="list-group-item">
-        <span class="badge">{{ titles|length }}</span>
-        <a href="/blog/tag/{{ t|urlencode }}/">{{ t }}</a>
-      </li>
+      <a href="/blog/tag/{{ t|urlencode }}/">{{ t }}</a>
+      <span class="badge pull-right">{{ titles|length }}</span>
       {% endfor %}
-    </li>
-  </div>
+    </accordion-group>
+  </accordion>
 </div>

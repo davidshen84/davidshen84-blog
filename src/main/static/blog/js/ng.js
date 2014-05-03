@@ -44,7 +44,9 @@ angular.module('blogapi', [ 'ngResource' ])
     return BlogComment;
   }]);
 
-angular.module('ngapp', [ 'ngRoute', 'blogapi' ])
+angular.module('angular-ui', [ 'ui.bootstrap', 'template/accordion/accordion.html', 'template/accordion/accordion-group.html' ]);
+
+angular.module('ngapp', [ 'ngRoute', 'angular-ui', 'blogapi' ])
   .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/blog/', { "redirectTo": function (routePath, path) {

@@ -9,6 +9,9 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
+- url: /static/angular-ui
+  static_dir: static/angular-ui/
+
 - url: /blog/static
   static_dir: static/blog/
 
