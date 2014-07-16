@@ -25,7 +25,7 @@ angular.module('app.factory', [])
       "replace": true,
       "controller": ['$scope', '$element', 'editor', function($scope, $element, editor) {
         var opt = { container: $element[0],
-                    basePath: '/blog/admin/static/epiceditor',
+                    basePath: '/static/epiceditor',
                     clientSideStorage: false },
             ctx = angular.element($element.context),
             _e = editor(opt).load();

@@ -7,3 +7,7 @@ jshint.out
 *.*~
 node_modules
 bower_components
+src/main/*.zip
+src/main/*.py
+src/main/app/static/angular-ui
+src/main/app/static/epiceditor

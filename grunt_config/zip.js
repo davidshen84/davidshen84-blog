@@ -5,17 +5,17 @@ module.exports = {
     "cwd": '<%= pythonPackageDir %>',
     "src": [ '<%= pythonPackageDir %>/werkzeug/*.py',
              '<%= pythonPackageDir %>/werkzeug/contrib/*.py' ],
-    "dest": 'build/werkzeug.zip'
+    "dest": 'src/main/werkzeug.zip'
   },
   "flask": {
     "cwd": '<%= pythonPackageDir %>',
     "src": [ '<%= pythonPackageDir %>/flask/*.py',
              '<%= pythonPackageDir %>/flask/ext/*.py' ],
-    "dest": "build/flask.zip"
+    "dest": "src/main/flask.zip"
   },
-  "bloglib": {
+/*  "bloglib": {
     "cwd": "bloglib/src/",
     "src": "bloglib/src/bloglib/*.py",
-    "dest": "build/bloglib.zip"
-  }
+    "dest": "src/main/app/bloglib.zip"
+  }*/
 };

@@ -8,8 +8,8 @@ from google.appengine.api import users
 from flask import render_template, request, make_response, jsonify, abort, redirect, json
 from urllib import unquote
 
-from bloglib.blog import Blog
-from bloglib.blogcomment import BlogComment
+from db.blog import Blog
+from db.blogcomment import BlogComment
 from datetime import datetime
 
 MSG_OK = 'ok'

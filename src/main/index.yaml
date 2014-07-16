@@ -12,6 +12,25 @@ indexes:
 
 - kind: Blog
   properties:
+  - name: lastmodified
+  - name: published
+  - name: title
+
+- kind: Blog
+  properties:
+  - name: published
+  - name: created
+  - name: tags
+  - name: title
+
+- kind: Blog
+  properties:
+  - name: published
+  - name: created
+  - name: title
+
+- kind: Blog
+  properties:
   - name: published
   - name: created
     direction: desc

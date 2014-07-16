@@ -10,7 +10,7 @@ angular.module('ngapp.controller', ['blogapi'])
     };
 
     $scope.setPubStat = function (index, title, publish) {
-      Blog.update({ "title": encodeURIComponent(title) }, { "published": publish },
+      Blog.update({ "urlsafe": encodeURIComponent(title) }, { "published": publish },
                   function (response) {
                     if(response.msg == 'ok') {
                       $timeout(function () {
@@ -25,7 +25,7 @@ angular.module('ngapp.controller', ['blogapi'])
     };
 
     $scope.deleteBlog = function (title) {
-      Blog.remove({ "title": encodeURIComponent(title) },
+      Blog.remove({ "urlsafe": encodeURIComponent(title) },
                   function () {
                     $timeout(function () {
                       $scope.$apply(function () {

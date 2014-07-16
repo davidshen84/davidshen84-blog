@@ -9,11 +9,12 @@ handlers:
   static_files: favicon.ico
   upload: favicon\.ico
 
-- url: /static/angular-ui
-  static_dir: static/angular-ui/
+- url: /robots.txt
+  static_files: robots.txt
+  upload: robots.txt
 
-- url: /blog/static
-  static_dir: static/blog/
+- url: /static
+  static_dir: app/static
 
 - url: /blog/api.*
   script: app.app
@@ -22,26 +23,15 @@ handlers:
 - url: /blog/comment/api.*
   script: app.app
 
+- url: /blog.*
+  script: app.app
+
 - url: /blog/admin/
   script: app.app
   login: admin
 
-- url: /blog/admin/static/
-  static_dir: static/admin/
-  login: admin
-
 - url: /mytools/
   script: app.app
-
-- url: /mytools/static
-  static_dir: static/mytools/
-
-- url: /blog.*
-  script: app.app
-
-- url: /robots.txt
-  static_files: robots.txt
-  upload: robots.txt
 
 libraries:
 - name: jinja2

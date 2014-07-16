@@ -1,4 +1,4 @@
 module.exports = {
-  "markdown2": 'build',
-  "itsdangerous": 'build'
+  "markdown2": 'src/main/',
+  "itsdangerous": 'src/main/'
 };

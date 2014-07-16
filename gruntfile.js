@@ -22,10 +22,11 @@ module.exports = function(grunt) {
       })()
   }});
 
-  grunt.registerTask('default', ['jshint', 'shell:clean',
+/*  grunt.registerTask('default', ['jshint', 'shell:clean',
                                  'copy:main', 'copy:epiceditor', 'copy:angular-ui',
-                                 'zip', 'pythonmodule']);
+                                 'zip', 'pythonmodule']);*/
 
+  grunt.registerTask('setup', ['pythonmodule', 'copy:epiceditor', 'copy:angular-ui', 'zip'])
   grunt.registerTask('test', ['copy:test', 'shell:testapi', 'shell:testapp']);
   grunt.registerTask('bloglib', ['zip:bloglib']);
   grunt.registerTask('angular', ['curl-dir:angular']);

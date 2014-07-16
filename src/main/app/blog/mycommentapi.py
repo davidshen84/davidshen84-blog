@@ -4,8 +4,8 @@ import logging
 
 from flask import request, jsonify
 
-from bloglib.blog import Blog
-from bloglib.blogcomment import BlogComment
+from db.blog import Blog
+from db.blogcomment import BlogComment
 
 from apidecorator import login_admin
 

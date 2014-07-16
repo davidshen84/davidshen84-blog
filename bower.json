@@ -25,6 +25,10 @@
     "epiceditor": {
       "js": "epiceditor/js",
       "themes": "epiceditor/themes"
+    },
+    "angular-ui-bootstrap": {
+      "js": "dist/*.min.js",
+      "template": "template/accordion/*.js"
     }
   }
 }

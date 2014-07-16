@@ -16,7 +16,7 @@ module.exports = {
       }
     },
     "files":{
-      "src": ['src/main/static/*/js/*.js']
+      "src": ['src/main/app/static/blog/**/js/*.js', 'src/main/app/static/mytools/js/*.js']
     }
   },
   "test": {
@@ -35,7 +35,7 @@ module.exports = {
       }
     },
     "files": {
-      src: ['src/test/clientside/**/*.js']
+      src: ['src/test/javascript/**/*.js']
     }
   }
 };
