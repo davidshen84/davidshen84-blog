@@ -10,7 +10,7 @@ if len(sys.argv) > 1:
   gaesdk_path = sys.argv[1]
 
   sys.path.insert(0, gaesdk_path)
-  sys.path.insert(0, '../../')
+  sys.path.insert(0, '../../main/')
 else:
   print 'gae sdk is required'
   sys.exit(-1)
@@ -20,8 +20,8 @@ dev_appserver.fix_sys_path()
 
 # real test code
 from app import app
-from app.bloglib.blog import Blog
-from app.bloglib.blogcomment import BlogComment
+from app.blog.db.blog import Blog
+from app.blog.db.blogcomment import BlogComment
 from datetime import datetime
 from google.appengine.api import users
 from google.appengine.ext import testbed
@@ -42,7 +42,11 @@ class MyBlogApiTestCase(unittest.TestCase):
     self.app = app.test_client()
     self.base = '/blog/api/'
 
-    self.blog1 = Blog.create('test1', 'content 1')
+    self.blog1 = Blog.create('test1', 'content 1', published=True)
+    self.blog2 = Blog.create('test2', 'content 2', published=False)
+
+    # admim
+    os.environ['USER_IS_ADMIN'] = '1'
 
   def tearDown(self):
     self.testbed.deactivate()
@@ -52,7 +56,7 @@ class MyBlogApiTestCase(unittest.TestCase):
     self.assertEqual(404, r.status_code)
 
   def testFetch(self):
-    r = self.app.get(self.base + 'sync/test1')
+    r = self.app.get(self.base + 'sync/' + self.blog1.urlsafe())
     self.assertEqual(200, r.status_code)
     try:
       jsonData = json.loads(r.data)
@@ -78,7 +82,7 @@ class MyBlogApiTestCase(unittest.TestCase):
 
   def testPut(self):
     content = 'updated content'
-    r = self.app.put(self.base + 'sync/test1',
+    r = self.app.put(self.base + 'sync/' + self.blog1.urlsafe(),
       data=json.dumps({
         'content': content,
         'tags': ['test', 'tags']
@@ -88,21 +92,21 @@ class MyBlogApiTestCase(unittest.TestCase):
     self.assertEqual(content, Blog.get_by_id('test1').content)
 
   def testPut_badFormat(self):
-    r = self.app.put(self.base + 'sync/test1', data='bad data')
+    r = self.app.put(self.base + 'sync/' + self.blog1.urlsafe(), data='bad data')
     self.assertEqual(500, r.status_code)
 
   def testDestroy(self):
-    r = self.app.delete(self.base + 'sync/test1')
+    r = self.app.delete(self.base + 'sync/' + self.blog1.urlsafe())
     self.assertEqual(200, r.status_code)
     self.assertIsNone(Blog.get_by_id('test1'))
 
   def testPublish(self):
-    self.assertEqual(False, Blog.get_by_id('test1').published)
-    r = self.app.put(self.base + 'sync/test1',
+    self.assertEqual(False, Blog.get_by_id('test2').published)
+    r = self.app.put(self.base + 'sync/' + self.blog2.urlsafe(),
       data=json.dumps({'published': True}),
       content_type='application/json')
     self.assertEqual(200, r.status_code)
-    self.assertEqual(True, Blog.get_by_id('test1').published)
+    self.assertEqual(True, Blog.get_by_id('test2').published)
 
   def testPublish_notexist(self):
     r = self.app.put(self.base + 'sync/test_notexist',
@@ -118,7 +122,7 @@ class MyBlogApiTestCase(unittest.TestCase):
     r = self.app.get(self.base + 'sync')
     self.assertEqual(200, r.status_code)
     data = json.loads(r.data)
-    self.assertEqual(3, len(data['blogs']))
+    self.assertEqual(4, len(data['blogs']))
 
     # with filter
     r = self.app.get(self.base + 'sync?f=ab')
@@ -132,14 +136,14 @@ class MyBlogApiTestCase(unittest.TestCase):
     month = str(now.month)
     Blog.create('atest', 'test content', published=True)
 
-    # non admin
+    # admim
     r = self.app.get(self.base + 'archives')
     self.assertEqual(200, r.status_code)
     data = json.loads(r.data)
-    self.assertEqual(1, len(data['archives'][year][month]))
+    self.assertEqual(3, len(data['archives'][year][month]))
 
-    # admim
-    os.environ['USER_IS_ADMIN'] = '1'
+    # non admin
+    os.environ['USER_IS_ADMIN'] = '0'
     r = self.app.get(self.base + 'archives')
     self.assertEqual(200, r.status_code)
     data = json.loads(r.data)
@@ -147,4 +151,6 @@ class MyBlogApiTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
   suite = unittest.TestLoader().loadTestsFromTestCase(MyBlogApiTestCase)
-  unittest.TextTestRunner().run(suite)
+  # suite = unittest.TestLoader().loadTestsFromName('testmyblogapi.MyBlogApiTestCase.testPut')
+  result = unittest.TextTestRunner(verbosity=1).run(suite)
+  sys.exit(len(result.failures))

@@ -10,7 +10,7 @@ if len(sys.argv) > 1:
   gaesdk_path = sys.argv[1]
 
   sys.path.insert(0, gaesdk_path)
-  sys.path.insert(0, '../src/')
+  sys.path.insert(0, '../../main/')
 else:
   print 'gae sdk is required'
   sys.exit(-1)
@@ -19,8 +19,8 @@ import dev_appserver
 dev_appserver.fix_sys_path()
 
 # real test code
-from bloglib.blog import Blog
-from bloglib.blogcomment import BlogComment
+from app.blog.db.blog import Blog
+from app.blog.db.blogcomment import BlogComment
 from datetime import datetime, date
 from google.appengine.ext import testbed
 
@@ -74,4 +74,6 @@ class BlogCommentTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
   suite = unittest.TestLoader().loadTestsFromTestCase(BlogCommentTestCase)
-  unittest.TextTestRunner().run(suite)
+  # suite = unittest.TestLoader().loadTestsFromName('testcomment.BlogCommentTestCase.testDestroy')
+  result = unittest.TextTestRunner().run(suite)
+  sys.exit(len(result.failures))

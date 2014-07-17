@@ -10,7 +10,7 @@ if len(sys.argv) > 1:
   gaesdk_path = sys.argv[1]
 
   sys.path.insert(0, gaesdk_path)
-  sys.path.insert(0, '../src/')
+  sys.path.insert(0, '../../main/')
 else:
   print 'gae sdk is required'
   sys.exit(-1)
@@ -19,7 +19,7 @@ import dev_appserver
 dev_appserver.fix_sys_path()
 
 # real test code
-from bloglib.blog import Blog
+from app.blog.db.blog import Blog
 from google.appengine.ext import testbed
 from datetime import datetime, date
 
@@ -57,7 +57,7 @@ class BlogTestCase(unittest.TestCase):
     key1 = Blog.create(self.title1, self.content1)
     key2 = Blog.create(self.title2, self.content2)
 
-    Blog.update(self.title1, published=True)
+    Blog.update(key1.urlsafe(), published=True)
 
     blog1 = Blog.keyForTitle(self.title1).get()
     blog2 = Blog.keyForTitle(self.title2).get()
@@ -69,7 +69,7 @@ class BlogTestCase(unittest.TestCase):
     key1 = Blog.create(self.title1, self.content1, published=True)
     key2 = Blog.create(self.title2, self.content2, published=True)
 
-    Blog.update(self.title1, published=False)
+    Blog.update(key1.urlsafe(), published=False)
 
     blog1 = Blog.keyForTitle(self.title1).get()
     blog2 = Blog.keyForTitle(self.title2).get()
@@ -123,10 +123,10 @@ class BlogTestCase(unittest.TestCase):
   def testUpdate(self):
     # verify blog can be updated
     newtags = ['new', 'newnew']
-    Blog.create(self.title1, self.content1, self.tags1)
+    blog = Blog.create(self.title1, self.content1, self.tags1)
     updateData = {'content': 'new', 'tags': newtags}
     # Blog.update(self.title1, content='new', tags=newtags)
-    Blog.update(self.title1, **updateData)
+    Blog.update(blog.urlsafe(), **updateData)
     blog = Blog.get_by_id(self.title1)
 
     self.assertIsNotNone(blog)
@@ -136,10 +136,10 @@ class BlogTestCase(unittest.TestCase):
     self.assertEqual(blog.published, False)
 
   def testDestroy(self):
-    Blog.create(self.title1, self.content1, self.tags1)
+    blog1 = Blog.create(self.title1, self.content1, self.tags1)
     # verify the data exists
     self.assertIsNotNone(Blog.get_by_id(self.title1))
-    Blog.destroy(self.title1)
+    Blog.destroy(blog1.urlsafe())
     # verify the data is destroyed
     self.assertIsNone(Blog.get_by_id(self.title1))
 
@@ -202,4 +202,6 @@ class BlogTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
   suite = unittest.TestLoader().loadTestsFromTestCase(BlogTestCase)
-  unittest.TextTestRunner().run(suite)
+  # suite = unittest.TestLoader().loadTestsFromName('testblog.BlogTestCase.testUpdate')
+  result = unittest.TextTestRunner().run(suite)
+  sys.exit(len(result.failures))

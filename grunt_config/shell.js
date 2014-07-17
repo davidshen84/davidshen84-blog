@@ -2,22 +2,16 @@ module.exports = {
   "clean": {
     "command": 'rm -rf build'
   },
-  "testapp": {
+  "testpython": {
     "options": {
       "stdout": true,
+      "stderr": true,
+      "failOnError": true,
       "execOptions": {
         "cwd": 'src/test/python/'
       }
     },
-    "command": ['python testmyblogapi.py <%= gaeDir %>', 'python testmycommentapi.py <%= gaeDir %>'].join(' && ')
-  },
-  "testapi": {
-    "options": {
-      "stdout": true,
-      "execOptions": {
-        "cwd": 'src/test/python'
-      }
-    },
-    "command": ['python testblog.py <%= gaeDir %>', 'python testcomment.py <%= gaeDir %>'].join(' && ')
+    "command": ['python testmyblogapi.py <%= gaeDir %>', 'python testmycommentapi.py <%= gaeDir %>',
+                'python testblog.py <%= gaeDir %>', 'python testcomment.py <%= gaeDir %>'].join(' && ')
   }
 };

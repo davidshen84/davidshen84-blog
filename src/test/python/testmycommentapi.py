@@ -10,7 +10,7 @@ if len(sys.argv) > 1:
   gaesdk_path = sys.argv[1]
 
   sys.path.insert(0, gaesdk_path)
-  sys.path.insert(0, '../../')
+  sys.path.insert(0, '../../main/')
 else:
   print 'gae sdk is required'
   sys.exit(-1)
@@ -20,8 +20,8 @@ dev_appserver.fix_sys_path()
 
 # real test code
 from app import app
-from app.bloglib.blog import Blog
-from app.bloglib.blogcomment  import BlogComment
+from app.blog.db.blog import Blog
+from app.blog.db.blogcomment import BlogComment
 from datetime import datetime
 from google.appengine.api import users
 from google.appengine.ext import testbed
@@ -42,14 +42,14 @@ class MyCommentApiTestCase(unittest.TestCase):
     self.app = app.test_client()
     self.base = '/blog/comment/api/'
 
-    self.blogkey1 = Blog.create('test1', 'content 1', published=True)
+    self.blog1 = Blog.create('test1', 'content 1', published=True)
 
   def tearDown(self):
     self.testbed.deactivate()
 
   def testCreate(self):
     r = self.app.post(
-      self.base + 'sync/test1',
+      self.base + 'sync/' + self.blog1.urlsafe(),
       data=json.dumps({
         'screenname': 'user1',
         'email': 'a@b.c',
@@ -66,7 +66,7 @@ class MyCommentApiTestCase(unittest.TestCase):
 
   @unittest.skip('design change')
   def testDestroy(self):
-    id = BlogComment.create(self.blogkey1, 'user1', 'a@b.c', 'comments').id()
+    id = BlogComment.create(self.blog1, 'user1', 'a@b.c', 'comments').id()
     blog = Blog.get_by_id('test1')
     comments = BlogComment.query(ancestor=blog.key)
     comments_count = reduce(lambda n, c: n+1, comments, 0)
@@ -82,11 +82,13 @@ class MyCommentApiTestCase(unittest.TestCase):
     self.assertEqual(0, comments_count)
 
   def testCollection(self):
-    BlogComment.create(self.blogkey1, 'user1', 'a@b.c', 'comments')
-    r = self.app.get(self.base + 'sync/title=%s' % ('test1'))
+    BlogComment.create(self.blog1, 'user1', 'a@b.c', 'comments')
+    r = self.app.get(self.base + 'sync/' + self.blog1.urlsafe())
     self.assertEqual(200, r.status_code)
     self.assertEqual(1, len(json.loads(r.data)))
 
 if __name__ == '__main__':
   suite = unittest.TestLoader().loadTestsFromTestCase(MyCommentApiTestCase)
-  unittest.TextTestRunner().run(suite)
+  # suite = unittest.TestLoader().loadTestsFromName('testmycommentapi.MyCommentApiTestCase.testCollection')
+  result = unittest.TextTestRunner(verbosity=1).run(suite)
+  sys.exit(len(result.failures))

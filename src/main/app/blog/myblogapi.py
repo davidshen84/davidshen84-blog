@@ -73,6 +73,9 @@ def update(urlsafe):
   updateData = {}
   blog = request.json
 
+  if not blog:
+    return MSG_NO_CONTENT, 500
+
   # update tags
   if blog.has_key('tags'):
     tags = blog['tags']

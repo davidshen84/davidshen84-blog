@@ -3,6 +3,8 @@
 import logging
 
 from google.appengine.ext import ndb
+from google.net.proto.ProtocolBuffer import ProtocolBufferDecodeError
+
 
 class Blog(ndb.Model):
   """GAE Blog Model
@@ -39,7 +41,12 @@ class Blog(ndb.Model):
 
   @staticmethod
   def getByUrlsafe(urlsafe, publishedOnly=True):
-    blog = ndb.Key(urlsafe=urlsafe).get()
+    try:
+      blog = ndb.Key(urlsafe=urlsafe).get()
+    except ProtocolBufferDecodeError, e:
+      logging.warning("bad urlsafe value %s, %s" % (urlsafe, e))
+      blog = None
+
     if blog and publishedOnly and not blog.published:
       blog = None
 
@@ -57,23 +64,31 @@ class Blog(ndb.Model):
 
   @staticmethod
   def update(urlsafe, **kw):
-    blog = Blog.getByUrlsafe(urlsafe, False)
-    if not blog:
-      return None
-    else:
+    try:
+      blog = Blog.getByUrlsafe(urlsafe, False)
       # update blog
-      if kw.has_key('content'):
-        blog.content = kw['content']
-      if kw.has_key('tags'):
-        blog.tags = kw['tags']
-      if kw.has_key('published'):
-        blog.published = kw['published']
+      if blog:
+        if kw.has_key('content'):
+          blog.content = kw['content']
+        if kw.has_key('tags'):
+          blog.tags = kw['tags']
+        if kw.has_key('published'):
+          blog.published = kw['published']
 
-    return blog.put()
+        return blog.put()
+      else:
+        return None
+
+    except (ProtocolBufferDecodeError, TypeError), e:
+      logging.warning("bad urlsafe value: %s, %s" % (urlsafe, e))
+      return None
 
   @staticmethod
   def destroy(urlsafe):
-    ndb.Key(urlsafe=urlsafe).delete()
+    try:
+      ndb.Key(urlsafe=urlsafe).delete()
+    except TypeError, e:
+      logging.warning("bad urlsafe value: %s, %s" % (urlsafe, e))
 
   @staticmethod
   def allTitles(publishedOnly=True):
