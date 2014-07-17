@@ -44,7 +44,7 @@ describe('Blog service', function() {
   }));
 });
 
-describe('BlogComment module', function() {
+describe('BlogComment service', function() {
   'use strict';
 
   var $http;

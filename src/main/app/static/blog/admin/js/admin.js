@@ -9,8 +9,8 @@ angular.module('ngapp.controller', ['blogapi'])
       return 'glyphicon ' + (published ? 'glyphicon-eye-open' : 'glyphicon-eye-close');
     };
 
-    $scope.setPubStat = function (index, title, publish) {
-      Blog.update({ "urlsafe": encodeURIComponent(title) }, { "published": publish },
+    $scope.setPubStat = function (index, urlsafe, publish) {
+      Blog.update({ "urlsafe": urlsafe }, { "published": publish },
                   function (response) {
                     if(response.msg == 'ok') {
                       $timeout(function () {
@@ -24,12 +24,12 @@ angular.module('ngapp.controller', ['blogapi'])
       return published ? 'Unpublish' : 'Publish';
     };
 
-    $scope.deleteBlog = function (title) {
-      Blog.remove({ "urlsafe": encodeURIComponent(title) },
+    $scope.deleteBlog = function (urlsafe) {
+      Blog.remove({ "urlsafe": urlsafe },
                   function () {
                     $timeout(function () {
                       $scope.$apply(function () {
-                        $scope.blogs.blogs = $filter('filter')($scope.blogs.blogs, {'title': '!' + title});
+                        $scope.blogs.blogs = $filter('filter')($scope.blogs.blogs, {'urlsafe': '!' + urlsafe});
                       });
                     }, 500);
                   });
@@ -40,15 +40,15 @@ angular.module('ngapp.controller', ['blogapi'])
      function($scope, $routeParams, $interpolate, $sce, Blog, BlogComment, editor) {
        'use strict';
 
+       var titlePattern = /^#.*$/m;
        function extractTitleFromContent(content) {
          var match = titlePattern.exec(content);
 
          return match && match.length > 0 ? match[0].substr(1) : null;
        }
 
-       var titlePattern = /^#.*$/m,
-           isNew = true,
-           title = $routeParams.title !== undefined ? encodeURIComponent($routeParams.title) : null,
+       var isNew = true,
+           urlsafe = $routeParams.urlsafe,
            notificationTemplate = $interpolate(
              '<div class="alert alert-{{type}}" data-timestamp={{timestamp}}>\
                <button type="button" class="close" data-dismiss="alert">&times;</button>\
@@ -58,16 +58,16 @@ angular.module('ngapp.controller', ['blogapi'])
        $scope.isClean = true;
        $scope.notifyMessage = '';
 
-       if(title) {
+       if(urlsafe) {
          isNew = false;
 
-         Blog.get({"title": title}, function (blog) {
+         Blog.get({"urlsafe": urlsafe}, function (blog) {
            editor().importFile(blog.title, blog.content);
            $scope.tags = blog.tags.join(', ');
          });
 
          // try to get comments
-         $scope.comments = BlogComment.get({"title": title});
+         $scope.comments = BlogComment.get({"urlsafe": urlsafe});
        }
 
        $scope.save = function () {

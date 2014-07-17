@@ -35,9 +35,9 @@ describe('controllers', function() {
     });
 
     it('should call Blog.update', function() {
-      scope.setPubStat(0, 'title', true);
+      scope.setPubStat(0, 'urlsafe', true);
       blog.update.should.have.been
-        .calledWith({"title": 'title'}, {"published": true}, sinon.match.func);
+        .calledWith({"urlsafe": 'urlsafe'}, {"published": true}, sinon.match.func);
     });
 
     it('should return published icon', function() {
@@ -47,7 +47,7 @@ describe('controllers', function() {
 
     it('should call Blog.remove', function() {
       scope.deleteBlog('test');
-      blog.remove.should.have.been.calledWith({"title": 'test'});
+      blog.remove.should.have.been.calledWith({"urlsafe": 'test'});
     });
   });
 
@@ -69,7 +69,7 @@ describe('controllers', function() {
       };
 
       routeParams = {
-        "title": 'test'
+        "urlsafe": 'test'
       };
       scope = $rootScope.$new();
 
@@ -89,4 +89,3 @@ describe('controllers', function() {
 
   });
 });
-
