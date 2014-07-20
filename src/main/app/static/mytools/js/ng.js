@@ -22,7 +22,7 @@ function RdnGenCtrl($scope, prime, lowerCases, upperCases, digits, specials, cjk
   $scope.digits = digits;
   $scope.specials = specials;
 
-  $scope.generate = function () {
+  $scope.generate = function() {
     var rnd, charArr, charArrLen, i, maxLen;
 
     charArr = '';
@@ -62,4 +62,16 @@ function RdnGenCtrl($scope, prime, lowerCases, upperCases, digits, specials, cjk
       }
     }
   };
+
+  // automatically select the content on mouse over
+  $("#selTarget").on("mouseover", function(e) {
+      var range = document.createRange();
+      var selection = window.getSelection();
+
+      range.selectNodeContents(this);
+      selection.removeAllRanges();
+      selection.addRange(range);
+
+      $(this).focus();
+  });
 }
