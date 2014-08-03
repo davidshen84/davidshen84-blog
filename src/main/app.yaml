@@ -16,6 +16,10 @@ handlers:
 - url: /static
   static_dir: app/static
 
+- url: /blog/admin/
+  script: app.app
+  login: admin
+
 - url: /blog/api.*
   script: app.app
   login: admin
@@ -25,10 +29,6 @@ handlers:
 
 - url: /blog.*
   script: app.app
-
-- url: /blog/admin/
-  script: app.app
-  login: admin
 
 - url: /mytools/
   script: app.app
