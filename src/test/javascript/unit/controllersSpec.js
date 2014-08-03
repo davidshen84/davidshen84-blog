@@ -51,13 +51,14 @@ describe('controllers', function() {
     });
   });
 
-  describe('CreateEditCtrl', function() {
+  describe('CreateEditCtrl w/ exists blog', function() {
     var ctrl, scope, blog, blogCmt, routeParams, editor;
 
     beforeEach(module('ngapp.controller'));
     beforeEach(inject(function($controller, $rootScope) {
       blog = {
-        "get": sinon.spy()
+        "get": sinon.spy(),
+        "update": sinon.spy()
       };
 
       blogCmt = {
@@ -65,7 +66,8 @@ describe('controllers', function() {
       };
 
       editor = {
-        "importFile": sinon.spy()
+        "importFile": sinon.spy(),
+        "exportFile": sinon.stub()
       };
 
       routeParams = {
@@ -82,10 +84,53 @@ describe('controllers', function() {
                          });
     }));
 
-    it('should call Blog.get and BlogComment.get when title is set', function() {
+    it('should call Blog.get and BlogComment.get when urlsafe is set', function() {
       blog.get.should.have.been.calledWith(routeParams);
       blogCmt.get.should.have.been.calledWith(routeParams);
     });
 
+    it('should update blog', function() {
+      editor.exportFile.returns("#title");
+      scope.save();
+      blog.update.should.have.been.called;
+    });
+  });
+
+  describe("CreateEditCtrl w/ new blog", function() {
+    var ctrl, scope, blog, blogCmt, routeParams, editor;
+
+    beforeEach(module('ngapp.controller'));
+    beforeEach(inject(function($controller, $rootScope) {
+      blog = {
+        "save": sinon.spy()
+      };
+
+      editor = {
+        "exportFile": sinon.stub()
+      };
+
+      routeParams = {};
+      scope = $rootScope.$new();
+
+      ctrl = $controller('CreateEditCtrl',
+                         { "$scope": scope,
+                           "$routeParams": routeParams,
+                           "Blog": blog,
+                           "BlogComment": blogCmt,
+                           "editor": function() {return editor;}
+                         });
+    }));
+
+    it('should be able to save new blog', function() {
+      editor.exportFile.returns("#title");
+      scope.save();
+      blog.save.should.have.been.called;
+    });
+
+    it('should not save blog if it does not have title', function() {
+      editor.exportFile.returns("notitle");
+      scope.save();
+      blog.save.should.not.have.been.called;
+    });
   });
 });
