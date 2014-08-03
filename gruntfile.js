@@ -26,7 +26,7 @@ module.exports = function(grunt) {
                                  'copy:main', 'copy:epiceditor', 'copy:angular-ui',
                                  'zip', 'pythonmodule']);*/
 
-  grunt.registerTask('setup', ['pythonmodule', 'copy:epiceditor', 'copy:angular-ui', 'zip'])
+  grunt.registerTask('setup', ['pythonmodule', 'copy', 'zip']);
   grunt.registerTask('test', ['copy:test', 'shell:testapi', 'shell:testapp']);
   grunt.registerTask('bloglib', ['zip:bloglib']);
   grunt.registerTask('angular', ['curl-dir:angular']);

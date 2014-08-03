@@ -92,14 +92,14 @@ angular.module('ngapp.controller', ['blogapi'])
 
          if(isNew) {
            Blog.save(
-             { "title": title,
+             { "urlsafe": urlsafe,
                "content": content,
                "tags": tags.length ? $scope.tags.split(',') : [] },
              updateSuccess
            );
          } else {
            Blog.update(
-             { "title": title },
+             { "urlsafe": urlsafe },
              { "content": content,
                "tags": tags.length ? $scope.tags.split(',') : [] },
              updateSuccess
@@ -107,10 +107,10 @@ angular.module('ngapp.controller', ['blogapi'])
          }
        };
 
-       $scope.deleteComment = function (id) {
-         BlogComment.remove({ "title": id }, null,
+       $scope.deleteComment = function (urlsafe) {
+         BlogComment.remove({ "urlsafe": urlsafe }, null,
                             function () {
-                              $scope.comments = BlogComment.get({ "title": title });
+                              $scope.comments = BlogComment.get({ "urlsafe": urlsafe });
                             });
        };
 
