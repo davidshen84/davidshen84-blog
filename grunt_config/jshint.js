@@ -3,6 +3,14 @@ module.exports = {
     "multistr": true,
     "expr": true
   },
+  "default": {
+    "options": {
+      "globalstrict": true
+    },
+    "files": {
+      "src": ["gruntfile.js", "grunt_config/*.js"]
+    }
+  },
   "main": {
     "options": {
       "globalstrict": true,

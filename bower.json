@@ -20,9 +20,7 @@
   "dependencies": {
     "epiceditor": "~0.2.2",
     "angular-ui-bootstrap": "~0.11.0",
-    "angular-resource": "~1.2.21",
-    "angular-route": "~1.2.21",
-    "angular-mocks": "~1.2.21"
+    "angular-latest": "~1.3.4"
   },
   "exportsOverride": {
     "epiceditor": {

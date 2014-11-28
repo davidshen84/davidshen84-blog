@@ -2,6 +2,7 @@ var path = require('path'),
     shell = require('shelljs');
 
 module.exports = function(grunt) {
+  'use strict';
 
   grunt.loadTasks('grunt_tasks');
 
@@ -13,7 +14,8 @@ module.exports = function(grunt) {
       "pythonPackageDir": (function() {
         var path = shell
           .exec('python -c "import flask; \
-                print \'/\'.join(flask.__file__.split(\'/\')[0:-2]);"', {"silent": true})
+                print \'/\'.join(flask.__file__.split(\'/\')[0:-2]);"',
+                {"silent": true})
           .output.trim();
 
         grunt.log.debug(path);
@@ -28,7 +30,5 @@ module.exports = function(grunt) {
 
   grunt.registerTask('setup', ['pythonmodule', 'copy', 'zip']);
   grunt.registerTask('test', ['copy:test', 'shell:testapi', 'shell:testapp']);
-  grunt.registerTask('bloglib', ['zip:bloglib']);
-  grunt.registerTask('angular', ['curl-dir:angular']);
+  // grunt.registerTask('bloglib', ['zip:bloglib']);
 };
-
