@@ -6,32 +6,32 @@ threadsafe: yes
 
 handlers:
 - url: /favicon\.ico
-  static_files: favicon.ico
+  static_files: blog/statics/favicon.ico
   upload: favicon\.ico
 
 - url: /robots.txt
-  static_files: robots.txt
+  static_files: blog/statics/robots.txt
   upload: robots.txt
 
 - url: /static
-  static_dir: app/static
+  static_dir: blog/statics
 
 - url: /blog/admin/
-  script: app.app
+  script: blog.app
   login: admin
 
 - url: /blog/api.*
-  script: app.app
+  script: blog.app
   login: admin
 
 - url: /blog/comment/api.*
-  script: app.app
+  script: blog.app
 
 - url: /blog.*
-  script: app.app
+  script: blog.app
 
 - url: /mytools/
-  script: app.app
+  script: blog.app
 
 libraries:
 - name: jinja2

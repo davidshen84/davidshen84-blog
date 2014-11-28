@@ -2,13 +2,13 @@
 
 import sys
 
-sys.path.insert(0, 'werkzeug.zip')
-sys.path.insert(0, 'flask.zip')
-# sys.path.insert(0, 'bloglib.zip')
+sys.path.insert(0, 'blog/modules')
+sys.path.insert(0, 'blog/modules/werkzeug.zip')
+sys.path.insert(0, 'blog/modules/flask.zip')
 
 from flask import Flask
 from google.appengine.ext.webapp import util
-from route import add_url_rule
+from modules.route import add_url_rule
 from urllib import quote
 
 app = Flask(__name__)

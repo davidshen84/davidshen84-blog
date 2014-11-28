@@ -92,7 +92,7 @@ angular.module('ngapp.controller', ['blogapi'])
 
          if(isNew) {
            Blog.save(
-             { "urlsafe": urlsafe,
+             { "title": title,
                "content": content,
                "tags": tags.length ? $scope.tags.split(',') : [] },
              updateSuccess
