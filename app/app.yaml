@@ -11,7 +11,7 @@ handlers:
 
 - url: /robots.txt
   static_files: blog/statics/robots.txt
-  upload: robots.txt
+  upload: blog/statics/robots.txt
 
 - url: /static
   static_dir: blog/statics
@@ -30,8 +30,13 @@ handlers:
 - url: /blog.*
   script: blog.app
 
-- url: /mytools/
-  script: blog.app
+- url: /online-tools/
+  static_files: online-tools/index.html
+  upload: online-tools/index.html
+
+- url: /online-tools
+  static_dir: online-tools
+  expiration: 1d
 
 libraries:
 - name: jinja2

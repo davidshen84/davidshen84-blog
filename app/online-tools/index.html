@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en" ng-app="ngapp">
+  <head>
+    <title>Online Tools</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/blog/main.css" rel="stylesheet">
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-35014753-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="wrap">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">My Blog</a>
+          </div>
+          <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+              <li><a href="/blog/" target="_self">Blog</a></li>
+              <li class="active"><a href="/online-tools/index.html" target="_self">Online  Tools</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="http://about.me/davidshen" target="_blank">About Me</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div ng-controller="RootCtrl">
+          <div class="page-header">
+            <h1 id="title">Online Tools</h1>
+          </div>
+          <div ng-controller="RdnGenCtrl">
+            <div class="col-md-6">
+              <form class="form-horizontal" ng-submit="generate()">
+                <div class="form-group">
+                  <label class="text">Number of chars: 
+                    <input type="number" ng-model="charCount" min="1" max="50" />
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label class="checkbox">
+                    <input type="checkbox" ng-model="hasLowerCases" />{{lowerCases}}
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label class="checkbox">
+                    <input type="checkbox" ng-model="hasUpperCases" />{{upperCases}}
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label class="checkbox">
+                    <input type="checkbox" ng-model="hasDigits" />{{digits}}
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label class="checkbox">
+                    <input type="checkbox" ng-model="hasSpecials" />{{specials}}
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label class="checkbox">
+                    <input type="checkbox" ng-model="hasCJK" />CJK
+                  </label>
+                </div>
+                <div class="form-group">
+                  <input type="submit" class="btn btn-primary btn-lg" value="Generate"
+                         ng-disabled="!(hasLowerCases || hasUpperCases || hasDigits || hasSpecials || hasCJK)"/>
+                </div>
+              </form>
+            </div>
+
+            <div class="col-md-6">
+              <h4>Result:</h4>
+              <p id="selTarget">{{generatedChars}}</p>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-offset-2 col-md-8">
+              <iframe src="http://rcm.amazon.com/e/cm?t=david0a-20&o=1&p=48&l=ur1&category=music&banner=0V2BZ4DRFD905XWVCVR2&f=ifr" width="728" height="90" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+            </div>
+          </div>
+
+          <div class="row">
+            <h5 style="text-align: center;"><em>Coming soon...</em></h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="footer">
+      <div class="container">
+        <ol class="breadcrumb">
+          <strong class=>Powered by&nbsp;</strong>
+          <li>Python</li>
+          <li>GAE</li>
+          <li>markdown2</li>
+          <li>Flask</li>
+          <li>jinja2</li>
+        </ol>
+      </div>
+    </div>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-route.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-resource.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+
+    <script src="/static/angular-ui/template/accordion/accordion-group.html.js"></script>
+    <script src="/static/angular-ui/template/accordion/accordion.html.js"></script>
+    <script src="/static/angular-ui/js/ui-bootstrap-0.11.0.min.js"></script>
+
+    <script src="js/ng.js"></script>
+
+  </body>
+</html>
