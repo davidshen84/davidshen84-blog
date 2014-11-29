@@ -1,17 +1,17 @@
-# coding=utf-8
+# -*- coding: utf-8-unix -*-
 
 import logging
 import re
 import json
 
 from flask import render_template, request, jsonify, abort, redirect, url_for
-from markdown2 import markdown
-from . import is_admin
-from apidecorator import auto_unquote
+from blog.modules.markdown2 import markdown
+from blog.modules.blog import is_admin
+from blog.modules.blog.apidecorator import auto_unquote
 from urllib import quote
 
-from db.blog import Blog
-from db.blogcomment import BlogComment
+from blog.modules.blog.db.blog import Blog
+from blog.modules.blog.db.blogcomment import BlogComment
 
 
 BAD_SP = unichr(0xa0)

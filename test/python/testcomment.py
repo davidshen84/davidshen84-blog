@@ -1,4 +1,4 @@
-# coding = utf-8
+# -*- coding: utf-8-unix -*-
 
 import unittest2 as unittest
 
@@ -10,7 +10,7 @@ if len(sys.argv) > 1:
   gaesdk_path = sys.argv[1]
 
   sys.path.insert(0, gaesdk_path)
-  sys.path.insert(0, '../../main/')
+  sys.path.insert(0, '../../app/')
 else:
   print 'gae sdk is required'
   sys.exit(-1)
@@ -19,8 +19,8 @@ import dev_appserver
 dev_appserver.fix_sys_path()
 
 # real test code
-from app.blog.db.blog import Blog
-from app.blog.db.blogcomment import BlogComment
+from blog.modules.blog.db.blog import Blog
+from blog.modules.blog.db.blogcomment import BlogComment
 from datetime import datetime, date
 from google.appengine.ext import testbed
 
