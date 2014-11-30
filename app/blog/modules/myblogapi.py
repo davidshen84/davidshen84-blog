@@ -1,16 +1,18 @@
-# coding=utf-8
+# -*- coding: utf-8-unix -*-
 
 import logging
 import re
 
-from apidecorator import login_admin, simpleauth, auto_unquote
+from datetime import datetime
+from flask import render_template, request, make_response,\
+  jsonify, abort, redirect, json
 from google.appengine.api import users
-from flask import render_template, request, make_response, jsonify, abort, redirect, json
 from urllib import unquote
 
-from db.blog import Blog
-from db.blogcomment import BlogComment
-from datetime import datetime
+from blog.modules import login_admin, simpleauth, auto_unquote
+from blog.modules.model.blog import Blog
+from blog.modules.model.blogcomment import BlogComment
+
 
 MSG_OK = 'ok'
 MSG_SAVE_ERROR = 'failed to save blog'

@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from blog import myblog, myblogadmin, myblogapi, mycommentapi
+from blog.modules import myblog, myblogadmin, myblogapi, mycommentapi
 
 def add_url_rule(app):
   # blog route

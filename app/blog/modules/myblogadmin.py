@@ -1,10 +1,10 @@
-# coding=utf-8
+# -*- coding: utf-8-unix -*-
 
 import logging
 import re
 
 from flask import redirect, render_template
-from . import is_admin
+from blog.modules import is_admin
 
 def logout():
   return redirect(users.create_logout_url('/blog'))

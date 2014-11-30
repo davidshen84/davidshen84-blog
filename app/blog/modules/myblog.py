@@ -1,17 +1,17 @@
 # -*- coding: utf-8-unix -*-
 
+import json
 import logging
 import re
-import json
 
-from flask import render_template, request, jsonify, abort, redirect, url_for
-from blog.modules.markdown2 import markdown
-from blog.modules.blog import is_admin
-from blog.modules.blog.apidecorator import auto_unquote
+from flask import render_template, request, jsonify,\
+  abort, redirect, url_for
 from urllib import quote
 
-from blog.modules.blog.db.blog import Blog
-from blog.modules.blog.db.blogcomment import BlogComment
+from blog.modules import is_admin, auto_unquote
+from blog.modules.model.blog import Blog
+from blog.modules.model.blogcomment import BlogComment
+from blog.modules.markdown2 import markdown
 
 
 BAD_SP = unichr(0xa0)
@@ -25,7 +25,10 @@ def default():
   myblog = Blog.getLatest()
   if myblog:
     created = myblog.created
-    return redirect(url_for('blog', year=created.year, month=created.month, urlsafe=myblog.key.urlsafe()))
+    return redirect(url_for('blog',
+                            year=created.year,
+                            month=created.month,
+                            urlsafe=myblog.key.urlsafe()))
   else:
     return abort(404)
 
@@ -34,17 +37,21 @@ def blog(year, month, urlsafe):
 
   if myblog:
     created = myblog.created
-    articlePath = '%s%d/%d/%s' % (blog_route_base, created.year, created.month, myblog.title)
+    articlePath = '%s%d/%d/%s' % (
+      blog_route_base, created.year, created.month, myblog.title)
     comments = BlogComment.query(ancestor=myblog.key)
 
     year = created.year
     month = created.month
     blogtitle = myblog.title
-    blogcontent = re.sub(r'^#.*$', '', myblog.content, 1, re.M | re.U).replace(BAD_SP, ' ')
-    breadcrumbs = [ {'href': blog_route_base, 'text': 'blog'},
-                    {'href': blog_route_base + '%d/' % (year), 'text': year},
-                    {'href': blog_route_base + '%d/%d/' % (year, month), 'text': month},
-                    {'href': '#', 'text': myblog.title} ]
+    blogcontent = re.sub(r'^#.*$', '', myblog.content, 1, re.M | re.U)\
+                    .replace(BAD_SP, ' ')
+    breadcrumbs = [
+      {'href': blog_route_base, 'text': 'blog'},
+      {'href': blog_route_base + '%d/' % (year), 'text': year},
+      {'href': blog_route_base + '%d/%d/' % (year, month), 'text': month},
+      {'href': '#', 'text': myblog.title}
+    ]
   else:
     return abort(404)
 
@@ -67,10 +74,15 @@ def archivesByDate(year, month=None):
   myblogs = Blog.getArchiveStats(True)
 
   if myblogs:
-    breadcrumbs = [ {'href': blog_route_base, 'text': 'blog'},
-                    {'href': blog_route_base + '%d/' % (year), 'text': year} ]
+    breadcrumbs = [
+      {'href': blog_route_base, 'text': 'blog'},
+      {'href': blog_route_base + '%d/' % (year,), 'text': year}
+    ]
+
     if month:
-      breadcrumbs.append({'href': blog_route_base + '%d/%d/' % (year, month), 'text': month})
+      breadcrumbs.append({
+        'href': blog_route_base + '%d/%d/' % (year, month),
+        'text': month})
 
   return render_template('blog/bloglist.html',
                          title='blog list',
@@ -96,7 +108,10 @@ def archivesByTags(tag):
                     {'href': blog_route_base + 'tag/', 'text': 'tag'} ]
 
   if tag:
-    breadcrumbs.append({'href': blog_route_base + 'tag/%s/' % (tag), 'text': tag})
+    breadcrumbs.append({
+      'href': blog_route_base + 'tag/%s/' % (tag,),
+      'text': tag
+    })
 
   return render_template('blog/bloglist.html',
                          title='blog list',
@@ -108,4 +123,3 @@ def archivesByTags(tag):
                          articlePath=request.path,
                          isXhr=request.is_xhr or request.args.has_key('xhr'),
                          isAdmin=is_admin())
-
