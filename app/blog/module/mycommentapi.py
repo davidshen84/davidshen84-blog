@@ -1,8 +1,8 @@
-# coding=utf-8
+# -*- coding: utf-8-unix -*-
 
 import logging
 
-from flask import request, jsonify
+from flask import Blueprint, request, jsonify
 
 from blog.module.model.blog import Blog
 from blog.module.model.blogcomment import BlogComment
@@ -12,6 +12,11 @@ from blog.module import login_admin
 MSG_OK = 'ok'
 MSG_SAVE_ERROR = 'failed to save comment'
 
+mycommentapi = Blueprint('mycommentapi', __name__,
+                         url_prefix='/blog/comment/api')
+route = mycommentapi.route
+
+@route('/sync/<urlsafe>')
 def query(urlsafe):
   blog = Blog.getByUrlsafe(urlsafe)
 
@@ -30,6 +35,7 @@ def query(urlsafe):
 
   return jsonify(comments=comments)
 
+@route('/sync/<urlsafe>', methods=['POST'])
 def create(urlsafe):
   comment = request.json
   blog = Blog.getByUrlsafe(urlsafe)
@@ -44,6 +50,7 @@ def create(urlsafe):
   else:
     return MSG_SAVE_ERROR, 500
 
+@route('/sync/<urlsafe>', methods=['DELETE'])
 @login_admin
 def destroy(urlsafe):
   BlogComment.destroy(urlsafe)

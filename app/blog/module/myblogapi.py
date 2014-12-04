@@ -4,8 +4,8 @@ import logging
 import re
 
 from datetime import datetime
-from flask import render_template, request, make_response,\
-  jsonify, abort, redirect, json
+from flask import Blueprint, render_template, request,\
+  make_response, jsonify, abort, redirect, json
 from google.appengine.api import users
 from urllib import unquote
 
@@ -22,10 +22,15 @@ MSG_UPDATE_FAIL = 'update blog failed'
 MSG_NO_CONTENT = 'content is required'
 MSG_SAVE_DUP = 'duplicate title'
 
+myblogapi = Blueprint('mybloapi', __name__, url_prefix='/blog/api')
+route = myblogapi.route
+
+@route('/')
 @login_admin
 def index():
   return jsonify(msg=users.get_current_user().nickname(), logout=users.create_logout_url('/blog/api/'))
 
+@route('/sync')
 @simpleauth
 def query(publishedOnly):
   blogs = Blog.getBlogStatus(publishedOnly)
@@ -40,7 +45,8 @@ def query(publishedOnly):
 
   return jsonify(blogs=[ {'title': b.title, 'urlsafe': b.key.urlsafe(), 'published': b.published, 'lastmodified': b.lastmodified} for b in blogs ])
 
-@simpleauth  
+@route('/sync/<urlsafe>')
+@simpleauth
 def fetch(urlsafe, publishedOnly):
   blog = Blog.getByUrlsafe(urlsafe, publishedOnly)
 
@@ -56,6 +62,7 @@ def fetch(urlsafe, publishedOnly):
   else:
     return MSG_NOT_EXIST, 404
 
+@route('/sync', methods=['POST'])
 @login_admin
 def create():
   blog = request.json
@@ -70,6 +77,7 @@ def create():
   else:
     return MSG_SAVE_ERROR, 500
 
+@route('/sync/<urlsafe>', methods=['PUT'])
 @login_admin
 def update(urlsafe):
   updateData = {}
@@ -99,12 +107,14 @@ def update(urlsafe):
   else:
     return MSG_UPDATE_FAIL, 404
 
+@route('/sync/<urlsafe>', methods=['DELETE'])
 @login_admin
 def destroy(urlsafe):
   Blog.destroy(urlsafe)
 
   return MSG_OK
 
+@route('/syncpub/<urlsafe>', methods=['PUT'])
 @login_admin
 def publish(urlsafe):
   published = request.values['published'].lower() == 'true'
@@ -115,6 +125,7 @@ def publish(urlsafe):
   else:
     return MSG_UPDATE_FAIL, 404
 
+@route('/archives')
 @simpleauth
 def archives(publishedOnly):
   return jsonify(archives=Blog.getArchiveStats(publishedOnly))
