@@ -4,7 +4,7 @@ import logging
 import re
 
 from flask import redirect, render_template
-from blog.modules import is_admin
+from blog.module import is_admin
 
 def logout():
   return redirect(users.create_logout_url('/blog'))

@@ -4,9 +4,9 @@ import logging
 
 from flask import request, jsonify
 
-from blog.modules.model.blog import Blog
-from blog.modules.model.blogcomment import BlogComment
-from blog.modules import login_admin
+from blog.module.model.blog import Blog
+from blog.module.model.blogcomment import BlogComment
+from blog.module import login_admin
 
 
 MSG_OK = 'ok'

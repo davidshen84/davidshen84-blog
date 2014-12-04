@@ -6,26 +6,30 @@ threadsafe: yes
 
 handlers:
 - url: /favicon\.ico
-  static_files: blog/statics/favicon.ico
-  upload: favicon\.ico
+  static_files: static/favicon.ico
+  upload: static/favicon\.ico
 
 - url: /robots.txt
-  static_files: blog/statics/robots.txt
-  upload: blog/statics/robots.txt
+  static_files: static/robots.txt
+  upload: static/robots\.txt
 
 - url: /static
-  static_dir: blog/statics
+  static_dir: static
+
+- url: /(.+)/static/(.*)$
+  static_files: \1/static/\2
+  upload: \1/static/\2$
 
 - url: /blog/admin/
   script: blog.app
   login: admin
 
 - url: /blog/api.*
-  script: blog.app
+  script: blog.api
   login: admin
 
 - url: /blog/comment/api.*
-  script: blog.app
+  script: blog.api
 
 - url: /blog.*
   script: blog.app

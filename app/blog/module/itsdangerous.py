@@ -450,7 +450,7 @@ class TimestampSigner(Signer):
 
 class Serializer(object):
     """This class provides a serialization interface on top of the
-    signer.  It provides a similar API to json/pickle and other modules but is
+    signer.  It provides a similar API to json/pickle and other module but is
     slightly differently structured internally.  If you want to change the
     underlying implementation for parsing and loading you have to override the
     :meth:`load_payload` and :meth:`dump_payload` functions.

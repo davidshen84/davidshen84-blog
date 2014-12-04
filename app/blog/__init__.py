@@ -1,22 +1,22 @@
 # coding=utf-8
 
 import sys
+import logging
 
-sys.path.insert(0, 'blog/modules')
-sys.path.insert(0, 'blog/modules/werkzeug.zip')
-sys.path.insert(0, 'blog/modules/flask.zip')
+sys.path.insert(0, 'blog/module')
+sys.path.insert(0, 'blog/module/werkzeug.zip')
+sys.path.insert(0, 'blog/module/flask.zip')
 
 from flask import Flask
 from google.appengine.ext.webapp import util
-from modules.route import add_url_rule
+from module.route import add_app_url_rule, add_api_url_rule
 from urllib import quote
 
 app = Flask(__name__)
 app.jinja_env.filters['urlencode'] = quote
+add_app_url_rule(app)
+app.debug = True
 
-add_url_rule(app)
-
-if __name__ == '__main__':
-  app.debug = True
-  util.run_wsgi_app(app)
-
+api = Flask(__name__)
+add_api_url_rule(api)
+api.debug = True

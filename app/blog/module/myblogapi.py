@@ -9,9 +9,9 @@ from flask import render_template, request, make_response,\
 from google.appengine.api import users
 from urllib import unquote
 
-from blog.modules import login_admin, simpleauth, auto_unquote
-from blog.modules.model.blog import Blog
-from blog.modules.model.blogcomment import BlogComment
+from blog.module import login_admin, simpleauth, auto_unquote
+from blog.module.model.blog import Blog
+from blog.module.model.blogcomment import BlogComment
 
 
 MSG_OK = 'ok'

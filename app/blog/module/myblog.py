@@ -8,10 +8,10 @@ from flask import render_template, request, jsonify,\
   abort, redirect, url_for
 from urllib import quote
 
-from blog.modules import is_admin, auto_unquote
-from blog.modules.model.blog import Blog
-from blog.modules.model.blogcomment import BlogComment
-from blog.modules.markdown2 import markdown
+from blog.module import is_admin, auto_unquote
+from blog.module.model.blog import Blog
+from blog.module.model.blogcomment import BlogComment
+from blog.module.markdown2 import markdown
 
 
 BAD_SP = unichr(0xa0)

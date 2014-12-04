@@ -6,7 +6,7 @@
     {% block meta %}{% endblock %}
 
     <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static/blog/main.css" rel="stylesheet">
+    <link href="/static/main.css" rel="stylesheet">
     <script type="text/javascript">
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-35014753-1']);
@@ -41,7 +41,7 @@
           <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
               <li class="{{ 'active' if activePill=='blog' }}"><a href="/blog/" target="_self">Blog</a></li>
-              <li class="{{ 'active' if activePill=='mytools' }}"><a href="/mytools/" target="_self">My Tools</a></li>
+              <li class="{{ 'active' if activePill=='mytools' }}"><a href="/online-tools/" target="_self">Online Tools</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               {% if isAdmin %}<li class="{{ 'active' if activePill=='admin' }}"><a href="/blog/admin" target="_self">Admin</a></li>{% endif %}
