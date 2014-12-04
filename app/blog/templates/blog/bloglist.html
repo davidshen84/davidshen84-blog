@@ -49,7 +49,7 @@
       {% for m, tupes in archives[year].iteritems() %}
       <li class="nav-header">{{ monthFullName[m-1] }}</li>
       {% for title, urlsafe in tupes %}
-      <li><a href="/blog/{{ year }}/{{ m }}/{{ title }}">{{ urlsafe }}</a></li>
+      <li><a href="/blog/{{ year }}/{{ m }}/{{ urlsafe }}">{{ title }}</a></li>
       {% endfor %}
       {% endfor %}
     </ul>

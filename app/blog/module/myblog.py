@@ -86,10 +86,10 @@ def archivesByDate(year, month=None):
     ]
 
     if month:
-      breadcrumbs += {
+      breadcrumbs.append({
         'href': url_for('myblog.archivesByDate', year=year, month=month),
         'text': month
-      }
+      })
 
   return render_template('blog/bloglist.html',
                          title='blog list',
