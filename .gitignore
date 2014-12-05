@@ -2,9 +2,9 @@
 *.pyo
 *~
 
-app/blog/modules/*.zip
-app/blog/statics/angular-ui
-app/blog/statics/epiceditor
+app/blog/module/*.zip
+app/static/angular-ui
+app/static/epiceditor
 
 dist
 
