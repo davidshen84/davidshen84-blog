@@ -2,6 +2,8 @@
   "name": "myblog",
   "description": "my blog",
   "version": "0.1.0",
+  "license": "UNLICENSED",
+  "private": true,
   "repository": "https://code.google.com/p/davidshen84-blog/",
   "devDependencies": {
     "grunt": "~0.4.2",

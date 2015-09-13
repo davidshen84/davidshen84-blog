@@ -3,9 +3,10 @@
 import sys
 import logging
 
-sys.path.insert(0, 'blog/module')
-sys.path.insert(0, 'blog/module/werkzeug.zip')
-sys.path.insert(0, 'blog/module/flask.zip')
+sys.path.insert(0, 'lib')
+# sys.path.insert(0, 'blog/module')
+# sys.path.insert(0, 'blog/module/werkzeug.zip')
+# sys.path.insert(0, 'blog/module/flask.zip')
 
 from urllib import quote
 
