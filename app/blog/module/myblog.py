@@ -11,7 +11,7 @@ from urllib import quote
 from blog.module import is_admin, auto_unquote
 from blog.module.model.blog import Blog
 from blog.module.model.blogcomment import BlogComment
-from blog.module.markdown2 import markdown
+from markdown2 import markdown
 
 
 BAD_SP = unichr(0xa0)
