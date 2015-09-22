@@ -11,11 +11,11 @@ module.exports = {
     "src": [ '*.min.js' ],
     "dest": 'app/static/angular-ui/js'
   },
-  "angular-ui-template": {
-    "expand": true,
-    "cwd": 'bower_components/angular-ui-bootstrap/template',
-    "src": [ 'accordion' ],
-    "dest": 'app/static/angular-ui/template'
+  material: {
+    expand: true,
+    cwd: 'bower_components/material-design-lite',
+    src: [ 'material.min.js', 'material.min.css' ],
+    dest: 'app/static/material'
   }
 };
 
