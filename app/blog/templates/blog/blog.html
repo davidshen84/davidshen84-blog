@@ -1,86 +1,180 @@
-{% if not isXhr %}
-{% extends "base.html" %}
-{% endif %}
+<!doctype html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
 
-{% block title %}
-<title>{{ title }}</title>
-{% endblock %}
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
 
-{% block meta %}
-<meta name="keywords" content="{{ tags }}" />
-{% endblock %}
+      https://www.apache.org/licenses/LICENSE-2.0
 
-{% if not isXhr %}
-{% block extra_scripts %}
-<script src="/blog/static/blog/js/ng.js"></script>
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
 
-<script type="text/javascript">
-  // bootstrap script
-  window.articlePath = '{{ articlePath }}';
-</script>
-{% endblock %}
-{% endif %}
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+  <meta name="description" content="Introducing Lollipop, a sweet new take on Android.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
 
-{% block body %}
-<div class="col-md-2">
-  <iframe src="http://rcm.amazon.com/e/cm?t=david0a-20&o=1&p=11&l=ez&f=ifr&f=ifr" width="120" height="600" scrolling="no" marginwidth="0" marginheight="0" border="0" frameborder="0" style="border:none;"></iframe>
-</div>
-<div class="col-md-8">
-  <nav id="breadcrumbs" class="row">
-    <ul class="breadcrumb">
-      {% for i in breadcrumbs %}
-      {% if not loop.last %}
-      <li><a href="{{i['href']}}">{{i['text']}}</a></li>
-      {% else %}
-      <li class="active">{{i['text']}}</li>
-      {% endif %}
-      {% endfor %}
-    </ul>
-  </nav>
-  <article id="article" class="row markdown">
-    {{ article|safe }}
-  </article>
-  <div class="row">
-    <dl id="comments">
-      {% for c in comments %}
-      <dt><em>{{ c.screenname }}</em> on {{ c.created }}:</dt>
-      <dd  class="well">{{ c.comment }}</dd>
-      {% endfor %}
-    </dl>
+  <!-- Page styles -->
+  <link
+      href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en"
+      rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.0/material.min.css">
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+  </style>
+</head>
+<body>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+  <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+    <div class="mdl-layout__header-row">
+          <span class="android-title mdl-layout-title">
+            <!--<img class="android-logo-image" src="images/android-logo.png">-->
+            <span style="color: black;">logo</span>
+          </span>
+      <!-- Add spacer, to align navigation to the right in desktop -->
+      <div class="android-header-spacer mdl-layout-spacer"></div>
+      <div
+          class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
+        <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
+          <i class="material-icons">search</i>
+        </label>
+
+        <div class="mdl-textfield__expandable-holder">
+          <input class="mdl-textfield__input" type="text" id="search-field"/>
+        </div>
+      </div>
+      <!-- Navigation -->
+      <div class="android-navigation-container">
+        <nav class="android-navigation mdl-navigation">
+          <a class="mdl-navigation__link mdl-typography--text-uppercase" href="">Blog</a>
+          <a class="mdl-navigation__link mdl-typography--text-uppercase" href="">Utilities</a>
+          <a class="mdl-navigation__link mdl-typography--text-uppercase" href="">About Me</a>
+        </nav>
+      </div>
+      <!--<button class="android-more-button mdl-button mdl-js-button mdl-button&#45;&#45;icon mdl-js-ripple-effect"-->
+      <!--id="more-button">-->
+      <!--<i class="material-icons">more_vert</i>-->
+      <!--</button>-->
+      <!--<ul class="mdl-menu mdl-js-menu mdl-menu&#45;&#45;bottom-right mdl-js-ripple-effect" for="more-button">-->
+      <!--<li class="mdl-menu__item">5.0 Lollipop</li>-->
+      <!--<li class="mdl-menu__item">4.4 KitKat</li>-->
+      <!--<li disabled class="mdl-menu__item">4.3 Jelly Bean</li>-->
+      <!--<li class="mdl-menu__item">Android History</li>-->
+      <!--</ul>-->
+      <span class="android-mobile-title mdl-layout-title">
+        <!--<img class="android-logo-image" src="images/android-logo.png">-->
+        My Blog Logo
+      </span>
+    </div>
   </div>
-  <div class="row" id="addcommentform">
-    <h3>Please add your comments</h3>
-    <form class="well form-horizontal" role="form" id="commentForm" name="commentForm" ng-controller="CommentCtrl" ng-submit="submit()">
-      <div class="form-group">
-        <label class="control-label col-md-2" for="screenname">Name*</label>
-        <div class="col-md-6">
-          <input type="text" class="form-control input-lg" name="screenname" ng-model="screenname" placeholder="screen name" required ng-minlength="2"/>
-          <div class="error" ng-show="commentForm.screenname.$dirty && (commentForm.screenname.$error.required || commentForm.screenname.$error.minlength)">Required, 2 letters minimum!</div>
+
+  <div class="android-drawer mdl-layout__drawer">
+    <span class="mdl-layout-title">
+      <!--<img class="android-logo-image" src="images/android-logo-white.png">-->
+      My Blog
+    </span>
+    <nav class="mdl-navigation">
+      <a class="mdl-navigation__link" href="">Blog</a>
+      <a class="mdl-navigation__link" href="">Utilities</a>
+      <a class="mdl-navigation__link" href="">About Me</a>
+
+      <div class="android-drawer-separator"></div>
+      <span class="mdl-navigation__link" href="">Powered By</span>
+      <a class="mdl-navigation__link" href="">GAE</a>
+    </nav>
+  </div>
+
+  <div class="blog-content mdl-layout__content">
+    <a name="top"></a>
+
+    <div class="blog-title mdl-typography--text-center">
+      <div class="android-font android-slogan">{{ title }}</div>
+      <!--<div class="android-font android-sub-slogan">welcome to android... be yourself. do your thing. see what's going on. </div>-->
+      <!--<div class="android-font android-create-character">-->
+      <!--<a href=""><img src="images/andy.png"> create your android character</a>-->
+      <!--</div>-->
+
+      <a href="#article">
+        <button class="android-fab mdl-button mdl-button--colored mdl-js-button mdl-button--fab mdl-js-ripple-effect">
+          <i class="material-icons">expand_more</i>
+        </button>
+      </a>
+    </div>
+    <div class="mdl-typography--text-center">
+      <a name="article"></a>
+
+      <!--<div class="mdl-typography&#45;&#45;display-1-color-contrast">{{ article | safe }}</div>-->
+      <div class="blog-article">
+        <p>{{ article | safe }}</p>
+      </div>
+    </div>
+
+    <footer class="android-footer mdl-mega-footer">
+      <div class="mdl-mega-footer--top-section">
+        <div class="mdl-mega-footer--left-section">
+          <button class="mdl-mega-footer--social-btn"></button>
+          &nbsp;
+          <button class="mdl-mega-footer--social-btn"></button>
+          &nbsp;
+          <button class="mdl-mega-footer--social-btn"></button>
+        </div>
+        <div class="mdl-mega-footer--right-section">
+          <a class="mdl-typography--font-light" href="#top">
+            Back to Top
+            <i class="material-icons">expand_less</i>
+          </a>
         </div>
       </div>
-      <div class="form-group">
-        <label class="control-label col-md-2" for="emailaddr">Email*</label>
-        <div class="col-md-6">
-          <input type="email" class="form-control input-lg" name="email" ng-model="email" placeholder="email...it will NOT appear publicly" required/>
-          <div class="error" ng-show="commentForm.email.$dirty && commentForm.email.$invalid">Invalid email address!</div>
-        </div>
+
+      <div class="mdl-mega-footer--middle-section">
+        <p class="mdl-typography--font-light">Copyright © 2015 Xi Shen</p>
       </div>
-      <div class="form-group">
-        <label class="control-label col-md-2" for="comment">Comments*</label>
-        <div class="col-md-8">
-          <textarea class="form-control input-lg" name="comment" ng-model="comment" placeholder="please input your comments here..." required ng-minlength="5"></textarea>
-          <div class="error" ng-show="commentForm.comment.$dirty && (commentForm.comment.$error.required || commentForm.comment.$error.minlength)">At least 5 letters!</div>
-        </div>
+
+      <div class="mdl-mega-footer--bottom-section">
+        <a class="android-link android-link-menu mdl-typography--font-light" id="poweredby-dropdown">
+          Powered by
+          <i class="material-icons">arrow_drop_up</i>
+        </a>
+        <ul class="mdl-menu mdl-js-menu mdl-menu--top-left mdl-js-ripple-effect" for="poweredby-dropdown">
+          <li class="mdl-menu__item">Python 2.7</li>
+          <li class="mdl-menu__item">GAE</li>
+          <li class="mdl-menu__item">AngularJS</li>
+          <li class="mdl-menu__item">Material Design Lite</li>
+        </ul>
+        <!--<a class="android-link android-link-menu mdl-typography&#45;&#45;font-light" id="developers-dropdown">-->
+        <!--For Developers-->
+        <!--<i class="material-icons">arrow_drop_up</i>-->
+        <!--</a>-->
+        <!--<ul class="mdl-menu mdl-js-menu mdl-menu&#45;&#45;top-left mdl-js-ripple-effect" for="developers-dropdown">-->
+        <!--<li class="mdl-menu__item">App developer resources</li>-->
+        <!--<li class="mdl-menu__item">Android Open Source Project</li>-->
+        <!--<li class="mdl-menu__item">Android SDK</li>-->
+        <!--<li class="mdl-menu__item">Android for Work</li>-->
+        <!--</ul>-->
+        <a class="android-link mdl-typography--font-light" href="">Blog</a>
+        <a class="android-link mdl-typography--font-light" href="">Privacy Policy</a>
       </div>
-      <div class="form-group">
-        <div class="col-md-offset-2 col-md-5">
-          <button type="submit" class="btn btn-primary submit" ng-disabled="commentForm.$invalid">Submit</button>
-          <button type="reset" class="btn btn-danger clear">Clear</button>
-        </div>
-      </div>
-    </form>
+
+    </footer>
   </div>
 </div>
+<!--<a href="https://github.com/google/material-design-lite/blob/master/templates/android-dot-com/" target="_blank"-->
+<!--id="view-source"-->
+<!--class="mdl-button mdl-js-button mdl-button&#45;&#45;raised mdl-js-ripple-effect mdl-color&#45;&#45;accent mdl-color-text&#45;&#45;accent-contrast">View-->
+<!--Source</a>-->
+<script src="/static/material/material.min.js"></script>
 
-{% include "blog/right_side.html" %}
-{% endblock %}
+</body>
+</html>
