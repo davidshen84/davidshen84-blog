@@ -1,0 +1,12 @@
+.blog-title {
+  position: relative;;
+  height: 250px;
+  width: auto;
+  background-color: #f3f3f3;
+  background-size: cover;
+}
+
+.blog-article {
+  min-height: 400px;
+}
+
