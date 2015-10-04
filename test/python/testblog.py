@@ -206,7 +206,7 @@ class BlogTestCase(unittest.TestCase):
     old_blog = Blog.create(self.title1, self.content1, self.tags1, created=date(2014, 1, 1))
     new_blog = Blog.create(self.title2, self.content2, self.tags2, created=date(2015, 1, 1))
 
-    blog = Blog.get_older(new_blog, False)
+    blog = Blog.get_older(new_blog.urlsafe(), False)
 
     self.assertEquals(old_blog, blog.key)
 
@@ -214,7 +214,7 @@ class BlogTestCase(unittest.TestCase):
     old_blog = Blog.create(self.title1, self.content1, self.tags1, created=date(2014, 1, 1))
     new_blog = Blog.create(self.title2, self.content2, self.tags2, created=date(2015, 1, 1))
 
-    blog = Blog.get_newer(old_blog, False)
+    blog = Blog.get_newer(old_blog.urlsafe(), False)
 
     self.assertEquals(new_blog, blog.key)
 

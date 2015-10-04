@@ -204,16 +204,16 @@ class Blog(ndb.Model):
 
     return reduce(func, blog_metas, {})
 
-  @staticmethod
-  def get_older(current_key, published_only=True):
-    current_blog = current_key.get()
+  @classmethod
+  def get_older(cls, current_urlsafe, published_only=True):
+    current_blog = ndb.Key(urlsafe=current_urlsafe).get()
     query = Blog.query(Blog.created < current_blog.created,
                        Blog.published == published_only)
     return query.get()
 
   @classmethod
-  def get_newer(cls, old_blog_key, published_only=False):
-    current_blog = old_blog_key.get()
+  def get_newer(cls, current_urlsafe, published_only=False):
+    current_blog = ndb.Key(urlsafe=current_urlsafe).get()
     query = cls.query(cls.created > current_blog.created,
                       cls.published == published_only)
 

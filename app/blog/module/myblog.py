@@ -4,7 +4,7 @@ import json
 import logging
 import re
 
-from flask import Blueprint, render_template, request,\
+from flask import Blueprint, render_template, request, \
   jsonify, abort, redirect, url_for
 from urllib import quote
 
@@ -12,7 +12,6 @@ from blog.module import is_admin, auto_unquote
 from blog.module.model.blog import Blog
 from blog.module.model.blogcomment import BlogComment
 from lib.markdown2 import markdown
-
 
 BAD_SP = unichr(0xa0)
 
@@ -36,6 +35,7 @@ def default():
   else:
     return abort(404)
 
+
 @route('/<int:year>/<int:month>/<urlsafe>')
 def blog(year, month, urlsafe):
   myblog = Blog.get_by_urlsafe(urlsafe)
@@ -49,14 +49,27 @@ def blog(year, month, urlsafe):
     year = created.year
     month = created.month
     blogtitle = myblog.title
-    blogcontent = re.sub(r'^#.*$', '', myblog.content, 1, re.M | re.U)\
-                    .replace(BAD_SP, ' ')
+    blogcontent = re.sub(r'^#.*$', '', myblog.content, 1, re.M | re.U) \
+      .replace(BAD_SP, ' ')
     breadcrumbs = [
       {'href': url_for('myblog.default'), 'text': 'blog'},
       {'href': url_for('myblog.archivesByDate', year=year), 'text': year},
       {'href': url_for('myblog.archivesByDate', year=year, month=month), 'text': month},
       {'href': '#', 'text': myblog.title}
     ]
+
+    # get older and newer
+    older = Blog.get_older(urlsafe)
+    if older is None:
+      older_url = '#'
+    else:
+      older_url = url_for('myblog.blog', year=older.created.year, month=older.created.year, urlsafe=older.key.urlsafe())
+
+    newer = Blog.get_newer(urlsafe)
+    if newer is None:
+      newer_url = '#'
+    else:
+      newer_url = url_for('myblog.blog', year=newer.created.year, month=newer.created.year, urlsafe=newer.key.urlsafe())
   else:
     return abort(404)
 
@@ -64,15 +77,18 @@ def blog(year, month, urlsafe):
                          title=blogtitle,
                          tags=','.join(myblog.tags),
                          article=markdown(blogcontent),
-                         breadcrumbs=breadcrumbs,
+                         # breadcrumbs=breadcrumbs,
                          comments=comments,
-                         archives=Blog.get_archive_stats(),
-                         tagstats=Blog.get_tag_stats(),
+                         # archives=Blog.get_archive_stats(),
+                         # tagstats=Blog.get_tag_stats(),
                          monthFullName=monthFullName,
                          articlePath=articlePath,
                          isXhr=request.is_xhr or request.args.has_key('xhr'),
                          isAdmin=is_admin(),
-                         activePill="blog")
+                         # activePill="blog",
+                         older_url=older_url,
+                         newer_url=newer_url)
+
 
 @route('/<int:year>/')
 @route('/<int:year>/<int:month>/')
@@ -103,9 +119,11 @@ def archivesByDate(year, month=None):
                          isXhr=request.is_xhr or request.args.has_key('xhr'),
                          isAdmin=is_admin())
 
+
 @route('/tag/')
 def notag():
   return abort(403)
+
 
 @route('/tag/<tag>/')
 def archivesByTags(tag):
@@ -115,7 +133,7 @@ def archivesByTags(tag):
   if myblogs:
     breadcrumbs = [
       {'href': url_for('myblog.default'), 'text': 'blog'},
-      {'href': url_for('myblog.archivesByTags', tag=tag),  'text': tag}
+      {'href': url_for('myblog.archivesByTags', tag=tag), 'text': tag}
     ]
 
   return render_template('blog/bloglist.html',
