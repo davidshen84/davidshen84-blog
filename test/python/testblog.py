@@ -202,6 +202,22 @@ class BlogTestCase(unittest.TestCase):
     tag_stats = stats['tag11'][0]
     self.assertIsInstance(tag_stats[2], type(()))
 
+  def testGetOlder(self):
+    old_blog = Blog.create(self.title1, self.content1, self.tags1, created=date(2014, 1, 1))
+    new_blog = Blog.create(self.title2, self.content2, self.tags2, created=date(2015, 1, 1))
+
+    blog = Blog.get_older(new_blog, False)
+
+    self.assertEquals(old_blog, blog.key)
+
+  def testGetNewer(self):
+    old_blog = Blog.create(self.title1, self.content1, self.tags1, created=date(2014, 1, 1))
+    new_blog = Blog.create(self.title2, self.content2, self.tags2, created=date(2015, 1, 1))
+
+    blog = Blog.get_newer(old_blog, False)
+
+    self.assertEquals(new_blog, blog.key)
+
 
 if __name__ == '__main__':
   suite = unittest.TestLoader().loadTestsFromTestCase(BlogTestCase)
