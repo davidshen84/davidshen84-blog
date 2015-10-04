@@ -3,7 +3,9 @@
 *~
 
 app/blog/module/*.zip
-app/lib
+app/lib/*
+!app/lib/__init__.py
+
 app/static/angular-ui
 app/static/epiceditor
 app/static/material
