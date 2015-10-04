@@ -20,8 +20,9 @@ myblog = Blueprint('myblog', __name__,
                    url_prefix='/blog')
 route = myblog.route
 monthFullName = ['January', 'February', 'March', 'April',
-                  'May', 'June', 'July', 'August',
-                  'September', 'October', 'November', 'December']
+                 'May', 'June', 'July', 'August',
+                 'September', 'October', 'November', 'December']
+
 
 @route('/')
 def default():
