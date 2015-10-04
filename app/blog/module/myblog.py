@@ -26,7 +26,7 @@ monthFullName = ['January', 'February', 'March', 'April',
 
 @route('/')
 def default():
-  myblog = Blog.getLatest()
+  myblog = Blog.get_latest()
   if myblog:
     created = myblog.created
     return redirect(url_for('myblog.blog',
@@ -38,7 +38,7 @@ def default():
 
 @route('/<int:year>/<int:month>/<urlsafe>')
 def blog(year, month, urlsafe):
-  myblog = Blog.getByUrlsafe(urlsafe)
+  myblog = Blog.get_by_urlsafe(urlsafe)
 
   if myblog:
     created = myblog.created
@@ -66,8 +66,8 @@ def blog(year, month, urlsafe):
                          article=markdown(blogcontent),
                          breadcrumbs=breadcrumbs,
                          comments=comments,
-                         archives=Blog.getArchiveStats(),
-                         tagstats=Blog.getTagStats(),
+                         archives=Blog.get_archive_stats(),
+                         tagstats=Blog.get_tag_stats(),
                          monthFullName=monthFullName,
                          articlePath=articlePath,
                          isXhr=request.is_xhr or request.args.has_key('xhr'),
@@ -78,7 +78,7 @@ def blog(year, month, urlsafe):
 @route('/<int:year>/<int:month>/')
 def archivesByDate(year, month=None):
   breadcrumbs = []
-  myblogs = Blog.getArchiveStats(True)
+  myblogs = Blog.get_archive_stats(True)
 
   if myblogs:
     breadcrumbs = [
@@ -96,8 +96,8 @@ def archivesByDate(year, month=None):
                          title='blog list',
                          year=year, month=month,
                          breadcrumbs=breadcrumbs,
-                         archives=Blog.getArchiveStats(),
-                         tagstats=Blog.getTagStats(),
+                         archives=Blog.get_archive_stats(),
+                         tagstats=Blog.get_tag_stats(),
                          monthFullName=monthFullName,
                          articlePath=request.path,
                          isXhr=request.is_xhr or request.args.has_key('xhr'),
@@ -110,7 +110,7 @@ def notag():
 @route('/tag/<tag>/')
 def archivesByTags(tag):
   breadcrumbs = []
-  myblogs = Blog.getArchiveStats(True)
+  myblogs = Blog.get_archive_stats(True)
 
   if myblogs:
     breadcrumbs = [
@@ -122,8 +122,8 @@ def archivesByTags(tag):
                          title='blog list',
                          tag=tag or '',
                          breadcrumbs=breadcrumbs,
-                         archives=Blog.getArchiveStats(),
-                         tagstats=Blog.getTagStats(),
+                         archives=Blog.get_archive_stats(),
+                         tagstats=Blog.get_tag_stats(),
                          monthFullName=monthFullName,
                          articlePath=request.path,
                          isXhr=request.is_xhr or request.args.has_key('xhr'),

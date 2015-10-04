@@ -18,7 +18,7 @@ route = mycommentapi.route
 
 @route('/sync/<urlsafe>')
 def query(urlsafe):
-  blog = Blog.getByUrlsafe(urlsafe)
+  blog = Blog.get_by_urlsafe(urlsafe)
 
   if blog:
     comments = [
@@ -38,7 +38,7 @@ def query(urlsafe):
 @route('/sync/<urlsafe>', methods=['POST'])
 def create(urlsafe):
   comment = request.json
-  blog = Blog.getByUrlsafe(urlsafe)
+  blog = Blog.get_by_urlsafe(urlsafe)
 
   if blog:
     commentKey = BlogComment\

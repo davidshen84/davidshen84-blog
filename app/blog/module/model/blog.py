@@ -24,37 +24,39 @@ class Blog(ndb.Model):
   tags = ndb.StringProperty(repeated=True)
 
   @staticmethod
-  def keyForTitle(title):
+  def key_for_title(title):
     return ndb.Key(Blog, title)
 
   @staticmethod
-  def getByTitle(title, publishedOnly=True):
+  def get_by_title(title, published_only=True):
     """Gets the Blog entry by title
 
     **if multiple entries have the same title, only the 1st one will be returned.**"""
 
     blog = Blog.get_by_id(title)
-    if blog and publishedOnly and not blog.published:
+    if blog and published_only and not blog.published:
       blog = None
 
     return blog
 
   @staticmethod
-  def getByUrlsafe(urlsafe, publishedOnly=True):
+  def get_by_urlsafe(urlsafe, published_only=True):
     try:
       blog = ndb.Key(urlsafe=urlsafe).get()
     except ProtocolBufferDecodeError, e:
       logging.warning("bad urlsafe value %s, %s" % (urlsafe, e))
       blog = None
 
-    if blog and publishedOnly and not blog.published:
+    if blog and published_only and not blog.published:
       blog = None
 
     return blog
 
   @staticmethod
-  def create(title, content, tags=[], **kws):
-    key = Blog.keyForTitle(title)
+  def create(title, content, tags=None, **kws):
+    if not tags:
+      tags = []
+    key = Blog.key_for_title(title)
     if not key.get():
       return Blog(key=key,
                   title=title,
@@ -65,14 +67,14 @@ class Blog(ndb.Model):
   @staticmethod
   def update(urlsafe, **kw):
     try:
-      blog = Blog.getByUrlsafe(urlsafe, False)
+      blog = Blog.get_by_urlsafe(urlsafe, False)
       # update blog
       if blog:
-        if kw.has_key('content'):
+        if 'content' in kw:
           blog.content = kw['content']
-        if kw.has_key('tags'):
+        if 'tags' in kw:
           blog.tags = kw['tags']
-        if kw.has_key('published'):
+        if 'published' in kw:
           blog.published = kw['published']
 
         return blog.put()
@@ -91,56 +93,55 @@ class Blog(ndb.Model):
       logging.warning("bad urlsafe value: %s, %s" % (urlsafe, e))
 
   @staticmethod
-  def allTitles(publishedOnly=True):
-    if publishedOnly:
-      query = Blog.query(Blog.published == True)
+  def all_titles(published_only=True):
+    if published_only:
+      query = Blog.query(Blog.published is True)
     else:
       query = Blog.query()
 
     return query.fetch(projection=[Blog.title])
 
   @staticmethod
-  def getBlogStatus(publishedOnly=True):
-    if publishedOnly:
-      query = Blog.query(Blog.published == True)
+  def get_blog_status(published_only=True):
+    if published_only:
+      query = Blog.query(Blog.published is True)
     else:
       query = Blog.query()
 
     return query.fetch(projection=[Blog.title, Blog.published, Blog.lastmodified])
 
   @staticmethod
-  def publish(urlsafe):
-    blog = Blog.getByUrlsafe(urlsafe, False)
+  def publish(urlsafe, published):
+    blog = Blog.get_by_urlsafe(urlsafe, False)
     if blog:
       blog.published = published
       return blog.put()
 
   @staticmethod
-  def getLatest():
+  def get_latest():
     return Blog.gql('where published=True order by lastmodified desc').get()
 
   @staticmethod
-  def getByTags(tags, publishedOnly=True):
-    """Return published blogs by tags
+  def get_by_tags(tags, published_only=True):
+    """Return published blog by tags
 
     tags :
       a list of (title, key_urlsafe)"""
 
     if not type(tags) is list:
-      tags = [ tags ]
+      tags = [tags]
 
-    if publishedOnly:
-      query = Blog.query(Blog.published == True, Blog.tags.IN(tags)).order(-Blog.lastmodified)
+    if published_only:
+      query = Blog.query(Blog.published is True, Blog.tags.IN(tags)).order(-Blog.lastmodified)
     else:
       query = Blog.query(Blog.tags.IN(tags)).order(-Blog.lastmodified)
 
-    return sorted(set([ (b.title, b.key.urlsafe())
-                        for t in tags
-                        for b in query.fetch(projection=[Blog.title]) ]))
+    return sorted(set([(b.title, b.key.urlsafe())
+                       for b in query.fetch(projection=[Blog.title])]))
 
   @staticmethod
-  def getArchiveStats(publishedOnly=True):
-    """Count the blogs by date and put them in a Year-Month list.
+  def get_archive_stats(published_only=True):
+    """Count the blog by date and put them in a Year-Month list.
 
     E.g.
 
@@ -153,52 +154,52 @@ class Blog(ndb.Model):
 
       - February (3)"""
 
-    if publishedOnly:
-      q = Blog.query(Blog.published == True)
+    if published_only:
+      q = Blog.query(Blog.published is True)
     else:
       q = Blog.query()
 
-    blogMetas = [ (b.created.year, b.created.month, (b.title, b.key.urlsafe())) for
-                  b in q.fetch(projection=[Blog.title, Blog.created]) ]
+    blog_metas = [(b.created.year, b.created.month, (b.title, b.key.urlsafe())) for
+                  b in q.fetch(projection=[Blog.title, Blog.created])]
 
-    def func(data, blogMetas):
-      year, month, tupe = blogMetas
-      if data.has_key(year):
-        if data[year].has_key(month):
-          data[year][month].append(tupe)
+    def func(data, blog_metas):
+      year, month, meta = blog_metas
+      if year in data:
+        if month in data[year]:
+          data[year][month].append(meta)
         else:
-          data[year][month] = [tupe]
+          data[year][month] = [meta]
       else:
         data[year] = {}
-        data[year][month] = [tupe]
+        data[year][month] = [meta]
 
       return data
 
-    return reduce(func, blogMetas, {})
+    return reduce(func, blog_metas, {})
 
   @staticmethod
-  def getTagStats(publishedOnly=True):
-    """Returs a dictionary with below data structure:
+  def get_tag_stats(published_only=True):
+    """Returns a dictionary with below data structure:
       tag: (year, month, title)
     """
 
-    if publishedOnly:
-      q = Blog.query(Blog.published == True)
+    if published_only:
+      q = Blog.query(Blog.published is True)
     else:
       q = Blog.query()
 
-    blogMetas = [ (b.tags, b.created.year, b.created.month, (b.title, b.key.urlsafe()))
-                  for b in q.fetch(projection=[Blog.title, Blog.tags, Blog.created]) ]
-    def func(data, blogMetas):
-      tags, year, month, tupe = blogMetas
+    blog_metas = [(b.tags, b.created.year, b.created.month, (b.title, b.key.urlsafe()))
+                  for b in q.fetch(projection=[Blog.title, Blog.tags, Blog.created])]
+
+    def func(data, blog_metas):
+      tags, year, month, title_urlsafe = blog_metas
       for tag in tags:
-        meta = (year, month, tupe)
-        if data.has_key(tag):
+        meta = (year, month, title_urlsafe)
+        if tag in data:
           data[tag].append(meta)
         else:
           data[tag] = [meta]
 
       return data
 
-    return reduce(func, blogMetas, {})
-
+    return reduce(func, blog_metas, {})

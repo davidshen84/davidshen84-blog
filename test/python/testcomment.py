@@ -44,7 +44,7 @@ class BlogCommentTestCase(unittest.TestCase):
     self.tags2 = [ 'tag21', 'tag22' ]
 
     Blog.create('test', 'test content')
-    self.blog = Blog.getByTitle('test', publishedOnly=False)
+    self.blog = Blog.get_by_title('test', published_only=False)
     self.blog_key = self.blog.key
 
   def tearDown(self):

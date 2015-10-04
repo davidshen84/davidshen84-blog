@@ -33,7 +33,7 @@ def index():
 @route('/sync')
 @simpleauth
 def query(publishedOnly):
-  blogs = Blog.getBlogStatus(publishedOnly)
+  blogs = Blog.get_blog_status(publishedOnly)
   # apply filters if provided
   f = request.values.get('f')
   if f:
@@ -48,7 +48,7 @@ def query(publishedOnly):
 @route('/sync/<urlsafe>')
 @simpleauth
 def fetch(urlsafe, publishedOnly):
-  blog = Blog.getByUrlsafe(urlsafe, publishedOnly)
+  blog = Blog.get_by_urlsafe(urlsafe, publishedOnly)
 
   if blog:
     comments = [ {'screenname': c.screenname, 'email': c.email, 'comment': c.comment}
@@ -128,5 +128,4 @@ def publish(urlsafe):
 @route('/archives')
 @simpleauth
 def archives(publishedOnly):
-  return jsonify(archives=Blog.getArchiveStats(publishedOnly))
-
+  return jsonify(archives=Blog.get_archive_stats(publishedOnly))

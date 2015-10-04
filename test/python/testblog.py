@@ -49,7 +49,7 @@ class BlogTestCase(unittest.TestCase):
     Blog.create(self.title1, self.content1)
     Blog.create(self.title1, self.content1)
 
-    blog = Blog.getByTitle(self.title1, False)
+    blog = Blog.get_by_title(self.title1, False)
     self.assertIsNotNone(blog)
     self.assertIsInstance(blog, Blog)
 
@@ -59,8 +59,8 @@ class BlogTestCase(unittest.TestCase):
 
     Blog.update(key1.urlsafe(), published=True)
 
-    blog1 = Blog.keyForTitle(self.title1).get()
-    blog2 = Blog.keyForTitle(self.title2).get()
+    blog1 = Blog.key_for_title(self.title1).get()
+    blog2 = Blog.key_for_title(self.title2).get()
 
     self.assertTrue(blog1.published)
     self.assertFalse(blog2.published)
@@ -71,8 +71,8 @@ class BlogTestCase(unittest.TestCase):
 
     Blog.update(key1.urlsafe(), published=False)
 
-    blog1 = Blog.keyForTitle(self.title1).get()
-    blog2 = Blog.keyForTitle(self.title2).get()
+    blog1 = Blog.key_for_title(self.title1).get()
+    blog2 = Blog.key_for_title(self.title2).get()
 
     self.assertFalse(blog1.published)
     self.assertTrue(blog2.published)
@@ -84,14 +84,14 @@ class BlogTestCase(unittest.TestCase):
     Blog(title=self.title2 + '2', content=self.content2, published=False, tags=self.tags2).put()
 
     # test by giving a complete match set
-    blogs = [ b for b in Blog.getByTags(self.tags1) ]
+    blogs = [b for b in Blog.get_by_tags(self.tags1)]
     self.assertEqual(len(blogs), 1)
 
     # test by giving a partial match set
     Blog(title='t3', content='c3', published=True, tags=[ self.tags1[0] ]).put()
     Blog(title='t33', content='c3', published=False, tags=[ self.tags1[0] ]).put()
 
-    blogs = [ b for b in Blog.getByTags(self.tags1[0]) ]
+    blogs = [b for b in Blog.get_by_tags(self.tags1[0])]
     self.assertEqual(len(blogs), 2)
 
   def testGetAllByTags(self):
@@ -101,13 +101,13 @@ class BlogTestCase(unittest.TestCase):
     Blog(title=self.title2 + '2', content=self.content2, published=False, tags=self.tags2).put()
 
     # test by giving a complete match set
-    blogs = [ b for b in Blog.getByTags(self.tags1, False) ]
+    blogs = [b for b in Blog.get_by_tags(self.tags1, False)]
     self.assertEqual(len(blogs), 2)
 
     # test by giving a partial match set
     Blog(title='t3', content='c3', published=True, tags=[ self.tags1[0] ]).put()
     Blog(title='t33', content='c3', published=False, tags=[ self.tags1[0] ]).put()
-    blogs = [ b for b in Blog.getByTags(self.tags1[0], False) ]
+    blogs = [b for b in Blog.get_by_tags(self.tags1[0], False)]
     self.assertEqual(len(blogs), 4)
 
   def testGetLatest(self):
@@ -116,7 +116,7 @@ class BlogTestCase(unittest.TestCase):
     Blog(title=self.title1, content=self.content1, published=True, tags=self.tags1, created=date1).put()
     Blog(title=self.title2, content=self.content2, published=True, tags=self.tags2, created=date2).put()
 
-    blog = Blog.getLatest()
+    blog = Blog.get_latest()
     self.assertIsNotNone(blog)
     self.assertEqual(blog.created, date2)
 
@@ -158,14 +158,14 @@ class BlogTestCase(unittest.TestCase):
     self.assertFalse(blog.published)
 
   def testCreateKey(self):
-    key = Blog.keyForTitle('test')
+    key = Blog.key_for_title('test')
 
     self.assertEqual('Blog', key.kind())
     self.assertEqual('test', key.id())
 
   def testAllTitles(self):
     Blog.create(self.title1, self.content1, self.tags1)
-    titles = Blog.allTitles(False)
+    titles = Blog.all_titles(False)
 
     self.assertGreater(len(titles), 0)
 
@@ -173,7 +173,7 @@ class BlogTestCase(unittest.TestCase):
     Blog.create(self.title1, self.content1, self.tags1, created=date(2014, 3, 21))
     Blog.create(self.title2, self.content2, self.tags2, created=date(2014, 3, 21))
 
-    stats = Blog.getArchiveStats(False)
+    stats = Blog.get_archive_stats(False)
 
     self.assertIsNotNone(stats[2014])
     self.assertIsNotNone(stats[2014][3])
@@ -183,12 +183,12 @@ class BlogTestCase(unittest.TestCase):
     Blog.create(self.title1, self.content1, self.tags1, created=date(2014, 3, 21))
     Blog.create(self.title2, self.content2, self.tags2, created=date(2014, 3, 21))
 
-    stats = Blog.getTagStats(False)
+    stats = Blog.get_tag_stats(False)
     self.assertIsNotNone(stats['tag11'])
 
   def testCanGetByUrlsafe(self):
     urlsafe = Blog.create(self.title1, self.content1).urlsafe()
-    blog = Blog.getByUrlsafe(urlsafe, False)
+    blog = Blog.get_by_urlsafe(urlsafe, False)
 
     self.assertIsNotNone(blog)
 
@@ -196,7 +196,7 @@ class BlogTestCase(unittest.TestCase):
     Blog.create(self.title1, self.content1, self.tags1, created=date(2014, 3, 21))
     Blog.create(self.title2, self.content2, self.tags2, created=date(2014, 3, 21))
 
-    stats = Blog.getTagStats(False)
+    stats = Blog.get_tag_stats(False)
     tagStats = stats['tag11'][0]
     self.assertIsInstance(tagStats[2], type(()))
 
