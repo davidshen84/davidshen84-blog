@@ -16,9 +16,9 @@
 
 @font-face {
   font-family: "And Black";
-  src: url("myfont-webfont.eot?#iefix") format('embedded-opentype'),
-  url("fonts/and_black.woff") format('woff'),
-  url("fonts/and_black.ttf") format('truetype');
+  src: url('fonts/and_black.eot?#iefix') format('embedded-opentype'),
+  url('fonts/and_black.woff') format('woff'),
+  url('fonts/and_black.ttf') format('truetype');
 }
 
 body {
@@ -27,7 +27,7 @@ body {
 
 /* Disable ugly boxes around images in IE10 */
 a img {
-  border: 0px;
+  border: 0;
 }
 
 ::-moz-selection {
@@ -183,20 +183,7 @@ a img {
   height: 800px;
   width: auto;
   background-color: #f3f3f3;
-  background: url('images/slide01.jpg') center 30% no-repeat;
   background-size: cover;
-}
-
-.blog-title {
-  position: relative;;
-  height: 300px;
-  width: auto;
-  background-color: #f3f3f3;
-  background-size: cover;
-}
-
-.blog-article {
-  min-height: 400px;
 }
 
 .android-font {

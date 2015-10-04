@@ -31,6 +31,7 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.0/material.min.css">
   <link rel="stylesheet" href="/static/styles.css">
+  <link rel="stylesheet" href="/static/blog.css">
   <style>
   </style>
 </head>
@@ -41,7 +42,6 @@
     <div class="mdl-layout__header-row">
           <span class="android-title mdl-layout-title">
             <!--<img class="android-logo-image" src="images/android-logo.png">-->
-            <span style="color: black;">logo</span>
           </span>
       <!-- Add spacer, to align navigation to the right in desktop -->
       <div class="android-header-spacer mdl-layout-spacer"></div>
@@ -58,9 +58,9 @@
       <!-- Navigation -->
       <div class="android-navigation-container">
         <nav class="android-navigation mdl-navigation">
-          <a class="mdl-navigation__link mdl-typography--text-uppercase" href="">Blog</a>
-          <a class="mdl-navigation__link mdl-typography--text-uppercase" href="">Utilities</a>
-          <a class="mdl-navigation__link mdl-typography--text-uppercase" href="">About Me</a>
+          <a class="mdl-navigation__link mdl-typography--text-uppercase" href="#">Blog</a>
+          <a class="mdl-navigation__link mdl-typography--text-uppercase" href="/online-tools/">Utilities</a>
+          <a class="mdl-navigation__link mdl-typography--text-uppercase" href="https://about.me/davidshen">About Me</a>
         </nav>
       </div>
       <!--<button class="android-more-button mdl-button mdl-js-button mdl-button&#45;&#45;icon mdl-js-ripple-effect"-->
@@ -75,7 +75,6 @@
       <!--</ul>-->
       <span class="android-mobile-title mdl-layout-title">
         <!--<img class="android-logo-image" src="images/android-logo.png">-->
-        My Blog Logo
       </span>
     </div>
   </div>
@@ -83,16 +82,16 @@
   <div class="android-drawer mdl-layout__drawer">
     <span class="mdl-layout-title">
       <!--<img class="android-logo-image" src="images/android-logo-white.png">-->
-      My Blog
+      Xi's Blog
     </span>
     <nav class="mdl-navigation">
-      <a class="mdl-navigation__link" href="">Blog</a>
-      <a class="mdl-navigation__link" href="">Utilities</a>
-      <a class="mdl-navigation__link" href="">About Me</a>
+      <a class="mdl-navigation__link" href="#">Blog</a>
+      <a class="mdl-navigation__link" href="/online-tools/">Utilities</a>
+      <a class="mdl-navigation__link" href="https://about.me/davidshen">About Me</a>
 
       <div class="android-drawer-separator"></div>
-      <span class="mdl-navigation__link" href="">Powered By</span>
-      <a class="mdl-navigation__link" href="">GAE</a>
+      <span class="mdl-navigation__link">Powered By</span>
+      <!--<a class="mdl-navigation__link" href="">GAE</a>-->
     </nav>
   </div>
 
@@ -112,11 +111,16 @@
         </button>
       </a>
     </div>
-    <div class="mdl-typography--text-center">
+    <div class="mdl-grid">
       <a name="article"></a>
 
-      <!--<div class="mdl-typography&#45;&#45;display-1-color-contrast">{{ article | safe }}</div>-->
-      <div class="blog-article">
+      <div class="mdl-cell mdl-cell--2-col mdl-layout--large-screen-only">
+        <iframe src="http://rcm.amazon.com/e/cm?t=david0a-20&o=1&p=11&l=ez&f=ifr&f=ifr" width="120" height="600"
+                scrolling="no" marginwidth="0" marginheight="0" frameborder="0"
+                style="border:none;"></iframe>
+      </div>
+      <div class="mdl-cell mdl-cell--1-col"><!-- offset --></div>
+      <div class="mdl-cell mdl-cell--5-col mdl-typography--display-3-color-contrast blog-article">
         <p>{{ article | safe }}</p>
       </div>
     </div>
@@ -124,11 +128,12 @@
     <footer class="android-footer mdl-mega-footer">
       <div class="mdl-mega-footer--top-section">
         <div class="mdl-mega-footer--left-section">
-          <button class="mdl-mega-footer--social-btn"></button>
+          <button class="mdl-mega-footer--social-btn" onclick="window.open('//plus.google.com/+XiShen/');">G</button>
           &nbsp;
-          <button class="mdl-mega-footer--social-btn"></button>
+          <button class="mdl-mega-footer--social-btn" onclick="window.open('//twitter.com/davidshen84');">T</button>
           &nbsp;
-          <button class="mdl-mega-footer--social-btn"></button>
+          <button class="mdl-mega-footer--social-btn" onclick="window.open('//www.facebook.com/davidshen84');">F
+          </button>
         </div>
         <div class="mdl-mega-footer--right-section">
           <a class="mdl-typography--font-light" href="#top">
@@ -140,6 +145,8 @@
 
       <div class="mdl-mega-footer--middle-section">
         <p class="mdl-typography--font-light">Copyright © 2015 Xi Shen</p>
+
+        <p class="mdl-typography--font-light">A personal blog project</p>
       </div>
 
       <div class="mdl-mega-footer--bottom-section">
@@ -153,16 +160,6 @@
           <li class="mdl-menu__item">AngularJS</li>
           <li class="mdl-menu__item">Material Design Lite</li>
         </ul>
-        <!--<a class="android-link android-link-menu mdl-typography&#45;&#45;font-light" id="developers-dropdown">-->
-        <!--For Developers-->
-        <!--<i class="material-icons">arrow_drop_up</i>-->
-        <!--</a>-->
-        <!--<ul class="mdl-menu mdl-js-menu mdl-menu&#45;&#45;top-left mdl-js-ripple-effect" for="developers-dropdown">-->
-        <!--<li class="mdl-menu__item">App developer resources</li>-->
-        <!--<li class="mdl-menu__item">Android Open Source Project</li>-->
-        <!--<li class="mdl-menu__item">Android SDK</li>-->
-        <!--<li class="mdl-menu__item">Android for Work</li>-->
-        <!--</ul>-->
         <a class="android-link mdl-typography--font-light" href="">Blog</a>
         <a class="android-link mdl-typography--font-light" href="">Privacy Policy</a>
       </div>
@@ -170,10 +167,6 @@
     </footer>
   </div>
 </div>
-<!--<a href="https://github.com/google/material-design-lite/blob/master/templates/android-dot-com/" target="_blank"-->
-<!--id="view-source"-->
-<!--class="mdl-button mdl-js-button mdl-button&#45;&#45;raised mdl-js-ripple-effect mdl-color&#45;&#45;accent mdl-color-text&#45;&#45;accent-contrast">View-->
-<!--Source</a>-->
 <script src="/static/material/material.min.js"></script>
 
 </body>
