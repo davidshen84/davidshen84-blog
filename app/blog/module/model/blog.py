@@ -95,7 +95,7 @@ class Blog(ndb.Model):
   @staticmethod
   def all_titles(published_only=True):
     if published_only:
-      query = Blog.query(Blog.published is True)
+      query = Blog.query(Blog.published == True)
     else:
       query = Blog.query()
 
@@ -104,7 +104,7 @@ class Blog(ndb.Model):
   @staticmethod
   def get_blog_status(published_only=True):
     if published_only:
-      query = Blog.query(Blog.published is True)
+      query = Blog.query(Blog.published == True)
     else:
       query = Blog.query()
 
@@ -132,7 +132,7 @@ class Blog(ndb.Model):
       tags = [tags]
 
     if published_only:
-      query = Blog.query(Blog.published is True, Blog.tags.IN(tags)).order(-Blog.lastmodified)
+      query = Blog.query(Blog.published == True, Blog.tags.IN(tags)).order(-Blog.lastmodified)
     else:
       query = Blog.query(Blog.tags.IN(tags)).order(-Blog.lastmodified)
 
@@ -155,7 +155,7 @@ class Blog(ndb.Model):
       - February (3)"""
 
     if published_only:
-      q = Blog.query(Blog.published is True)
+      q = Blog.query(Blog.published == True)
     else:
       q = Blog.query()
 
@@ -184,7 +184,7 @@ class Blog(ndb.Model):
     """
 
     if published_only:
-      q = Blog.query(Blog.published is True)
+      q = Blog.query(Blog.published == True)
     else:
       q = Blog.query()
 

@@ -6,25 +6,27 @@ import unittest2 as unittest
 import sys
 import os
 
-if len(sys.argv) > 1:
-  gaesdk_path = sys.argv[1]
+if 'GAE_SDK' in os.environ:
+  sys.path.insert(0, os.environ['GAE_SDK'])
 
-  sys.path.insert(0, gaesdk_path)
-  sys.path.insert(0, '../../app/')
-else:
+sys.path.insert(0, '../../app/')
+
+try:
+  import dev_appserver
+
+  dev_appserver.fix_sys_path()
+except ImportError:
   print 'gae sdk is required'
   sys.exit(-1)
 
-import dev_appserver
-dev_appserver.fix_sys_path()
 
 # real test code
-from blog.modules.blog.db.blog import Blog
+from blog.module.model.blog import Blog
 from google.appengine.ext import testbed
 from datetime import datetime, date
 
-class BlogTestCase(unittest.TestCase):
 
+class BlogTestCase(unittest.TestCase):
   def setUp(self):
     # First, create an instance of the Testbed class.
     self.testbed = testbed.Testbed()
@@ -36,11 +38,11 @@ class BlogTestCase(unittest.TestCase):
 
     self.title1 = 'test title1'
     self.content1 = 'test content1'
-    self.tags1 = [ 'tag11', 'tag12' ]
+    self.tags1 = ['tag11', 'tag12']
 
     self.title2 = 'test title2'
     self.content2 = 'test content2'
-    self.tags2 = [ 'tag21', 'tag22' ]
+    self.tags2 = ['tag21', 'tag22']
 
   def tearDown(self):
     self.testbed.deactivate()
@@ -79,7 +81,7 @@ class BlogTestCase(unittest.TestCase):
 
   def testGetPublishedByTags(self):
     Blog(title=self.title1, content=self.content1, published=True, tags=self.tags1).put()
-    Blog(title=self.title1 + '1' , content=self.content1, published=False, tags=self.tags1).put()
+    Blog(title=self.title1 + '1', content=self.content1, published=False, tags=self.tags1).put()
     Blog(title=self.title2, content=self.content2, published=True, tags=self.tags2).put()
     Blog(title=self.title2 + '2', content=self.content2, published=False, tags=self.tags2).put()
 
@@ -88,15 +90,15 @@ class BlogTestCase(unittest.TestCase):
     self.assertEqual(len(blogs), 1)
 
     # test by giving a partial match set
-    Blog(title='t3', content='c3', published=True, tags=[ self.tags1[0] ]).put()
-    Blog(title='t33', content='c3', published=False, tags=[ self.tags1[0] ]).put()
+    Blog(title='t3', content='c3', published=True, tags=[self.tags1[0]]).put()
+    Blog(title='t33', content='c3', published=False, tags=[self.tags1[0]]).put()
 
     blogs = [b for b in Blog.get_by_tags(self.tags1[0])]
     self.assertEqual(len(blogs), 2)
 
   def testGetAllByTags(self):
     Blog(title=self.title1, content=self.content1, published=True, tags=self.tags1).put()
-    Blog(title=self.title1 + '1' , content=self.content1, published=False, tags=self.tags1).put()
+    Blog(title=self.title1 + '1', content=self.content1, published=False, tags=self.tags1).put()
     Blog(title=self.title2, content=self.content2, published=True, tags=self.tags2).put()
     Blog(title=self.title2 + '2', content=self.content2, published=False, tags=self.tags2).put()
 
@@ -105,8 +107,8 @@ class BlogTestCase(unittest.TestCase):
     self.assertEqual(len(blogs), 2)
 
     # test by giving a partial match set
-    Blog(title='t3', content='c3', published=True, tags=[ self.tags1[0] ]).put()
-    Blog(title='t33', content='c3', published=False, tags=[ self.tags1[0] ]).put()
+    Blog(title='t3', content='c3', published=True, tags=[self.tags1[0]]).put()
+    Blog(title='t33', content='c3', published=False, tags=[self.tags1[0]]).put()
     blogs = [b for b in Blog.get_by_tags(self.tags1[0], False)]
     self.assertEqual(len(blogs), 4)
 
@@ -122,17 +124,17 @@ class BlogTestCase(unittest.TestCase):
 
   def testUpdate(self):
     # verify blog can be updated
-    newtags = ['new', 'newnew']
+    new_tags = ['new', 'newnew']
     blog = Blog.create(self.title1, self.content1, self.tags1)
-    updateData = {'content': 'new', 'tags': newtags}
-    # Blog.update(self.title1, content='new', tags=newtags)
-    Blog.update(blog.urlsafe(), **updateData)
+    update_data = {'content': 'new', 'tags': new_tags}
+    # Blog.update(self.title1, content='new', tags=new_tags)
+    Blog.update(blog.urlsafe(), **update_data)
     blog = Blog.get_by_id(self.title1)
 
     self.assertIsNotNone(blog)
     self.assertEqual(blog.title, self.title1)
     self.assertEqual(blog.content, 'new')
-    self.assertEqual(blog.tags, newtags)
+    self.assertEqual(blog.tags, new_tags)
     self.assertEqual(blog.published, False)
 
   def testDestroy(self):
@@ -197,8 +199,9 @@ class BlogTestCase(unittest.TestCase):
     Blog.create(self.title2, self.content2, self.tags2, created=date(2014, 3, 21))
 
     stats = Blog.get_tag_stats(False)
-    tagStats = stats['tag11'][0]
-    self.assertIsInstance(tagStats[2], type(()))
+    tag_stats = stats['tag11'][0]
+    self.assertIsInstance(tag_stats[2], type(()))
+
 
 if __name__ == '__main__':
   suite = unittest.TestLoader().loadTestsFromTestCase(BlogTestCase)
