@@ -1,15 +1,15 @@
 module.exports = {
-  "epiceditor": {
+  epiceditor: {
     "expand": true,
     "cwd": 'bower_components/epiceditor/epiceditor',
     "src": '**',
     "dest": 'app/static/epiceditor'
   },
-  "angular-ui": {
-    "expand": true,
-    "cwd": 'bower_components/angular-ui-bootstrap/dist/',
-    "src": [ '*.min.js' ],
-    "dest": 'app/static/angular-ui/js'
+  angular: {
+    expand: true,
+    cwd: 'bower_components/angular-latest/build',
+    src: ['angular.min.js', 'angular-resource.min.js', 'angular-route.min.js'],
+    dest: 'app/static/angular'
   },
   material: {
     expand: true,

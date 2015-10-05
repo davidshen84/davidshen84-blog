@@ -443,6 +443,8 @@ body .demo-blog {
   -webkit-align-items: stretch;
   -ms-flex-align: stretch;
   align-items: stretch;
+
+  padding-bottom: 30px;
 }
 
 .demo-blog--blogpost .comments .comment > .comment__header {

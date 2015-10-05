@@ -1,0 +1,13 @@
+{
+  "multistr": true,
+  "expr": true,
+  "browser": true,
+  "devel": true,
+  "globals": {
+    "angular": true,
+    "EpicEditor": true,
+    "$": true,
+    "document": true,
+    "console": true
+  }
+}

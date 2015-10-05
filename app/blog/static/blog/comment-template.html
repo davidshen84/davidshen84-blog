@@ -1,0 +1,77 @@
+<div class="mdl-color-text--primary-contrast mdl-card__supporting-text comments">
+  <form>
+    <div class="mdl-grid">
+      <div class="mdl-cell mdl-cell-6-col mdl-textfield mdl-js-textfield">
+        <input class="mdl-textfield__input" type="text" id="screenname" pattern="[a-zA-Z0-9]{3,}"
+               ng-model="screenname"/>
+        <label class="mdl-textfield__label" for="screenname">Screen Name</label>
+      </div>
+      <div class="mdl-cell mdl-cell-6-col mdl-textfield mdl-js-textfield">
+        <input class="mdl-textfield__input" type="email" id="email" ng-model="email"/>
+        <label class="mdl-textfield__label" for="email">Email</label>
+      </div>
+      <div class="mdl-cell mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <textarea rows=1 class="mdl-textfield__input" id="comment" ng-model="comment"></textarea>
+        <label for="comment" class="mdl-textfield__label">Join the discussion</label>
+      </div>
+      <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" ng-click="submit()">
+        <i class="material-icons" role="presentation">check</i><span class="visuallyhidden">add comment</span>
+      </button>
+    </div>
+  </form>
+
+  <div ng-repeat="comment in comments" class="comment mdl-color-text--grey-700">
+    <header class="comment__header">
+      <img src="" class="comment__avatar">
+
+      <div class="comment__author">
+        <strong>{{ comment.screenname }}</strong>
+        <span>{{ comment.created }}</span>
+      </div>
+    </header>
+    <div class="comment__text">
+      {{ comment.comment }}
+    </div>
+    <nav class="comment__actions" style="display: none;">
+      <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">thumb_up</i><span
+          class="visuallyhidden">like comment</span>
+      </button>
+      <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">thumb_down</i><span
+          class="visuallyhidden">dislike comment</span>
+      </button>
+      <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+        <i class="material-icons" role="presentation">share</i><span class="visuallyhidden">share comment</span>
+      </button>
+    </nav>
+    <!-- <div class="comment__answers">
+      <div class="comment">
+        <header class="comment__header">
+          <img src="images/co2.jpg" class="comment__avatar">
+
+          <div class="comment__author">
+            <strong>John Dufry</strong>
+            <span>2 days ago</span>
+          </div>
+        </header>
+        <div class="comment__text">
+          Yep, agree!
+        </div>
+        <nav class="comment__actions">
+          <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <i class="material-icons" role="presentation">thumb_up</i><span
+              class="visuallyhidden">like comment</span>
+          </button>
+          <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <i class="material-icons" role="presentation">thumb_down</i><span class="visuallyhidden">dislike comment</span>
+          </button>
+          <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+            <i class="material-icons" role="presentation">share</i><span
+              class="visuallyhidden">share comment</span>
+          </button>
+        </nav>
+      </div>
+    </div> -->
+  </div>
+</div>
