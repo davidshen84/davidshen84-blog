@@ -1,0 +1,19 @@
+.site-header {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.site-title {
+  width: 128px;
+  height: 32px;
+  background-color: red;
+}
+
+@media (max-width: 900px) {
+  .site-title {
+    display: none;
+  }
+
+  .site-header-spacer {
+    display: none;
+  }
+}

@@ -84,7 +84,7 @@ def blog(year, month, urlsafe):
                          monthFullName=monthFullName,
                          articlePath=articlePath,
                          isXhr=request.is_xhr or request.args.has_key('xhr'),
-                         isAdmin=is_admin(),
+                         is_admin=is_admin(),
                          # activePill="blog",
                          older_url=older_url,
                          newer_url=newer_url)

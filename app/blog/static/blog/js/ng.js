@@ -49,6 +49,7 @@
           templateUrl: 'blog/static/blog/comment-template.html',
           controller: 'CommentCtrl'
         })
+        .otherwise()
         //.when('/blog/:year/', {})
         //.when('/blog/:year/:month/', {})
         //.when('/blog/tag/:tag/', {})
