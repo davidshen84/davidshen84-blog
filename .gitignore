@@ -2,18 +2,12 @@
 *.pyo
 *~
 
-app/blog/module/*.zip
 app/lib/*
 !app/lib/__init__.py
 
-app/static/angular
-app/static/angular-ui
-app/static/epiceditor
-app/static/material
+app/static/libs/
 
-dist
-
-bower_components
-node_modules
-.idea
+bower_components/
+node_modules/
+.idea/
 *.iml

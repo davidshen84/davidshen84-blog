@@ -8,7 +8,7 @@
       </div>
       <div class="mdl-cell mdl-cell-6-col mdl-textfield mdl-js-textfield">
         <input class="mdl-textfield__input" type="email" id="email" ng-model="email"/>
-        <label class="mdl-textfield__label" for="email">Email</label>
+        <label class="mdl-textfield__label" for="email">Email (It will NOT be displayed)</label>
       </div>
       <div class="mdl-cell mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
         <textarea rows=1 class="mdl-textfield__input" id="comment" ng-model="comment"></textarea>
@@ -22,7 +22,7 @@
 
   <div ng-repeat="comment in comments" class="comment mdl-color-text--grey-700">
     <header class="comment__header">
-      <img src="" class="comment__avatar">
+      <img src="http://www.googleplusblog.it/wp-content/uploads/2011/08/v-per-vendetta.png" class="comment__avatar">
 
       <div class="comment__author">
         <strong>{{ comment.screenname }}</strong>
