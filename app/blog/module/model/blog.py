@@ -41,11 +41,14 @@ class Blog(ndb.Model):
 
   @staticmethod
   def getByUrlsafe(urlsafe, publishedOnly=True):
+    blog = None
+
     try:
-      blog = ndb.Key(urlsafe=urlsafe).get()
-    except ProtocolBufferDecodeError, e:
+      blog_key = ndb.Key(urlsafe=urlsafe)
+      if blog_key is not None:
+        blog = blog_key.get()
+    except Exception as e:
       logging.warning("bad urlsafe value %s, %s" % (urlsafe, e))
-      blog = None
 
     if blog and publishedOnly and not blog.published:
       blog = None

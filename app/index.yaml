@@ -20,6 +20,11 @@ indexes:
   properties:
   - name: published
   - name: created
+
+- kind: Blog
+  properties:
+  - name: published
+  - name: created
   - name: tags
   - name: title
 
