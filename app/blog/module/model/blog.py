@@ -41,11 +41,14 @@ class Blog(ndb.Model):
 
   @staticmethod
   def get_by_urlsafe(urlsafe, published_only=True):
+    blog = None
+
     try:
-      blog = ndb.Key(urlsafe=urlsafe).get()
-    except ProtocolBufferDecodeError, e:
+      blog_key = ndb.Key(urlsafe=urlsafe)
+      if blog_key is not None:
+        blog = blog_key.get()
+    except Exception as e:
       logging.warning("bad urlsafe value %s, %s" % (urlsafe, e))
-      blog = None
 
     if blog and published_only and not blog.published:
       blog = None
@@ -162,8 +165,8 @@ class Blog(ndb.Model):
     blog_metas = [(b.created.year, b.created.month, (b.title, b.key.urlsafe())) for
                   b in q.fetch(projection=[Blog.title, Blog.created])]
 
-    def func(data, blog_metas):
-      year, month, meta = blog_metas
+    def func(data, metas):
+      year, month, meta = metas
       if year in data:
         if month in data[year]:
           data[year][month].append(meta)
@@ -191,8 +194,8 @@ class Blog(ndb.Model):
     blog_metas = [(b.tags, b.created.year, b.created.month, (b.title, b.key.urlsafe()))
                   for b in q.fetch(projection=[Blog.title, Blog.tags, Blog.created])]
 
-    def func(data, blog_metas):
-      tags, year, month, title_urlsafe = blog_metas
+    def func(data, metas):
+      tags, year, month, title_urlsafe = metas
       for tag in tags:
         meta = (year, month, title_urlsafe)
         if tag in data:
