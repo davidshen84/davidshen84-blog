@@ -1,20 +1,21 @@
 <div class="mdl-color-text--primary-contrast mdl-card__supporting-text comments">
-  <form>
+  <form name="form" ng-submit="submit(comment)">
     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell-6-col mdl-textfield mdl-js-textfield">
         <input class="mdl-textfield__input" type="text" id="screenname" pattern="[a-zA-Z0-9]{3,}"
-               ng-model="screenname"/>
+               ng-model="comment.screenname" required/>
         <label class="mdl-textfield__label" for="screenname">Screen Name</label>
       </div>
       <div class="mdl-cell mdl-cell-6-col mdl-textfield mdl-js-textfield">
-        <input class="mdl-textfield__input" type="email" id="email" ng-model="email"/>
+        <input class="mdl-textfield__input" type="email" id="email" ng-model="comment.email" required/>
         <label class="mdl-textfield__label" for="email">Email (It will NOT be displayed)</label>
       </div>
       <div class="mdl-cell mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <textarea rows=1 class="mdl-textfield__input" id="comment" ng-model="comment"></textarea>
+        <textarea rows=1 class="mdl-textfield__input" id="comment" ng-model="comment.comment" required></textarea>
         <label for="comment" class="mdl-textfield__label">Join the discussion</label>
       </div>
-      <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" ng-click="submit()">
+      <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" type="submit"
+              ng-disabled="form.$invalid">
         <i class="material-icons" role="presentation">check</i><span class="visuallyhidden">add comment</span>
       </button>
     </div>

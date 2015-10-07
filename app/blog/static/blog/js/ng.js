@@ -17,21 +17,18 @@
       $locationProvider.html5Mode(true);
     }])
     .controller('CommentCtrl', ['$scope', '$route', 'BlogComment', function ($scope, $route, commentService) {
+      $scope.comment = {};
+
       // get comment data
       commentService.get({urlsafe: $route.current.params.urlsafe}, function (data) {
         $scope.comments = data.comments;
       });
 
-      $scope.submit = function () {
-        var body = {
-            "screenname": $scope.screenname,
-            "email": $scope.email,
-            "comment": $scope.comment
-          },
-          params = {"urlsafe": $route.current.params.urlsafe};
+      $scope.submit = function (comment) {
+        var params = {"urlsafe": $route.current.params.urlsafe};
 
-        commentService.save(params, body, function (data) {
-            $scope.comments.push(data);
+        commentService.save(params, comment, function (data) {
+            $scope.comments.unshift(data);
             // TODO reset form
           }
         );

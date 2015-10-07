@@ -1,13 +1,10 @@
 # -*- coding: utf-8-unix -*-
 
-import logging
-
 from flask import Blueprint, request, jsonify
 
 from blog.module.model.blog import Blog
 from blog.module.model.blogcomment import BlogComment
 from blog.module import login_admin
-
 
 MSG_OK = 'ok'
 MSG_SAVE_ERROR = 'failed to save comment'
@@ -16,24 +13,23 @@ mycommentapi = Blueprint('mycommentapi', __name__,
                          url_prefix='/blog/comment/api')
 route = mycommentapi.route
 
+
 @route('/sync/<urlsafe>')
 def query(urlsafe):
   blog = Blog.get_by_urlsafe(urlsafe)
 
   if blog:
-    comments = [
-      { 'urlsafe': c.key.urlsafe(),
-        'screenname': c.screenname,
-        'email': c.email,
-        'comment': c.comment,
-        'created': str(c.created)
-      }
-      for c in BlogComment.getComments(blog.key)
-    ]
+    comments = [{'urlsafe': c.key.urlsafe(),
+                 'screenname': c.screenname,
+                 'email': c.email,
+                 'comment': c.comment,
+                 'created': str(c.created)}
+                for c in BlogComment.getComments(blog.key)]
   else:
     comments = []
 
   return jsonify(comments=comments)
+
 
 @route('/sync/<urlsafe>', methods=['POST'])
 def create(urlsafe):
@@ -41,14 +37,16 @@ def create(urlsafe):
   blog = Blog.get_by_urlsafe(urlsafe)
 
   if blog:
-    commentKey = BlogComment\
-      .create(blog.key,
-              comment['screenname'],
-              comment['email'],
-              comment['comment'])
-    return ''
+    comment_key = BlogComment.create(blog.key, comment['screenname'],
+                                     comment['email'], comment['comment'])
+    comment = comment_key.get()
+
+    return jsonify({'screenname': comment.screenname,
+                    'comment': comment.comment,
+                    'created': str(comment.created)})
   else:
     return MSG_SAVE_ERROR, 500
+
 
 @route('/sync/<urlsafe>', methods=['DELETE'])
 @login_admin
