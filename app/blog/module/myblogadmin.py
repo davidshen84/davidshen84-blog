@@ -8,10 +8,12 @@ from blog.module import is_admin
 
 myblogadmin = Blueprint('myblogadmin', __name__, url_prefix='/blog')
 
+
 def logout():
   return redirect(users.create_logout_url('/blog'))
 
-@myblogadmin.route('/admin')
+
+@myblogadmin.route('/admin/')
 def default():
   return render_template("admin/admin.html",
                          title="Admin",

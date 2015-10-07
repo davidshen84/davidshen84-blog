@@ -1,11 +1,15 @@
+@import url(https://fonts.googleapis.com/css?family=Sigmar+One);
+
 .site-header {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
 .site-title {
-  width: 128px;
+  /*width: 128px;*/
   height: 32px;
-  background-color: red;
+  /*background-color: red;*/
+  font-family: "Sigmar One", cursive;
+  font-size: xx-large;
 }
 
 @media (max-width: 900px) {

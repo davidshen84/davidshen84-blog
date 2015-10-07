@@ -15,7 +15,7 @@
   See the License for the specific language governing permissions and
   limitations under the License
 -->
-<html lang="en" ng-app="main">
+<html lang="en">
 <head>
   <base href="/blog"/>
   <meta charset="utf-8">
@@ -55,10 +55,11 @@
 </head>
 <body>
 <div class="xs-blog xs-blog--blogpost mdl-layout mdl-layout--fixed-header mdl-js-layout">
-  <div class="site-header mdl-layout__header mdl-layout__header--waterfall">
+  <header class="site-header mdl-layout__header mdl-layout__header--waterfall">
     <div class="mdl-layout__header-row">
       <span class="site-title mdl-layout-title mdl-layout--large-screen-only">
-        <img class="site-logo-image" src="">
+        <!--<img class="site-logo-image" src="">-->
+        Xi Shen's Blog
       </span>
       <!-- Add spacer, to align navigation to the right in desktop -->
       <div class="site-header-spacer mdl-layout-spacer"></div>
@@ -68,7 +69,7 @@
           <a class="mdl-navigation__link mdl-typography--text-uppercase" href="/blog/">Blog</a>
           <a class="mdl-navigation__link mdl-typography--text-uppercase" href="/online-tools/">Online Tools</a>
           {% if is_admin %}
-          <a class="mdl-navigation__link mdl-typography--text-uppercase" href="">Admin</a>
+          <a class="mdl-navigation__link mdl-typography--text-uppercase" href="/blog/admin/">Admin</a>
           {% endif %}
         </nav>
       </div>
@@ -76,8 +77,8 @@
               <img class="site-logo-image" src="">
             </span>-->
     </div>
-  </div>
-  <main class="mdl-layout__content">
+  </header>
+  <main ng-app="main" class="mdl-layout__content">
     <div class="xs-back">
       <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="/blog/" title="go back"
          role="button">
