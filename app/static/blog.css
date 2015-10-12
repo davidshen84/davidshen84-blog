@@ -188,7 +188,7 @@ body .xs-blog {
   flex-direction: column;
 }
 
-.xs-blog.is-small-screen .xs-blog__posts > .mdl-card.coffee-pic {
+.xs-blog.is-small-screen .xs-blog__posts > .mdl-card.blog-title-banner-0 {
   -webkit-box-ordinal-group: 1;
   -webkit-order: 0;
   -ms-flex-order: 0;
@@ -202,8 +202,8 @@ body .xs-blog {
   order: -1;
 }
 
-.xs-blog .coffee-pic .mdl-card__media {
-  background-image: url('images/coffee.jpg');
+.xs-blog .blog-title-banner-0 .mdl-card__media {
+  background-image: url('https://c1.staticflickr.com/9/8002/7643282900_a08d693073_z.jpg');
 }
 
 .xs-blog .something-else .mdl-card__media {
@@ -254,12 +254,8 @@ body .xs-blog {
   border-bottom-right-radius: 2px;
 }
 
-.xs-blog .on-the-road-again .mdl-card__media {
-  background-image: url('images/road.jpg');
-}
-
-.xs-blog .shopping .mdl-card__media {
-  background-image: url('images/shopping.jpg');
+.xs-blog .blog-title-banner-1 .mdl-card__media {
+  background-image: url('https://c2.staticflickr.com/6/5734/21898438608_bf0ecf62ca_c.jpg');
 }
 
 .xs-blog .xs-blog__posts > .xs-nav {

@@ -16,6 +16,7 @@ try:
 
   dev_appserver.fix_sys_path()
 except ImportError:
+  dev_appserver = None
   print 'gae sdk is required'
   sys.exit(-1)
 
@@ -23,7 +24,7 @@ except ImportError:
 # real test code
 from blog.module.model.blog import Blog
 from google.appengine.ext import testbed
-from datetime import datetime, date
+from datetime import date
 
 
 class BlogTestCase(unittest.TestCase):
@@ -217,6 +218,17 @@ class BlogTestCase(unittest.TestCase):
     blog = Blog.get_newer(old_blog.urlsafe(), False)
 
     self.assertEquals(new_blog, blog.key)
+
+  def testGetRecent(self):
+    for i in range(15):
+      Blog.create("{}_{}".format(self.title1, i), self.content1, self.tags1, created=date(2015, 1, i + 1))
+
+    recent_blogs = Blog.get_recent()
+    latest = recent_blogs[0]
+    oldest = recent_blogs[-1]
+
+    self.assertGreater(latest.created, oldest.created)
+
 
 
 if __name__ == '__main__':

@@ -12,7 +12,7 @@ from urllib import quote
 
 from flask import Flask
 
-from blog.module.myblog import myblog
+from blog.module.myblog import blueprint as myblog
 from blog.module.myblogadmin import myblogadmin
 from blog.module.myblogapi import myblogapi
 from blog.module.mycommentapi import mycommentapi
