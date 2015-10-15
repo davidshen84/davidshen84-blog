@@ -15,7 +15,7 @@
   See the License for the specific language governing permissions and
   limitations under the License
 -->
-<html lang="en">
+<html lang="en" ng-app="main">
 <head>
   <base href="/blog"/>
   <meta charset="utf-8">
@@ -66,10 +66,11 @@
       <!-- Navigation -->
       <div class="site-navigation-container">
         <nav class="site-navigation mdl-navigation">
-          <a class="mdl-navigation__link mdl-typography--text-uppercase" href="/blog/">Blog</a>
-          <a class="mdl-navigation__link mdl-typography--text-uppercase" href="/online-tools/">Online Tools</a>
+          <a class="mdl-navigation__link mdl-typography--text-uppercase" href="/blog/" target="_blank">Blog</a>
+          <a class="mdl-navigation__link mdl-typography--text-uppercase" href="/online-tools/" target="_blank">Online
+            Tools</a>
           {% if is_admin %}
-          <a class="mdl-navigation__link mdl-typography--text-uppercase" href="/blog/admin/">Admin</a>
+            <a class="mdl-navigation__link mdl-typography--text-uppercase" href="/blog/admin/" target="_blank">Admin</a>
           {% endif %}
         </nav>
       </div>
@@ -78,7 +79,7 @@
             </span>-->
     </div>
   </header>
-  <main ng-app="main" class="mdl-layout__content">
+  <main class="mdl-layout__content">
     <div class="xs-back">
       <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="/blog/" title="go back"
          role="button">
