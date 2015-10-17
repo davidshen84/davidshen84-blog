@@ -96,7 +96,7 @@
       {% for b in recent_blogs %}
         <div class="mdl-card blog-title-banner-1 mdl-cell mdl-cell--12-col">
         <div class="mdl-card__media mdl-color-text--grey-50">
-          <h3><a href="entry.html">{{ b.title }}</a></h3>
+          <h3><a href="{{ b.url }}">{{ b.title }}</a></h3>
         </div>
         <div class="mdl-color-text--grey-600 mdl-card__supporting-text">
           {{ b.content|safe }}

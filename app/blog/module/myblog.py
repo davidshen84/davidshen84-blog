@@ -23,10 +23,16 @@ def strip_title(content):
   return re.sub(r'^#.*$', '', content, 1, re.M | re.U).replace(BAD_SP, ' ')
 
 
+def url_for_blog(b):
+  created = b.created
+
+  return url_for('.blog', year=created.year, month=created.month, urlsafe=b.key.urlsafe())
+
+
 @route('/')
 def index():
-  recent_blogs = [{"created": b.created, "title": b.title,
-                   "content": markdown(''.join(strip_title(b.content).splitlines(True)[:10]))}
+  recent_blogs = [{'created': b.created, 'title': b.title, 'url': url_for_blog(b),
+                   'content': markdown(''.join(strip_title(b.content).splitlines(True)[:10]))}
                   for b in Blog.get_recent()]
   latest_blog = Blog.query().order(- Blog.created).get()
 
