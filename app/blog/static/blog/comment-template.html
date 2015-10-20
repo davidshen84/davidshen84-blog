@@ -1,4 +1,4 @@
-<div class="mdl-color-text--primary-contrast mdl-card__supporting-text comments">
+<div class="mdl-color-text--primary-contrast mdl-card__supporting-text comments" ng-controller="CommentCtrl">
   <form novalidate name="form" ng-submit="submit(comment)">
     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell-6-col mdl-textfield mdl-js-textfield">
@@ -33,18 +33,5 @@
     <div class="comment__text">
       {{ comment.comment }}
     </div>
-    <nav class="comment__actions" style="display: none;">
-      <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons" role="presentation">thumb_up</i><span
-          class="visuallyhidden">like comment</span>
-      </button>
-      <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons" role="presentation">thumb_down</i><span
-          class="visuallyhidden">dislike comment</span>
-      </button>
-      <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-        <i class="material-icons" role="presentation">share</i><span class="visuallyhidden">share comment</span>
-      </button>
-    </nav>
   </div>
 </div>

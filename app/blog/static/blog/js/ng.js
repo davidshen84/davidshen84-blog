@@ -8,26 +8,36 @@
 
   angular.module('main', ['ngRoute', 'blogapi'])
     .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
-      $routeProvider
+      /*$routeProvider
         .when('/blog/:year/:month/:urlsafe', {
           templateUrl: 'blog/static/blog/comment-template.html',
           controller: 'CommentCtrl'
         });
 
-      $locationProvider.html5Mode(true);
+       $locationProvider.html5Mode(true);*/
     }])
-    .controller('CommentCtrl', ['$scope', '$route', 'BlogComment', function ($scope, $route, commentService) {
+    .directive('xsComment', function () {
+      return {
+        templateUrl: 'blog/static/blog/comment-template.html',
+        restrict: 'E'
+      };
+    })
+    .controller('CommentCtrl', ['$scope', '$location', 'BlogComment', function ($scope, $location, commentService) {
       var master_comment = {};
+
+      // build params from url
+      var urlSplits = $location.absUrl().split('/');
+      var params = {urlsafe: urlSplits[urlSplits.length - 1]};
+
       $scope.comment = angular.copy(master_comment);
 
-      // get comment data
-      commentService.get({urlsafe: $route.current.params.urlsafe}, function (data) {
+      // get comments for the given blog
+      commentService.get(params, function (data) {
         $scope.comments = data.comments;
       });
 
+      // save comment
       $scope.submit = function (comment) {
-        var params = {"urlsafe": $route.current.params.urlsafe};
-
         commentService.save(params, comment, function (data) {
             $scope.comments.unshift(data);
             $scope.comment = angular.copy(master_comment);
