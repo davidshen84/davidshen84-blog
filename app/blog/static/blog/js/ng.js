@@ -17,7 +17,8 @@
       $locationProvider.html5Mode(true);
     }])
     .controller('CommentCtrl', ['$scope', '$route', 'BlogComment', function ($scope, $route, commentService) {
-      $scope.comment = {};
+      var master_comment = {};
+      $scope.comment = angular.copy(master_comment);
 
       // get comment data
       commentService.get({urlsafe: $route.current.params.urlsafe}, function (data) {
@@ -29,7 +30,7 @@
 
         commentService.save(params, comment, function (data) {
             $scope.comments.unshift(data);
-            // TODO reset form
+            $scope.comment = angular.copy(master_comment);
           }
         );
       };
