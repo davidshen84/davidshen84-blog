@@ -6,15 +6,9 @@
       return $resource('/blog/comment/api/sync/:urlsafe');
     }]);
 
-  angular.module('main', ['ngRoute', 'blogapi'])
-    .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
-      /*$routeProvider
-        .when('/blog/:year/:month/:urlsafe', {
-          templateUrl: 'blog/static/blog/comment-template.html',
-          controller: 'CommentCtrl'
-        });
-
-       $locationProvider.html5Mode(true);*/
+  angular.module('main', ['blogapi'])
+    .config([function () {
+      // left empty
     }])
     .directive('xsComment', function () {
       return {
@@ -22,27 +16,24 @@
         restrict: 'E'
       };
     })
-    .controller('CommentCtrl', ['$scope', '$location', 'BlogComment', function ($scope, $location, commentService) {
-      var master_comment = {};
+    .controller('CommentCtrl', ['$scope', '$location', 'BlogComment', function ($scope, $location, Comment) {
+      var default_comment = {};
 
       // build params from url
       var urlSplits = $location.absUrl().split('/');
       var params = {urlsafe: urlSplits[urlSplits.length - 1]};
 
-      $scope.comment = angular.copy(master_comment);
+      $scope.comment = new Comment(angular.copy(default_comment));
 
       // get comments for the given blog
-      commentService.get(params, function (data) {
-        $scope.comments = data.comments;
-      });
+      $scope.comments = Comment.query(params);
 
       // save comment
-      $scope.submit = function (comment) {
-        commentService.save(params, comment, function (data) {
-            $scope.comments.unshift(data);
-            $scope.comment = angular.copy(master_comment);
-          }
-        );
+      $scope.submit = function () {
+        $scope.comment.$save(params, function (comment) {
+          $scope.comments.unshift(comment);
+          $scope.comment = new Comment(angular.copy(default_comment));
+        });
       };
     }]);
 })(angular);

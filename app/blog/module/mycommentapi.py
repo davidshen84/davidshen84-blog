@@ -1,5 +1,7 @@
 # -*- coding: utf-8-unix -*-
 
+import json
+
 from flask import Blueprint, request, jsonify
 
 from blog.module.model.blog import Blog
@@ -28,7 +30,7 @@ def query(urlsafe):
   else:
     comments = []
 
-  return jsonify(comments=comments)
+  return json.dumps(comments)
 
 
 @route('/sync/<urlsafe>', methods=['POST'])
