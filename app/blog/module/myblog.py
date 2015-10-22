@@ -7,7 +7,7 @@ from flask import Blueprint, render_template, request, abort, redirect, url_for
 from blog.module import is_admin
 from blog.module.model.blog import Blog
 from blog.module.model.blogcomment import BlogComment
-from lib.markdown2 import markdown
+from lib.markdown import markdown
 
 BAD_SP = unichr(0xa0)
 
