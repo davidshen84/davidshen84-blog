@@ -21,9 +21,10 @@ describe('controllers', function() {
 
       scope = $rootScope.$new();
       ctrl = $controller('ListCtrl',
-                         { "$scope": scope,
-                           "Blog": blog
-                         });
+        {
+          "$scope": scope,
+          "Blog": blog
+        });
     }));
 
     it('should resolve ListCtrl', function() {
@@ -36,8 +37,7 @@ describe('controllers', function() {
 
     it('should call Blog.update', function() {
       scope.setPubStat(0, 'urlsafe', true);
-      blog.update.should.have.been
-        .calledWith({"urlsafe": 'urlsafe'}, {"published": true}, sinon.match.func);
+      blog.update.should.have.been.calledWith({"urlsafe": 'urlsafe'}, {"published": true}, sinon.match.func);
     });
 
     it('should return published icon', function() {
@@ -76,12 +76,15 @@ describe('controllers', function() {
       scope = $rootScope.$new();
 
       ctrl = $controller('CreateEditCtrl',
-                         { "$scope": scope,
-                           "$routeParams": routeParams,
-                           "Blog": blog,
-                           "BlogComment": blogCmt,
-                           "editor": function() {return editor;}
-                         });
+        {
+          "$scope": scope,
+          "$routeParams": routeParams,
+          "Blog": blog,
+          "BlogComment": blogCmt,
+          "editor": function () {
+            return editor;
+          }
+        });
     }));
 
     it('should call Blog.get and BlogComment.get when urlsafe is set', function() {
@@ -113,12 +116,15 @@ describe('controllers', function() {
       scope = $rootScope.$new();
 
       ctrl = $controller('CreateEditCtrl',
-                         { "$scope": scope,
-                           "$routeParams": routeParams,
-                           "Blog": blog,
-                           "BlogComment": blogCmt,
-                           "editor": function() {return editor;}
-                         });
+        {
+          "$scope": scope,
+          "$routeParams": routeParams,
+          "Blog": blog,
+          "BlogComment": blogCmt,
+          "editor": function () {
+            return editor;
+          }
+        });
     }));
 
     it('should be able to save new blog', function() {

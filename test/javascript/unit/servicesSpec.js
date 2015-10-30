@@ -14,8 +14,8 @@ describe('Blog service', function() {
   });
 
   it('should make GET request to /blog/api/sync', inject(function (Blog) {
-    $http.when('GET', '/blog/api/sync', undefined).respond('');
-    $http.expect('GET', '/blog/api/sync', undefined);
+    $http.when('GET', '/blog/api/sync').respond('');
+    $http.expect('GET', '/blog/api/sync');
     Blog.get();
 
     $http.flush();

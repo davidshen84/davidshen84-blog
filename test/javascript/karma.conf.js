@@ -7,19 +7,18 @@ module.exports = function(config) {
     // base path, that will be used to resolve files and exclude
     basePath: '',
 
-
     // frameworks to use
     frameworks: ['mocha', 'chai', 'sinon-chai'],
 
 
     // list of files / patterns to load in the browser
     files: [
-      '../../../bower_components/angular/angular.js',
-      '../../../bower_components/angular-route/angular-route.js',
-      '../../../bower_components/angular-resource/angular-resource.js',
-      '../../../bower_components/angular-mocks/angular-mocks.js',
-      '../../../bower_components/epiceditor/epiceditor/js/epiceditor.js',
-      '../../main/app/static/blog/admin/js/*.js',
+      '../../bower_components/angular-latest/build/angular.js',
+      '../../bower_components/angular-latest/build/angular-route.js',
+      '../../bower_components/angular-latest/build/angular-resource.js',
+      '../../bower_components/angular-mocks/angular-mocks.js',
+      '../../bower_components/epiceditor/epiceditor/js/epiceditor.js',
+      '../../app/blog/static/admin/js/*.js',
       'unit/*.js'
     ],
 

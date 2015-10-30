@@ -32,5 +32,8 @@
       "js": "dist/*.min.js",
       "template": "template/accordion/*.js"
     }
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.3.20"
   }
 }
