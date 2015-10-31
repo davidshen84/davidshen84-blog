@@ -9,19 +9,60 @@ describe('eeditor directive', function() {
   }));
 });
 
-// i have no idea...
-describe.skip('ng route', function () {
+describe('ng route', function () {
+  'use strict';
+
+  var should = chai.should();
+  var httpBackend, route, location, rootScope;
+
   beforeEach(module('ngapp'));
-
-  it('should route to /blog/admin', inject(function ($route, $location, $browser) {
-    var routeObj = $route.routes['/blog/admin'],
-        spyCtrl = sinon.spy();
-
-    routeObj.should.not.be.equal(undefined);
-    routeObj.controller = spyCtrl;
-    $location.path('/blog/admin/');
-
-    spyCtrl.called.should.be.ok;
+  beforeEach(inject(function ($rootScope, $route, $location, $httpBackend) {
+    rootScope = $rootScope;
+    route = $route;
+    httpBackend = $httpBackend;
+    location = $location;
   }));
+
+  afterEach(function () {
+    httpBackend.flush();
+    httpBackend.verifyNoOutstandingRequest();
+  });
+
+  it('should route to /blog/admin/', function () {
+    should.not.exist(route.current);
+    httpBackend.whenGET('/blog/static/admin/bloglist.html').respond('');
+
+    location.path('/blog/admin/');
+    rootScope.$digest();
+
+    var currentRoute = route.current;
+
+    currentRoute.controller.should.be.equal('ListCtrl');
+    currentRoute.templateUrl.should.be.equal('/blog/static/admin/bloglist.html');
+  });
+
+  it('should route to /blog/admin/edit/some-blog', function () {
+    should.not.exist(route.current);
+
+    httpBackend.whenGET('/blog/static/admin/blogedit.html').respond('');
+    location.path('/blog/admin/edit/xyz');
+    rootScope.$digest();
+
+    var currentRoute = route.current;
+    currentRoute.controller.should.be.equal('CreateEditCtrl');
+    currentRoute.templateUrl.should.be.equal('/blog/static/admin/blogedit.html');
+  });
+
+  it('should route to /blog/admin/new', function () {
+    should.not.exist(route.current);
+
+    httpBackend.whenGET('/blog/static/admin/blogedit.html').respond('');
+    location.path('/blog/admin/new');
+    rootScope.$digest();
+
+    var currentRoute = route.current;
+    currentRoute.controller.should.be.equal('CreateEditCtrl');
+    currentRoute.templateUrl.should.be.equal('/blog/static/admin/blogedit.html');
+  });
 });
 

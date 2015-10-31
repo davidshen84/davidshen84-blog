@@ -9,6 +9,7 @@ describe('Blog service', function() {
   }));
 
   afterEach(function(){
+    $http.flush();
     $http.verifyNoOutstandingExpectation();
     $http.verifyNoOutstandingRequest();
   });
@@ -17,16 +18,12 @@ describe('Blog service', function() {
     $http.when('GET', '/blog/api/sync').respond('');
     $http.expect('GET', '/blog/api/sync');
     Blog.get();
-
-    $http.flush();
   }));
 
   it('should make PUT request to /blog/api/sync/test', inject(function(Blog) {
     $http.when('PUT', '/blog/api/sync/test').respond(null);
     $http.expect('PUT', '/blog/api/sync/test', {});
     Blog.update({ "urlsafe": "test"}, {});
-
-    $http.flush();
   }));
 
   it('should make POST request to /blog/api/sync/test', inject(function(Blog) {
@@ -39,8 +36,6 @@ describe('Blog service', function() {
     $http.when('POST', '/blog/api/sync').respond(null);
     $http.expect('POST', '/blog/api/sync', data);
     Blog.save(data);
-
-    $http.flush();
   }));
 });
 
