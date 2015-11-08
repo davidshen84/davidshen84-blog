@@ -19,7 +19,8 @@ module.exports = function(config) {
       '../../bower_components/angular-mocks/angular-mocks.js',
       '../../bower_components/epiceditor/epiceditor/js/epiceditor.js',
       '../../app/blog/static/admin/js/*.js',
-      'unit/*.js'
+      // '../../app/blog/static/blog/js/*.js',
+      'spec/*.js'
     ],
 
 
@@ -31,8 +32,14 @@ module.exports = function(config) {
 
     // test results reporter to use
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
 
+    // define coverage scope
+    preprocessors: {
+      '../../app/blog/static/admin/js/*.js': ['coverage'],
+      '../../app/blog/static/blog/js/*.js': ['coverage'],
+      'spec/*.js': ['coverage']
+    },
 
     // web server port
     port: 9876,
