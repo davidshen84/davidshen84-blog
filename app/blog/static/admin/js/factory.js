@@ -1,42 +1,42 @@
-angular.module('app.factory', [])
-  .factory('editor', function() {
-    'use strict';
+(function (angular) {
+  'use strict';
 
-    var epiceditor;
+  angular.module('app.factory', [])
+    .factory('editor', function () {
+      var epiceditor;
 
-    return function (opt) {
-      if (opt) {
-        epiceditor = new EpicEditor(opt);
-      } else if (!epiceditor) {
-        throw 'option is required for initialize.';
-      }
+      return function (opt) {
+        if (opt) {
+          epiceditor = new EpicEditor(opt);
+        } else if (!epiceditor) {
+          throw 'option is required for initialization.';
+        }
 
-      return epiceditor;
-    };
-  })
-  .directive('eeditor', function () {
-    'use strict';
+        return epiceditor;
+      };
+    })
+    .directive('eeditor', function () {
+      return {
+        "restrict": 'E',
+        "scope": {
+          isclean: '='
+        },
+        "template": '<div></div>',
+        "replace": true,
+        "controller": ['$scope', '$element', 'editor', function ($scope, $element, editor) {
+          var opt = {
+              container: $element[0],
+              basePath: '/static/lib/epiceditor',
+              clientSideStorage: false
+            },
+            ctrl = editor(opt).load();
 
-    return {
-      "restrict": 'E',
-      "transclude": true,
-      "scope": {},
-      "template": '<div></div>',
-      "replace": true,
-      "controller": ['$scope', '$element', 'editor', function($scope, $element, editor) {
-        var opt = { container: $element[0],
-                    basePath: '/static/epiceditor',
-                    clientSideStorage: false },
-            ctx = angular.element($element.context),
-            _e = editor(opt).load();
-
-        // bind events
-        if (ctx.attr('onupdate')) {
-          _e.on('update', function () {
-            // apply the expression to the directive's parent controller
-            $scope.$parent.$apply(ctx.attr('onupdate'));
+          ctrl.on('update', function () {
+            $scope.$apply(function (scope) {
+              scope.isclean = false;
+            });
           });
-        }}]
-    };
-  });
-
+        }]
+      };
+    });
+})(angular);

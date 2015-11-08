@@ -6,7 +6,7 @@ app/blog/module/*.zip
 app/lib/*
 !app/lib/__init__.py
 
-app/static/libs/
+app/static/lib/
 
 bower_components/
 node_modules/

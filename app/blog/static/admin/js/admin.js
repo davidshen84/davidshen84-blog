@@ -67,7 +67,7 @@ angular.module('ngapp.controller', ['blogapi'])
          });
 
          // try to get comments
-         $scope.comments = BlogComment.get({"urlsafe": urlsafe});
+         $scope.comments = BlogComment.query({"urlsafe": urlsafe});
        }
 
        $scope.save = function () {
