@@ -1,141 +1,158 @@
-describe('controllers', function() {
+describe('controllers', function () {
   'use strict';
 
   beforeEach(module('ngapp.controller'));
 
   // RootCtrl is just simple :)
-  it('should resolve RootCtrl', inject(function($controller) {
+  it('should resolve RootCtrl', inject(function ($controller) {
     var ctrl = $controller('RootCtrl');
     ctrl.should.be.ok;
   }));
 
-  describe('ListCtrl', function() {
-    var ctrl, scope,  blog;
+  describe('ListCtrl', function () {
+    var ctrl, scope, blog, location;
 
-    beforeEach(inject(function($controller, $rootScope) {
+    beforeEach(inject(function ($controller, $rootScope) {
       blog = {
-        "get": sinon.spy(),
-        "update": sinon.spy(),
-        "remove": sinon.spy()
+        urlsafe: 'urlsafe',
+        query: sinon.spy(),
+        update: sinon.spy(),
+        remove: sinon.spy()
       };
 
       scope = $rootScope.$new();
+      location = {
+        url: {
+          bind: sinon.spy()
+        }
+      };
       ctrl = $controller('ListCtrl',
         {
-          "$scope": scope,
-          "Blog": blog
+          $scope: scope,
+          Blog: blog,
+          $location: location
         });
     }));
 
-    it('should resolve ListCtrl', function() {
+    it('should resolve ListCtrl', function () {
       ctrl.should.be.ok;
     });
 
-    it('should call Blog.get on start', function() {
-      blog.get.should.have.been.called;
+    it('should call url.bind', function () {
+      location.url.bind.should.have.been.calledWith(location);
     });
 
-    it('should call Blog.update', function() {
-      scope.setPubStat(0, 'urlsafe', true);
+    it('should call Blog.get on start', function () {
+      blog.query.should.have.been.called;
+    });
+
+    it('should call Blog.update', function () {
+      scope.setPubStatus(blog);
       blog.update.should.have.been.calledWith({"urlsafe": 'urlsafe'}, {"published": true}, sinon.match.func);
     });
 
-    it('should return published icon', function() {
-      scope.pubIcon(true).should.be.equal('glyphicon glyphicon-eye-open');
-      scope.pubIcon(false).should.be.equal('glyphicon glyphicon-eye-close');
+    it('should return visibility icon', function () {
+      scope.pubIcon(true).should.be.equal('visibility');
+      scope.pubIcon(false).should.be.equal('visibility_off');
     });
 
-    it('should call Blog.remove', function() {
+    it('should call Blog.remove', function () {
       scope.deleteBlog('test');
       blog.remove.should.have.been.calledWith({"urlsafe": 'test'});
     });
   });
 
-  describe('CreateEditCtrl w/ exists blog', function() {
+  describe('CreateEditCtrl editing exists blog', function () {
     var ctrl, scope, blog, blogCmt, routeParams, editor;
-
-    beforeEach(module('ngapp.controller'));
-    beforeEach(inject(function($controller, $rootScope) {
+    
+    beforeEach(inject(function ($controller, $rootScope) {
       blog = {
-        "get": sinon.spy(),
-        "update": sinon.spy()
+        query: sinon.spy(),
+        update: sinon.spy(),
+        get: sinon.spy()
       };
 
       blogCmt = {
-        "get": sinon.spy()
+        query: sinon.spy()
       };
 
       editor = {
-        "importFile": sinon.spy(),
-        "exportFile": sinon.stub()
+        importFile: sinon.spy(),
+        exportFile: sinon.stub()
       };
 
       routeParams = {
-        "urlsafe": 'test'
+        urlsafe: 'test'
       };
+
       scope = $rootScope.$new();
 
       ctrl = $controller('CreateEditCtrl',
         {
-          "$scope": scope,
-          "$routeParams": routeParams,
-          "Blog": blog,
-          "BlogComment": blogCmt,
-          "editor": function () {
+          $scope: scope,
+          $routeParams: routeParams,
+          Blog: blog,
+          BlogComment: blogCmt,
+          editor: function () {
             return editor;
           }
         });
     }));
 
-    it('should call Blog.get and BlogComment.get when urlsafe is set', function() {
+    it('should call Blog.get and BlogComment.query when urlsafe is set', function () {
       blog.get.should.have.been.calledWith(routeParams);
-      blogCmt.get.should.have.been.calledWith(routeParams);
+      blogCmt.query.should.have.been.calledWith(routeParams);
     });
 
-    it('should update blog', function() {
+    it('should update blog', function () {
       editor.exportFile.returns("#title");
       scope.save();
       blog.update.should.have.been.called;
     });
   });
 
-  describe("CreateEditCtrl w/ new blog", function() {
-    var ctrl, scope, blog, blogCmt, routeParams, editor;
+  describe("CreateEditCtrl create new blog", function () {
+    var ctrl, scope, blog, blogCmt, routeParams, editor, window;
 
-    beforeEach(module('ngapp.controller'));
-    beforeEach(inject(function($controller, $rootScope) {
+    beforeEach(inject(function ($controller, $rootScope) {
       blog = {
-        "save": sinon.spy()
+        save: sinon.spy()
       };
 
       editor = {
-        "exportFile": sinon.stub()
+        exportFile: sinon.stub()
       };
 
       routeParams = {};
       scope = $rootScope.$new();
 
+      window = {
+        alert: sinon.spy()
+      };
+
       ctrl = $controller('CreateEditCtrl',
         {
-          "$scope": scope,
-          "$routeParams": routeParams,
-          "Blog": blog,
-          "BlogComment": blogCmt,
-          "editor": function () {
+          $scope: scope,
+          $routeParams: routeParams,
+          $window: window,
+          Blog: blog,
+          BlogComment: blogCmt,
+          editor: function () {
             return editor;
           }
         });
     }));
 
-    it('should be able to save new blog', function() {
+    it('should be able to save new blog', function () {
       editor.exportFile.returns("#title");
       scope.save();
       blog.save.should.have.been.called;
     });
 
-    it('should not save blog if it does not have title', function() {
+    it('should not save blog if it does not have title', function () {
       editor.exportFile.returns("notitle");
       scope.save();
+      window.alert.should.have.been.calledWith('blog needs a title');
       blog.save.should.not.have.been.called;
     });
   });

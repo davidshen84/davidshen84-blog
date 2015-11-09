@@ -6,8 +6,6 @@
   "globals": {
     "angular": true,
     "EpicEditor": true,
-    "$": true,
-    "document": true,
-    "console": true
+    "$": true
   }
 }

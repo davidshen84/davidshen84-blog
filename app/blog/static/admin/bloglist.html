@@ -1,28 +1,37 @@
-<div class="col-md-12">
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th align="left" style="width: 95%;">
-          <form class="form-inline" role="form">
-            <div class="form-group">
-              <label class="sr-only">Search for</label>
-              <input id="search" ng-model="search" type="text" class="form-control" placeholder="type to search"/>
-            </div>
-          </form>
-        </th>
-        <th colspan="3">Actions
-          <a href="/blog/admin/new" class="btn btn-primary pull-right btn-xs" title="Create new blog"><i class="glyphicon glyphicon-file"></i></a>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-repeat="blog in blogs.blogs | filter:search">
-        <td>{{blog.title}}</td>
-        <td><a ng-class="pubCls(blog.published)" class="btn btn-xs" ng-click="setPubStat($index, blog.urlsafe, !blog.published)"><i ng-class="pubIcon(blog.published)"></i></a></td>
-        <td><a href="/blog/admin/edit/{{blog.urlsafe}}" class="btn btn-xs"><i class="glyphicon glyphicon-edit"></i></a></td>
-        <td><button ng-click="deleteBlog(blog.urlsafe)" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i></button></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
+<table class="mdl-data-table mdl-js-data-table" style="margin: auto;">
+  <thead>
+  <tr>
+    <th class="mdl-data-table__cell--non-numeric" style="width: 80%;">
+      <div class="mdl-textfield mdl-js-textfield ">
+        <input class="mdl-textfield__input" type="text" id="search" ng-model="search">
+        <label class="mdl-textfield__label" for="search">Text...</label>
+      </div>
+    </th>
+    <th colspan="3">Actions
+      <button class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">add</i>
+      </button>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="blog in blogs | filter:search">
+    <td class="mdl-data-table__cell--non-numeric">{{ blog.title }}</td>
+    <td>
+      <button class="mdl-button mdl-js-button mdl-button--icon" ng-click="setPubStatus(blog)">
+        <i class="material-icons">{{ pubIcon(blog.published) }}</i>
+      </button>
+    </td>
+    <td>
+      <button class="mdl-button mdl-js-button mdl-button--icon" ng-click="edit('/blog/admin/edit/' + blog.urlsafe)">
+        <i class="material-icons">edit</i>
+      </button>
+    </td>
+    <td>
+      <button class="mdl-button mdl-js-button mdl-button--icon" ng-click="deleteBlog(blog.urlsafe)">
+        <i class="material-icons">delete</i>
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
