@@ -54,7 +54,7 @@
   </style>
 </head>
 <body>
-<div class="xs-blog xs-blog--blogpost mdl-layout mdl-layout--fixed-header mdl-js-layout">
+<div class="xs-blog xs-blog--blogpost mdl-layout mdl-layout--fixed-header mdl-js-layout is-upgraded">
   {% include 'blog/header.html' %}
   <main class="mdl-layout__content" ng-app="main">
     <div class="xs-back">
@@ -116,32 +116,13 @@
         </a>
       </nav>
     </div>
-    <footer class="mdl-mini-footer">
-      <div class="mdl-mini-footer--left-section">
-        <button class="mdl-mini-footer--social-btn social-btn social-btn__twitter">
-          <span class="visuallyhidden">Twitter</span>
-        </button>
-        <button class="mdl-mini-footer--social-btn social-btn social-btn__blogger">
-          <span class="visuallyhidden">Facebook</span>
-        </button>
-        <button class="mdl-mini-footer--social-btn social-btn social-btn__gplus">
-          <span class="visuallyhidden">Google Plus</span>
-        </button>
-      </div>
-      <div class="mdl-mini-footer--right-section">
-        <button class="mdl-mini-footer--social-btn social-btn__share">
-          <i class="material-icons" role="presentation">share</i>
-          <span class="visuallyhidden">share</span>
-        </button>
-      </div>
-    </footer>
+    {% include 'blog/footer.html' %}
   </main>
   <div class="mdl-layout__obfuscator"></div>
 </div>
+<script src="/static/lib/material/material.min.js"></script>
 <script src="/static/lib/angular/angular.min.js"></script>
 <script src="/static/lib/angular/angular-resource.min.js"></script>
-<script src="/static/lib/angular/angular-route.min.js"></script>
-<script src="/static/lib/material/material.min.js"></script>
 <script src="/blog/static/blog/js/ng.js"></script>
 </body>
 </html>

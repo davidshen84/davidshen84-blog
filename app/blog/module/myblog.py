@@ -2,7 +2,7 @@
 
 import re
 
-from flask import Blueprint, render_template, request, abort, redirect, url_for
+from flask import Blueprint, render_template, request, abort, url_for
 
 from blog.module import is_admin
 from blog.module.model.blog import Blog
@@ -43,7 +43,8 @@ def index():
 
   return render_template('blog/index.html',
                          recent_blogs=recent_blogs,
-                         latest_blog=latest_blog_url)
+                         latest_blog=latest_blog_url,
+                         is_admin=is_admin())
 
 
 @route('/<int:year>/<int:month>/<urlsafe>')

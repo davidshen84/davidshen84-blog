@@ -53,7 +53,7 @@
   </style>
 </head>
 <body>
-<div class="xs-blog mdl-layout mdl-js-layout has-drawer is-upgraded">
+<div class="xs-blog mdl-layout mdl-layout--fixed-header mdl-js-layout is-upgraded">
   {% include 'blog/header.html' %}
   <main class="mdl-layout__content">
     <div class="xs-blog__posts mdl-grid">
@@ -64,30 +64,32 @@
         <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
           <div class="minilogo"></div>
           <div>
-            <strong>The Newist</strong>
-            <span>2 days ago</span>
+            <strong>Picture of the day</strong>
+            <span>Some time ago</span>
           </div>
         </div>
       </div>
       <div class="mdl-card something-else mdl-cell mdl-cell--8-col mdl-cell--4-col-desktop">
-        <button class="mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--fab mdl-color--accent">
-          <i class="material-icons mdl-color-text--white" role="presentation">add</i>
-          <span class="visuallyhidden">add</span>
-        </button>
+        {% if is_admin %}
+          <button class="mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--fab mdl-color--accent"
+                  onclick="location.href='/blog/admin/'">
+            <i class="material-icons mdl-color-text--white" role="presentation">add</i>
+            <span class="visuallyhidden">add</span>
+          </button>
+        {% endif %}
         <div class="mdl-card__media mdl-color--white mdl-color-text--grey-600">
           <img
               src="https://lh3.googleusercontent.com/T42wM7bjJp9K3HGHgwcw7QUEcyE_D3XVVZvKB9Z6UlpY9u2cXctiNb10h1jJdu40AK1YEruEuZWBO5i81QJADuxX0m7uSq9jzYVNm1anVh1USHtmz4QkRfWtuMiJcrk4drEyVeLwUHKlhEmFRwwXmH-5yPKUJg2kfinDtaoDmaMKACGV-nGddBGkR3u4vAVvDflwEzgwQF_LUDcGx_XqxD-SwRyysGZBLkhO7OhJdWOPxPQq2PSaiAMloWEFnNCdD16mCe4hCFYIoziVtMpNO0kHDAxVqpFBb4p2pAJVk80eGx96D0N4Anl_S_LSNwres0ExAGmghAjg_SrzzeldHx3YNKy2El92_Lu9oJDOiohJ9XtqNJbUSrHinWW1uSIqPv4LoiGUPDEVvTwH5HdjJfCLZlY7sAlKUmYEQ83HrWobj7Ec6cD4Ei6SGQ5Xr50xrgdvR3j2D01ipE2ZVinA1Xl1TWqDNNAI8BcqoAD9WekqG6oM3P44yp4JAw9bN_0cosiDdKmVY-WYU5HCEnAXMqQoc88a3mkHg9r7ob5OosU=s500-no">
-          +1,337
+          A mushroom
         </div>
         <div class="mdl-card__supporting-text meta meta--fill mdl-color-text--grey-600">
           <div>
-            <strong>The Newist</strong>
+            <strong>Me on SNS</strong>
           </div>
           <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="menubtn">
-            <li class="mdl-menu__item">About</li>
-            <li class="mdl-menu__item">Message</li>
-            <li class="mdl-menu__item">Favorite</li>
-            <li class="mdl-menu__item">Search</li>
+            <li class="mdl-menu__item">Twitter</li>
+            <li class="mdl-menu__item">Facebook</li>
+            <li class="mdl-menu__item">G+</li>
           </ul>
           <button id="menubtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
             <i class="material-icons" role="presentation">more_vert</i>
@@ -97,20 +99,20 @@
       </div>
       {% for b in recent_blogs %}
         <div class="mdl-card blog-title-banner-1 mdl-cell mdl-cell--12-col">
-        <div class="mdl-card__media mdl-color-text--grey-50">
-          <h3><a href="{{ b.url }}">{{ b.title }}</a></h3>
-        </div>
-        <div class="mdl-color-text--grey-600 mdl-card__supporting-text">
-          {{ b.content|safe }}
-        </div>
-        <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
-          <div class="minilogo"></div>
-          <div>
-            <strong>The Newist</strong>
-            <span>{{ b.created }}</span>
+          <div class="mdl-card__media mdl-color-text--grey-50">
+            <h3><a href="{{ b.url }}">{{ b.title }}</a></h3>
+          </div>
+          <div class="mdl-color-text--grey-600 mdl-card__supporting-text">
+            {{ b.content|safe }}
+          </div>
+          <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
+            <div class="minilogo"></div>
+            <div>
+              <strong>The Newist</strong>
+              <span>{{ b.created }}</span>
+            </div>
           </div>
         </div>
-      </div>
       {% endfor %}
       <nav class="xs-nav mdl-cell mdl-cell--12-col">
         <div class="section-spacer"></div>
@@ -122,30 +124,11 @@
         </a>
       </nav>
     </div>
-    <footer class="mdl-mini-footer">
-      <div class="mdl-mini-footer--left-section">
-        <button class="mdl-mini-footer--social-btn social-btn social-btn__twitter">
-          <span class="visuallyhidden">Twitter</span>
-        </button>
-        <button class="mdl-mini-footer--social-btn social-btn social-btn__blogger">
-          <span class="visuallyhidden">Facebook</span>
-        </button>
-        <button class="mdl-mini-footer--social-btn social-btn social-btn__gplus">
-          <span class="visuallyhidden">Google Plus</span>
-        </button>
-      </div>
-      <div class="mdl-mini-footer--right-section">
-        <button class="mdl-mini-footer--social-btn social-btn__share">
-          <i class="material-icons" role="presentation">share</i>
-          <span class="visuallyhidden">share</span>
-        </button>
-      </div>
-    </footer>
+    {% include 'blog/footer.html' %}
   </main>
   <div class="mdl-layout__obfuscator"></div>
 </div>
 <script src="/static/lib/material/material.min.js"></script>
-</body>
 <script>
   Array.prototype.forEach.call(document.querySelectorAll('.mdl-card__media'), function (el) {
     var link = el.querySelector('a');
@@ -161,4 +144,5 @@
     });
   });
 </script>
+</body>
 </html>
