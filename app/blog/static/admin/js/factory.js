@@ -21,7 +21,7 @@
         "scope": {
           isclean: '='
         },
-        "template": '<div></div>',
+        "template": '<div style="height: 500px;"></div>',
         "replace": true,
         "controller": ['$scope', '$element', 'editor', function ($scope, $element, editor) {
           var opt = {

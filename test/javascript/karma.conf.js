@@ -18,6 +18,7 @@ module.exports = function(config) {
       '../../bower_components/angular-latest/build/angular-resource.js',
       '../../bower_components/angular-mocks/angular-mocks.js',
       '../../bower_components/epiceditor/epiceditor/js/epiceditor.js',
+      '../../bower_components/material-design-lite/material.js',
       '../../app/blog/static/admin/js/*.js',
       // '../../app/blog/static/blog/js/*.js',
       'spec/*.js'
@@ -37,8 +38,8 @@ module.exports = function(config) {
     // define coverage scope
     preprocessors: {
       '../../app/blog/static/admin/js/*.js': ['coverage'],
-      '../../app/blog/static/blog/js/*.js': ['coverage'],
-      'spec/*.js': ['coverage']
+      '../../app/blog/static/blog/js/*.js': ['coverage']
+      //'spec/*.js': ['coverage']
     },
 
     // web server port

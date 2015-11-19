@@ -3,12 +3,6 @@ describe('controllers', function () {
 
   beforeEach(module('ngapp.controller'));
 
-  // RootCtrl is just simple :)
-  it('should resolve RootCtrl', inject(function ($controller) {
-    var ctrl = $controller('RootCtrl');
-    ctrl.should.be.ok;
-  }));
-
   describe('ListCtrl', function () {
     var ctrl, scope, blog, location;
 
@@ -62,9 +56,30 @@ describe('controllers', function () {
     });
   });
 
+  describe('CreateEditCtrl common function', function () {
+
+    it('should initialize MDL components', inject(function ($rootScope, $controller) {
+      var componentHandlerMock = sinon.mock(componentHandler);
+      componentHandlerMock.expects('upgradeAllRegistered').once();
+
+      $controller('CreateEditCtrl',
+        {
+          $scope: $rootScope.$new(),
+          $routeParams: {
+            urlsafe: 'urlsafe'
+          },
+          editor: function () {
+            return {};
+          }
+        });
+      componentHandlerMock.verify();
+    }));
+
+  });
+
   describe('CreateEditCtrl editing exists blog', function () {
     var ctrl, scope, blog, blogCmt, routeParams, editor;
-    
+
     beforeEach(inject(function ($controller, $rootScope) {
       blog = {
         query: sinon.spy(),

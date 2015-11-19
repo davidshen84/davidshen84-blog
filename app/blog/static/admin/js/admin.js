@@ -1,9 +1,7 @@
-(function (angular) {
+(function (angular, componentHandler) {
   'use strict';
 
   angular.module('ngapp.controller', ['blogapi'])
-    .controller('RootCtrl', function () {
-    })
     .controller('ListCtrl',
       ['$scope', '$timeout', '$filter', '$location', 'Blog',
         function ($scope, $timeout, $filter, $location, Blog) {
@@ -39,10 +37,15 @@
                 }, 500);
               });
           };
+
+          $scope.newBlog = function () {
+            $location.url('/blog/admin/new');
+          };
         }])
     .controller('CreateEditCtrl',
-      ['$scope', '$routeParams', '$interpolate', '$sce', '$window', 'Blog', 'BlogComment', 'editor',
-        function ($scope, $routeParams, $interpolate, $sce, $window, Blog, BlogComment, editor) {
+      ['$scope', '$routeParams', '$interpolate', '$sce', '$window', '$location', 'Blog', 'BlogComment', 'editor',
+        function ($scope, $routeParams, $interpolate, $sce, $window, $location, Blog, BlogComment, editor) {
+          componentHandler.upgradeAllRegistered();
 
           var titlePattern = /^#.*$/m;
 
@@ -129,5 +132,9 @@
 
             return null;
           };
+
+          $scope.cancel = function () {
+            $location.url('/blog/admin');
+          };
         }]);
-})(angular);
+})(angular, componentHandler);

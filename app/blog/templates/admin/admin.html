@@ -15,7 +15,7 @@
   See the License for the specific language governing permissions and
   limitations under the License
 -->
-<html lang="en" ng-app="ngapp">
+<html lang="en">
 <head>
   <base href="/blog"/>
   <meta charset="utf-8">
@@ -56,8 +56,8 @@
 <body>
 <div class="xs-blog mdl-layout mdl-layout--fixed-header mdl-js-layout is-upgraded">
   {% include 'blog/header.html' %}
-  <main class="mdl-layout__content">
-    <ng-view></ng-view>
+  <main class="mdl-layout__content" ng-app="ngapp">
+    <div class="mdl-grid" ng-view></div>
     {% include 'blog/footer.html' %}
   </main>
   <div class="mdl-layout__obfuscator"></div>
