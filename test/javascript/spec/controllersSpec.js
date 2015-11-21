@@ -1,7 +1,7 @@
 describe('controllers', function () {
   'use strict';
 
-  beforeEach(module('ngapp.controller'));
+  beforeEach(module('ngapp.controller', 'blogapi'));
 
   describe('ListCtrl', function () {
     var ctrl, scope, blog, location;
@@ -78,97 +78,137 @@ describe('controllers', function () {
   });
 
   describe('CreateEditCtrl editing exists blog', function () {
-    var ctrl, scope, blog, blogCmt, routeParams, editor;
+    var ctrl, scope;
 
-    beforeEach(inject(function ($controller, $rootScope) {
-      blog = {
-        query: sinon.spy(),
-        update: sinon.spy(),
-        get: sinon.spy()
-      };
-
-      blogCmt = {
+    // some predefined data
+    var blogCmt = {
         query: sinon.spy()
-      };
-
-      editor = {
-        importFile: sinon.spy(),
-        exportFile: sinon.stub()
-      };
-
+      },
       routeParams = {
         urlsafe: 'test'
+      },
+      eeditor = {
+        importFile: sinon.spy(),
+        exportFile: sinon.stub()
+      },
+      testBlog = {
+        title: 'test',
+        content: 'test',
+        tags: ['tags']
       };
 
+    beforeEach(inject(function ($controller, $rootScope) {
       scope = $rootScope.$new();
+    }));
+
+    it('should call Blog.get and BlogComment.query when urlsafe is set', inject(function ($controller, Blog) {
+      var blogGetStub = sinon.stub(Blog, 'get');
+      ctrl = $controller('CreateEditCtrl',
+        {
+          $scope: scope,
+          $routeParams: routeParams,
+          Blog: Blog,
+          BlogComment: blogCmt,
+          editor: function () {
+            return eeditor;
+          }
+        });
+      blogGetStub.should.have.been.calledWith(routeParams);
+      blogCmt.query.should.have.been.calledWith(routeParams);
+    }));
+
+    it('should import blog content to eeditor after Blog.get succeed', inject(function ($controller, Blog) {
+      var blogGetStub = sinon.stub(Blog, 'get');
+      blogGetStub.callsArgWith(1, testBlog);
 
       ctrl = $controller('CreateEditCtrl',
         {
           $scope: scope,
           $routeParams: routeParams,
-          Blog: blog,
+          Blog: Blog,
           BlogComment: blogCmt,
           editor: function () {
-            return editor;
+            return eeditor;
           }
         });
+
+      eeditor.importFile.should.have.been.called;
     }));
 
-    it('should call Blog.get and BlogComment.query when urlsafe is set', function () {
-      blog.get.should.have.been.calledWith(routeParams);
-      blogCmt.query.should.have.been.calledWith(routeParams);
-    });
+    it('should update blog', inject(function ($controller, Blog) {
+      // define stub behavior
+      sinon.stub(Blog, 'get').callsArgWith(1, testBlog);
+      var blogUpdateStub = sinon.stub(Blog, 'update').callsArgWith(2, {msg: 'ok'});
+      eeditor.exportFile.returns("#title");
 
-    it('should update blog', function () {
-      editor.exportFile.returns("#title");
+      ctrl = $controller('CreateEditCtrl',
+        {
+          $scope: scope,
+          $routeParams: routeParams,
+          Blog: Blog,
+          BlogComment: blogCmt,
+          editor: function () {
+            return eeditor;
+          }
+        });
       scope.save();
-      blog.update.should.have.been.called;
-    });
+      blogUpdateStub.should.have.been.called;
+    }));
   });
 
   describe("CreateEditCtrl create new blog", function () {
-    var ctrl, scope, blog, blogCmt, routeParams, editor, window;
+    var scope;
 
-    beforeEach(inject(function ($controller, $rootScope) {
-      blog = {
-        save: sinon.spy()
-      };
-
-      editor = {
+    var eeditor = {
         exportFile: sinon.stub()
-      };
-
-      routeParams = {};
-      scope = $rootScope.$new();
-
+      },
       window = {
         alert: sinon.spy()
-      };
+      },
+      routeParams = {},
+      blogCmt = {};
 
-      ctrl = $controller('CreateEditCtrl',
+    beforeEach(inject(function ($rootScope) {
+      scope = $rootScope.$new();
+    }));
+
+    it('should call Blog.save to save new blog', inject(function ($controller, Blog) {
+      eeditor.exportFile.returns("#title");
+      sinon.spy(Blog, 'save');
+      $controller('CreateEditCtrl',
         {
           $scope: scope,
           $routeParams: routeParams,
           $window: window,
-          Blog: blog,
+          Blog: Blog,
           BlogComment: blogCmt,
           editor: function () {
-            return editor;
+            return eeditor;
           }
         });
+      scope.save();
+      Blog.save.should.have.been.called;
     }));
 
-    it('should be able to save new blog', function () {
-      editor.exportFile.returns("#title");
-      scope.save();
-      blog.save.should.have.been.called;
-    });
+    it('should not call Blog.save if the blog does not have title', inject(function ($controller, Blog) {
+      eeditor.exportFile.returns("notitle");
+      sinon.spy(Blog, 'save');
 
-    it('should not save blog if it does not have title', function () {
-      editor.exportFile.returns("notitle");
+      $controller('CreateEditCtrl',
+        {
+          $scope: scope,
+          $routeParams: routeParams,
+          $window: window,
+          Blog: Blog,
+          BlogComment: blogCmt,
+          editor: function () {
+            return eeditor;
+          }
+        });
+
       scope.save();
+      Blog.save.should.not.have.been.called;
       window.alert.should.have.been.calledWith('blog needs a title');
-      blog.save.should.not.have.been.called;
-    });
+    }));
   });
 });
