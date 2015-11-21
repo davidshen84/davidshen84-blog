@@ -36,7 +36,7 @@ describe('controllers', function () {
       location.url.bind.should.have.been.calledWith(location);
     });
 
-    it('should call Blog.get on start', function () {
+    it('should call Blog.query on start', function () {
       blog.query.should.have.been.called;
     });
 
@@ -58,23 +58,58 @@ describe('controllers', function () {
 
   describe('CreateEditCtrl common function', function () {
 
-    it('should initialize MDL components', inject(function ($rootScope, $controller) {
-      var componentHandlerMock = sinon.mock(componentHandler);
-      componentHandlerMock.expects('upgradeAllRegistered').once();
+    var scope;
+    var routeParam = {urlsafe: 'test'};
 
+    beforeEach(inject(function ($rootScope) {
+      scope = $rootScope.$new();
+    }));
+
+    it('should initialize MDL components', inject(function ($controller) {
+      sinon.spy(componentHandler, 'upgradeAllRegistered');
       $controller('CreateEditCtrl',
         {
-          $scope: $rootScope.$new(),
-          $routeParams: {
-            urlsafe: 'urlsafe'
-          },
+          $scope: scope,
+          $routeParams: routeParam,
           editor: function () {
             return {};
           }
         });
-      componentHandlerMock.verify();
+      componentHandler.upgradeAllRegistered.should.have.been.called;
     }));
 
+    it('should call BlogComment.remove, then BlogComment.query', inject(function ($controller, BlogComment) {
+      sinon.stub(BlogComment, 'remove').callsArgWith(2, {});
+      sinon.stub(BlogComment, 'query');
+
+      $controller('CreateEditCtrl',
+        {
+          $scope: scope,
+          $routeParams: routeParam,
+          BlogComment: BlogComment,
+          editor: function () {
+            return {};
+          }
+        });
+      scope.deleteComment('test');
+      BlogComment.remove.should.have.been.calledWith(routeParam);
+      BlogComment.query.should.have.been.calledWith(routeParam);
+    }));
+
+    it('should call $location.url', inject(function($controller, $location){
+      sinon.spy($location, 'url');
+      $controller('CreateEditCtrl',
+        {
+          $scope: scope,
+          $routeParams: routeParam,
+          editor: function () {
+            return {};
+          },
+          $location: $location
+        });
+      scope.cancel();
+      $location.url.should.have.been.called;
+    }));
   });
 
   describe('CreateEditCtrl editing exists blog', function () {

@@ -121,7 +121,7 @@
           $scope.deleteComment = function (urlsafe) {
             BlogComment.remove({"urlsafe": urlsafe}, null,
               function () {
-                $scope.comments = BlogComment.get({"urlsafe": urlsafe});
+                $scope.comments = BlogComment.query({"urlsafe": urlsafe});
               });
           };
 
