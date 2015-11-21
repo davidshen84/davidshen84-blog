@@ -1,4 +1,4 @@
-describe('eeditor directive', function() {
+describe('eeditor directive', function () {
   'use strict';
 
   beforeEach(module('app.factory'));
@@ -65,4 +65,3 @@ describe('ng route', function () {
     currentRoute.templateUrl.should.be.equal('/blog/static/admin/blogedit.html');
   });
 });
-

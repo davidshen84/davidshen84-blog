@@ -29,13 +29,27 @@
               basePath: '/static/lib/epiceditor',
               clientSideStorage: false
             },
-            ctrl = editor(opt).load();
+            eeditor = editor(opt).load();
 
-          ctrl.on('update', function () {
+          eeditor.on('update', function () {
             $scope.$apply(function (scope) {
               scope.isclean = false;
             });
           });
+        }]
+      };
+    })
+    .directive('comment', function () {
+      return {
+        restrict: 'E',
+        scope: {
+          'blogUrlsafe': '='
+        },
+        templateUrl: '/blog/static/admin/comment.html',
+        replace: true,
+        controller: ['$scope', 'BlogComment', function ($scope, BlogComment) {
+          console.log($scope.blogUrlsafe);
+          $scope.comments = BlogComment.query({urlsafe: $scope.blogUrlsafe});
         }]
       };
     });

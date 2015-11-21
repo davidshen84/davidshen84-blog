@@ -19,13 +19,6 @@
   </div>
 </div>
 
-<div class="mdl-cell mdl-cell--4-col" style="background-color: beige;">
-  Comments:
-  <ul>
-    <li ng-repeat="comment in comments">
-      <a href="#" ng-click="deleteComment(comment.urlsafe)"><i class="glyphicon glyphicon-remove"></i></a>
-      <a href="mailto:{{comment.email}}">{{comment.screenname}}</a>:<span class="pull-right">{{comment.created}}</span>
-      <div>{{ comment.comment }}</div>
-    </li>
-  </ul>
+<div class="mdl-cell mdl-cell--4-col comment-wrapper">
+  <comment blog-urlsafe="urlsafe"></comment>
 </div>

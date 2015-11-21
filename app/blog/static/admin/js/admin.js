@@ -55,8 +55,8 @@
             return match && match.length > 0 ? match[0].substr(1) : null;
           }
 
-          var isNew = true,
-            urlsafe = $routeParams.urlsafe,
+          $scope.urlsafe = $routeParams.urlsafe;
+          var isNew = $scope.urlsafe ? false: true,
             notificationTemplate = $interpolate(
               '<div class="alert alert-{{type}}" data-timestamp={{timestamp}}>\
                 <button type="button" class="close" data-dismiss="alert">&times;</button>\
@@ -66,16 +66,14 @@
           $scope.isClean = true;
           $scope.notifyMessage = '';
 
-          if (urlsafe) {
-            isNew = false;
-
-            Blog.get({"urlsafe": urlsafe}, function (blog) {
+          if ($scope.urlsafe) {
+            Blog.get({"urlsafe": $scope.urlsafe}, function (blog) {
               editor().importFile(blog.title, blog.content);
               $scope.tags = blog.tags.join(', ');
             });
 
             // try to get comments
-            $scope.comments = BlogComment.query({"urlsafe": urlsafe});
+            $scope.comments = BlogComment.query({"urlsafe": $scope.urlsafe});
           }
 
           $scope.save = function () {
@@ -108,7 +106,7 @@
               );
             } else {
               Blog.update(
-                {"urlsafe": urlsafe},
+                {"urlsafe": $scope.urlsafe},
                 {
                   "content": content,
                   "tags": tags.length ? $scope.tags.split(',') : []

@@ -1,0 +1,15 @@
+.comment-wrapper {
+  background-color: beige;
+  max-height: 500px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.comment-wrapper .mdl-card__title {
+  background-color: #3f51b5;
+}
+
+.comment-wrapper .mdl-card {
+  min-height: 50px;
+  width: 100%;
+}
