@@ -2,10 +2,13 @@
 *.pyo
 *~
 
+dist/
+*.min.css
+
 app/blog/module/*.zip
 app/lib/*
 !app/lib/__init__.py
-
+app/static/maps/
 app/static/lib/
 
 bower_components/
