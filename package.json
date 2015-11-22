@@ -10,9 +10,6 @@
     "gulp-concat": "^2.6.0",
     "gulp-minify-css": "^1.2.1",
     "gulp-sourcemap": "^1.0.1",
-    "gulp-sourcemaps": "^1.6.0",
-    "shelljs": "~0.2.6",
-    "through2": "^2.0.0",
-    "uglify-js": "^2.6.1"
+    "gulp-sourcemaps": "^1.6.0"
   }
 }

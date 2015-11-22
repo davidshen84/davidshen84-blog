@@ -2,18 +2,22 @@
 *.pyo
 *~
 
+# generated files
 dist/
-*.min.css
 
+# vendor libs
 app/blog/module/*.zip
 app/lib/*
 !app/lib/__init__.py
-app/static/maps/
 app/static/lib/
 
+# npm and bower packages
 bower_components/
 node_modules/
+
+# intellij files
 .idea/
 *.iml
 
+# unit test generated files
 test/javascript/coverage

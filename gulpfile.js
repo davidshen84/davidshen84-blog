@@ -7,21 +7,14 @@ var gulp = require('gulp'),
   concate = require('gulp-concat'),
   sourcemaps = require('gulp-sourcemaps');
 
-gulp.task('default', function () {
-  return gulp.src('app/static/*.css')
-    .pipe(sourcemaps.init())
-    .pipe(concate('all.min.css'))
-    .pipe(minifycss())
-    .pipe(sourcemaps.write('maps'))
+gulp.task('copy-to-dist', function () {
+  return gulp.src(['app/**',
+      '!app/static/*.css',
+      '!app/lib/{*.egg-info,*.egg-info/!**}',
+      '!app/lib/{*.dist-info,*.dist-info/!**}',
+      '!app/lib/flask/{testsuite,testsuite/!**}',
+      '!app/lib/werkzeug/{debug,debug/!**}'])
     .pipe(gulp.dest('dist'));
-  /*
-   return gulp.src(['app/!**',
-   '!app/lib/{*.egg-info,*.egg-info/!**}',
-   '!app/lib/{*.dist-info,*.dist-info/!**}',
-   '!app/lib/flask/{testsuite,testsuite/!**}',
-   '!app/lib/werkzeug/{debug,debug/!**}'])
-   .pipe(gulp.dest('dist'));
-   */
 });
 
 gulp.task('css-preprocessor', function () {
@@ -30,9 +23,10 @@ gulp.task('css-preprocessor', function () {
     .pipe(concate('all.min.css'))
     .pipe(minifycss())
     .pipe(sourcemaps.write('maps'))
-    .pipe(gulp.dest('app/static/'));
+    .pipe(gulp.dest('dist/static/'));
 });
 
-gulp.task('watch', function () {
-  return gulp.watch('app/static/*.css', ['css-preprocessor']);
-});
+/*
+ gulp.task('watch', function () {
+ gulp.watch('app/static/!*.css', ['css-preprocessor']);
+ });*/
