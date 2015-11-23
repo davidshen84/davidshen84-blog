@@ -48,7 +48,6 @@
         templateUrl: '/blog/static/admin/comment.html',
         replace: true,
         controller: ['$scope', 'BlogComment', function ($scope, BlogComment) {
-          console.log($scope.blogUrlsafe);
           $scope.comments = BlogComment.query({urlsafe: $scope.blogUrlsafe});
         }]
       };

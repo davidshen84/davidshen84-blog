@@ -1,11 +1,7 @@
 # -*- coding: utf-8-unix -*-
 
-import sys
-
-sys.path.insert(0, 'lib')
-# sys.path.insert(0, 'blog/module')
-# sys.path.insert(0, 'blog/module/werkzeug.zip')
-# sys.path.insert(0, 'blog/module/flask.zip')
+from google.appengine.ext import vendor
+vendor.add('lib')
 
 from urllib import quote
 from flask import Flask
@@ -13,6 +9,7 @@ from blog.module.myblog import blueprint as myblog
 from blog.module.myblogadmin import myblogadmin
 from blog.module.myblogapi import blueprint as myblogapi
 from blog.module.mycommentapi import mycommentapi
+
 
 app = Flask(__name__)
 app.jinja_env.filters['urlencode'] = quote

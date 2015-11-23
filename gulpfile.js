@@ -23,7 +23,7 @@ gulp.task('css-preprocessor', function () {
     .pipe(concate('all.min.css'))
     .pipe(minifycss())
     .pipe(sourcemaps.write('maps'))
-    .pipe(gulp.dest('dist/static/'));
+    .pipe(gulp.dest('app/static/'));
 });
 
 /*

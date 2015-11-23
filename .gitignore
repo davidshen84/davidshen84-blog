@@ -4,6 +4,9 @@
 
 # generated files
 dist/
+*.min.css
+*.map
+
 
 # vendor libs
 app/blog/module/*.zip
