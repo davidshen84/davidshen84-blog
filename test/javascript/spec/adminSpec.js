@@ -1,7 +1,7 @@
 describe('eeditor directive', function () {
   'use strict';
 
-  beforeEach(module('app.factory'));
+  beforeEach(module('admin.directive'));
 
   it('should resolve editor factory', inject(function (editor) {
     editor.should.be.ok;
@@ -15,7 +15,7 @@ describe('ng route', function () {
   var should = chai.should();
   var httpBackend, route, location, rootScope;
 
-  beforeEach(module('ngapp'));
+  beforeEach(module('admin'));
   beforeEach(inject(function ($rootScope, $route, $location, $httpBackend) {
     rootScope = $rootScope;
     route = $route;

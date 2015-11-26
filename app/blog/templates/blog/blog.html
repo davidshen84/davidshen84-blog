@@ -55,7 +55,7 @@
 <body>
 <div class="xs-blog xs-blog--blogpost mdl-layout mdl-layout--fixed-header mdl-js-layout is-upgraded">
   {% include 'blog/header.html' %}
-  <main class="mdl-layout__content" ng-app="main">
+  <main class="mdl-layout__content" ng-app="blog">
     <div class="xs-back">
       <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="/blog/" title="go back"
          role="button">
@@ -122,6 +122,8 @@
 <script src="/static/lib/material/material.min.js"></script>
 <script src="/static/lib/angular/angular.min.js"></script>
 <script src="/static/lib/angular/angular-resource.min.js"></script>
-<script src="/blog/static/blog/js/ng.js"></script>
+<script src="/static/lib/angular/angular-route.min.js"></script>
+<script src="/blog/static/shared/js/blogapi.js"></script>
+<script src="/blog/static/blog/js/blog.js"></script>
 </body>
 </html>

@@ -1,15 +1,7 @@
 (function (angular) {
   'use strict';
 
-  angular.module('blogapi', ['ngResource'])
-    .factory('BlogComment', ['$resource', '$interpolate', function ($resource) {
-      return $resource('/blog/comment/api/sync/:urlsafe');
-    }]);
-
-  angular.module('main', ['blogapi'])
-    .config([function () {
-      // left empty
-    }])
+  angular.module('blog', ['blogapi'])
     .directive('xsComment', function () {
       return {
         templateUrl: 'blog/static/blog/comment-template.html',

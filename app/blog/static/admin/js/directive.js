@@ -1,7 +1,7 @@
 (function (angular) {
   'use strict';
 
-  angular.module('app.factory', [])
+  angular.module('admin.directive', [])
     .factory('editor', function () {
       var epiceditor;
 

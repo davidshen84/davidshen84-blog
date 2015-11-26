@@ -1,7 +1,29 @@
 (function (angular, componentHandler) {
   'use strict';
 
-  angular.module('ngapp.controller', ['blogapi'])
+  angular.module('admin', ['blogapi', 'admin.directive'])
+    .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+
+      $routeProvider
+        .when('/blog/admin/',
+          {
+            "controller": 'ListCtrl',
+            "templateUrl": '/blog/static/admin/bloglist.html'
+          })
+        .when('/blog/admin/edit/:urlsafe*',
+          {
+            "controller": 'CreateEditCtrl',
+            "templateUrl": '/blog/static/admin/blogedit.html'
+          })
+        .when('/blog/admin/new',
+          {
+            "controller": 'CreateEditCtrl',
+            "templateUrl": '/blog/static/admin/blogedit.html'
+          })
+        .otherwise({"redirectTo": '/blog/admin/'});
+
+      $locationProvider.html5Mode(true);
+    }])
     .controller('ListCtrl',
       ['$scope', '$timeout', '$filter', '$location', 'Blog',
         function ($scope, $timeout, $filter, $location, Blog) {

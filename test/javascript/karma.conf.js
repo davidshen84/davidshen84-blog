@@ -1,7 +1,7 @@
 // Karma configuration
 // Generated on Thu Mar 27 2014 15:11:40 GMT+0800 (CST)
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
 
     // base path, that will be used to resolve files and exclude
@@ -19,16 +19,15 @@ module.exports = function(config) {
       '../../bower_components/angular-mocks/angular-mocks.js',
       '../../bower_components/epiceditor/epiceditor/js/epiceditor.js',
       '../../bower_components/material-design-lite/material.js',
+      '../../app/blog/static/shared/js/*.js',
       '../../app/blog/static/admin/js/*.js',
-      // '../../app/blog/static/blog/js/*.js',
+      '../../app/blog/static/blog/js/*.js',
       'spec/*.js'
     ],
 
 
     // list of files to exclude
-    exclude: [
-      
-    ],
+    exclude: [],
 
 
     // test results reporter to use

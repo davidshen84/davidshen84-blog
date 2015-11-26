@@ -1,7 +1,7 @@
 describe('controllers', function () {
   'use strict';
 
-  beforeEach(module('ngapp.controller', 'blogapi'));
+  beforeEach(module('admin', 'blogapi'));
 
   describe('ListCtrl', function () {
     var ctrl, scope, blog, location;
