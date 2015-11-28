@@ -36,6 +36,7 @@ module.exports = function (config) {
 
     // define coverage scope
     preprocessors: {
+      '../../app/blog/static/shared/js/*.js': ['coverage'],
       '../../app/blog/static/admin/js/*.js': ['coverage'],
       '../../app/blog/static/blog/js/*.js': ['coverage']
       //'spec/*.js': ['coverage']
