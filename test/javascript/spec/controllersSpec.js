@@ -96,7 +96,7 @@ describe('controllers', function () {
       BlogComment.query.should.have.been.calledWith(routeParam);
     }));
 
-    it('should call $location.url', inject(function($controller, $location){
+    it('should call $location.url', inject(function ($controller, $location) {
       sinon.spy($location, 'url');
       $controller('CreateEditCtrl',
         {
@@ -191,7 +191,7 @@ describe('controllers', function () {
     }));
   });
 
-  describe("CreateEditCtrl create new blog", function () {
+  describe('CreateEditCtrl create new blog', function () {
     var scope;
 
     var eeditor = {

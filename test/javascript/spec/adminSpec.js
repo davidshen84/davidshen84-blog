@@ -1,23 +1,12 @@
-describe('eeditor directive', function () {
-  'use strict';
-
-  beforeEach(module('admin.directive'));
-
-  it('should resolve editor factory', inject(function (editor) {
-    editor.should.be.ok;
-    editor.should.be.a('function');
-  }));
-});
-
-describe('ng route', function () {
+describe('Admin ng route', function () {
   'use strict';
 
   var should = chai.should();
-  var httpBackend, route, location, rootScope;
+  var httpBackend, route, location, scope;
 
   beforeEach(module('admin'));
   beforeEach(inject(function ($rootScope, $route, $location, $httpBackend) {
-    rootScope = $rootScope;
+    scope = $rootScope;
     route = $route;
     httpBackend = $httpBackend;
     location = $location;
@@ -33,7 +22,7 @@ describe('ng route', function () {
     httpBackend.whenGET('/blog/static/admin/bloglist.html').respond('');
 
     location.path('/blog/admin/');
-    rootScope.$digest();
+    scope.$digest();
 
     var currentRoute = route.current;
 
@@ -46,7 +35,7 @@ describe('ng route', function () {
 
     httpBackend.whenGET('/blog/static/admin/blogedit.html').respond('');
     location.path('/blog/admin/edit/xyz');
-    rootScope.$digest();
+    scope.$digest();
 
     var currentRoute = route.current;
     currentRoute.controller.should.be.equal('CreateEditCtrl');
@@ -58,7 +47,7 @@ describe('ng route', function () {
 
     httpBackend.whenGET('/blog/static/admin/blogedit.html').respond('');
     location.path('/blog/admin/new');
-    rootScope.$digest();
+    scope.$digest();
 
     var currentRoute = route.current;
     currentRoute.controller.should.be.equal('CreateEditCtrl');

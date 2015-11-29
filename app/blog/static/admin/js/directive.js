@@ -23,22 +23,23 @@
         },
         "template": '<div style="height: 500px;"></div>',
         "replace": true,
-        "controller": ['$scope', '$element', 'editor', function ($scope, $element, editor) {
-          var opt = {
-              container: $element[0],
-              basePath: '/static/lib/epiceditor',
-              clientSideStorage: false
-            },
-            eeditor = editor(opt).load();
-
-          eeditor.on('update', function () {
-            $scope.$apply(function (scope) {
-              scope.isclean = false;
-            });
-          });
-        }]
+        "controller": 'EEditorDirectiveCtrl'
       };
     })
+    .controller('EEditorDirectiveCtrl', ['$scope', '$element', 'editor', function ($scope, $element, editor) {
+      var opt = {
+          container: $element[0],
+          basePath: '/static/lib/epiceditor',
+          clientSideStorage: false
+        },
+        eeditor = editor(opt).load();
+
+      eeditor.on('update', function () {
+        $scope.$apply(function (scope) {
+          scope.isclean = false;
+        });
+      });
+    }])
     .directive('comment', function () {
       return {
         restrict: 'E',
@@ -47,9 +48,10 @@
         },
         templateUrl: '/blog/static/admin/comment.html',
         replace: true,
-        controller: ['$scope', 'BlogComment', function ($scope, BlogComment) {
-          $scope.comments = BlogComment.query({urlsafe: $scope.blogUrlsafe});
-        }]
+        controller: 'CommentDirectiveCtrl'
       };
-    });
+    })
+    .controller('CommentDirectiveCtrl', ['$scope', 'BlogComment', function ($scope, BlogComment) {
+      $scope.comments = BlogComment.query({urlsafe: $scope.blogUrlsafe});
+    }]);
 })(angular);
