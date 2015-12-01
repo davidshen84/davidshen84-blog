@@ -1,7 +1,7 @@
 /**
  * Created by david on 11/29/2015.
  */
-describe('Admin directive and their controllers', function(){
+describe('Admin directive and their controllers', function () {
   'use strict';
 
   beforeEach(module('admin.directive', 'blogapi'));
@@ -54,21 +54,16 @@ describe('Admin directive and their controllers', function(){
   });
 
   describe('EEditorDirectiveCtrl', function () {
-    var scope;
+    var scope, eeditorSpy, editorLoadStub, editorStub;
 
     beforeEach(inject(function ($rootScope) {
       scope = $rootScope.$new();
+      eeditorSpy = {on: sinon.stub()};
+      editorLoadStub = sinon.stub().returns(eeditorSpy);
+      editorStub = sinon.stub().returns({load: editorLoadStub});
     }));
 
     it('should resolve', inject(function ($controller) {
-      var eeditorSpy = {
-        on: sinon.spy()
-      };
-
-      var editorLoadStub = sinon.stub().returns(eeditorSpy);
-      var editorStub = sinon.stub().returns({
-        load: editorLoadStub
-      });
       $controller('EEditorDirectiveCtrl',
         {
           $scope: scope,
@@ -79,6 +74,24 @@ describe('Admin directive and their controllers', function(){
       editorStub.should.have.been.called;
       editorLoadStub.should.have.been.called;
       eeditorSpy.on.should.have.been.called;
+    }));
+
+    it('should call scope.$apply to update isclean', inject(function ($controller) {
+      // setup spy/stub
+      eeditorSpy.on.withArgs('update').callsArgWith(1, scope);
+      sinon.spy(scope, '$apply');
+
+      // resolve the controller
+      $controller('EEditorDirectiveCtrl',
+        {
+          $scope: scope,
+          $element: [],
+          editor: editorStub
+        });
+
+      eeditorSpy.on.should.have.been.calledWith('update');
+      scope.$apply.should.have.been.called;
+      scope.isclean.should.be.false;
     }));
   });
 });
