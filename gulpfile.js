@@ -5,7 +5,8 @@
 var gulp = require('gulp'),
   minifycss = require('gulp-minify-css'),
   concate = require('gulp-concat'),
-  sourcemaps = require('gulp-sourcemaps');
+  sourcemaps = require('gulp-sourcemaps'),
+  uglifyjs = require('gulp-uglify');
 
 gulp.task('copy-to-dist', function () {
   return gulp.src(['app/**',
@@ -25,6 +26,23 @@ gulp.task('css-preprocessor', function () {
     .pipe(sourcemaps.write('maps'))
     .pipe(gulp.dest('app/static/'));
 });
+
+var uglifyjs_u = function (u) {
+  return function () {
+    var path = 'app/blog/static/' + u;
+
+    return gulp.src(path + '/js/*.js')
+      .pipe(concate(u + '.all.min.js'))
+      .pipe(uglifyjs())
+      .pipe(gulp.dest(path + '/'));
+  };
+};
+
+gulp.task('uglifyjs-admin', uglifyjs_u('admin'));
+gulp.task('uglifyjs-blog', uglifyjs_u('blog'));
+gulp.task('uglifyjs-shared', uglifyjs_u('shared'));
+
+gulp.task('uglifyjs', ['uglifyjs-admin', 'uglifyjs-blog', 'uglifyjs-shared']);
 
 /*
  gulp.task('watch', function () {

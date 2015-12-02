@@ -6,6 +6,7 @@
 dist/
 *.min.css
 *.map
+*.all.min.js
 
 
 # vendor libs

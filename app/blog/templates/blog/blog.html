@@ -123,7 +123,12 @@
 <script src="/static/lib/angular/angular.min.js"></script>
 <script src="/static/lib/angular/angular-resource.min.js"></script>
 <script src="/static/lib/angular/angular-route.min.js"></script>
-<script src="/blog/static/shared/js/blogapi.js"></script>
-<script src="/blog/static/blog/js/blog.js"></script>
+{% if config['DEBUG'] %}
+  <script src="/blog/static/shared/js/blogapi.js"></script>
+  <script src="/blog/static/blog/js/blog.js"></script>
+{% else %}
+  <script src="/blog/static/shared/shared.all.min.js"></script>
+  <script src="/blog/static/blog/blog.all.min.js"></script>
+{% endif %}
 </body>
 </html>
