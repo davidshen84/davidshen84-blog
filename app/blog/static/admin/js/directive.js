@@ -52,6 +52,8 @@
       };
     })
     .controller('CommentDirectiveCtrl', ['$scope', 'BlogComment', function ($scope, BlogComment) {
-      $scope.comments = BlogComment.query({urlsafe: $scope.blogUrlsafe});
+      if ($scope.blogUrlsafe) {
+        $scope.comments = BlogComment.query({urlsafe: $scope.blogUrlsafe});
+      }
     }]);
 })(angular);

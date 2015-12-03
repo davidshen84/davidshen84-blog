@@ -51,6 +51,18 @@ describe('Admin directive and their controllers', function () {
 
       BlogComment.query.should.have.been.calledWith({urlsafe: 'test'});
     }));
+
+    it('should not call BlogComment.query is urlsafe is empty', inject(function ($controller, BlogComment) {
+      sinon.spy(BlogComment, 'query');
+
+      $controller('CommentDirectiveCtrl',
+        {
+          $scope: scope,
+          BlogComment: BlogComment
+        });
+
+      BlogComment.query.should.not.have.been.called;
+    }));
   });
 
   describe('EEditorDirectiveCtrl', function () {
