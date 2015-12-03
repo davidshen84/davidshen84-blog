@@ -18,4 +18,16 @@
   .site-header-spacer {
     display: none;
   }
+
+  .amazon-ad {
+    width: 320px;
+    margin: auto;
+  }
+}
+
+@media (min-width: 900px) {
+  .amazon-ad {
+    width: 728px;
+    margin: auto;
+  }
 }
