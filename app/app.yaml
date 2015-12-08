@@ -19,6 +19,7 @@ handlers:
 - url: /(.+)/static/(.*)$
   static_files: \1/static/\2
   upload: \1/static/\2$
+  expiration: 1d
 
 - url: /blog/admin/
   script: blog.app
@@ -34,13 +35,8 @@ handlers:
 - url: /blog.*
   script: blog.app
 
-- url: /online-tools/
-  static_files: online-tools/index.html
-  upload: online-tools/index.html
-
-- url: /online-tools
-  static_dir: online-tools
-  expiration: 1d
+- url: /online_tools/
+  script: online_tools.app
 
 libraries:
 - name: jinja2

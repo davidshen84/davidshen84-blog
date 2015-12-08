@@ -27,20 +27,21 @@ gulp.task('css-preprocessor', function () {
     .pipe(gulp.dest('app/static/'));
 });
 
-var uglifyjs_u = function (u) {
+var uglifyjs_u = function (u, v) {
   return function () {
-    var path = 'app/blog/static/' + u;
+    var path = 'app/' + u + '/static/' + v;
 
     return gulp.src(path + '/js/*.js')
-      .pipe(concate(u + '.all.min.js'))
+      .pipe(concate((v ? v : u) + '.all.min.js'))
       .pipe(uglifyjs())
       .pipe(gulp.dest(path + '/'));
   };
 };
 
-gulp.task('uglifyjs-admin', uglifyjs_u('admin'));
-gulp.task('uglifyjs-blog', uglifyjs_u('blog'));
-gulp.task('uglifyjs-shared', uglifyjs_u('shared'));
+gulp.task('uglifyjs-admin', uglifyjs_u('blog', 'admin'));
+gulp.task('uglifyjs-blog', uglifyjs_u('blog', 'blog'));
+gulp.task('uglifyjs-shared', uglifyjs_u('blog', 'shared'));
+gulp.task('uglifyjs-online-tools', uglifyjs_u('online_tools', ''));
 
 gulp.task('uglifyjs', ['uglifyjs-admin', 'uglifyjs-blog', 'uglifyjs-shared']);
 
