@@ -40,7 +40,7 @@ var uglifyjs_u = function (u, v) {
 
 gulp.task('uglifyjs-admin', uglifyjs_u('blog', 'admin'));
 gulp.task('uglifyjs-blog', uglifyjs_u('blog', 'blog'));
-gulp.task('uglifyjs-shared', uglifyjs_u('blog', 'shared'));
+gulp.task('uglifyjs-shared', uglifyjs_u('blog', '_shared'));
 gulp.task('uglifyjs-online-tools', uglifyjs_u('online_tools', ''));
 
 gulp.task('uglifyjs', ['uglifyjs-admin', 'uglifyjs-blog', 'uglifyjs-shared']);

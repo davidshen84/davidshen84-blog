@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "_shared/base.html" %}
 
 {% block title %}
   <title>{{ title }}</title>
@@ -6,7 +6,7 @@
 
 {% block content %}
   <div class="xs-blog xs-blog--blogpost mdl-layout mdl-layout--fixed-header mdl-js-layout is-upgraded">
-    {% include 'shared/header.html' %}
+    {% include '_shared/header.html' %}
     <main class="mdl-layout__content" ng-app="blog">
       <div class="xs-back">
         <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="/blog/" title="go back"
@@ -67,7 +67,7 @@
           </a>
         </nav>
       </div>
-      {% include 'shared/footer.html' %}
+      {% include '_shared/footer.html' %}
     </main>
     <div class="mdl-layout__obfuscator"></div>
   </div>
@@ -79,10 +79,10 @@
   <script src="/static/lib/angular/angular-resource.min.js"></script>
   <script src="/static/lib/angular/angular-route.min.js"></script>
   {% if config['DEBUG'] %}
-    <script src="/blog/static/shared/js/blogapi.js"></script>
+    <script src="/blog/static/_shared/shared/js/blogapi.js"></script>
     <script src="/blog/static/blog/js/blog.js"></script>
   {% else %}
-    <script src="/blog/static/shared/shared.all.min.js"></script>
+    <script src="/blog/static/_shared/shared/shared.all.min.js"></script>
     <script src="/blog/static/blog/blog.all.min.js"></script>
   {% endif %}
 {% endblock %}

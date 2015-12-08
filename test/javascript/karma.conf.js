@@ -19,7 +19,7 @@ module.exports = function (config) {
       '../../bower_components/angular-mocks/angular-mocks.js',
       '../../bower_components/epiceditor/epiceditor/js/epiceditor.js',
       '../../bower_components/material-design-lite/material.js',
-      '../../app/blog/static/shared/js/*.js',
+      '../../app/blog/static/_shared/shared/js/*.js',
       '../../app/blog/static/admin/js/*.js',
       '../../app/blog/static/blog/js/*.js',
       'spec/*.js'

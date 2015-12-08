@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "_shared/base.html" %}
 
 {% block title %}
   <title>Xi Shen's Blog</title>
@@ -6,11 +6,11 @@
 
 {% block content %}
   <div class="xs-blog mdl-layout mdl-layout--fixed-header mdl-js-layout is-upgraded">
-    {% include 'shared/header.html' %}
+    {% include '_shared/header.html' %}
     <main class="mdl-layout__content">
       <div class="xs-blog__posts mdl-grid">
         <div class="mdl-cell mdl-cell--12-col">
-          {% include "amazon_ad.html" %}
+          {% include "_shared/amazon_ad.html" %}
         </div>
 
         <div class="mdl-card blog-title-banner-0 mdl-cell mdl-cell--8-col">
@@ -80,7 +80,7 @@
           </a>
         </nav>
       </div>
-      {% include 'shared/footer.html' %}
+      {% include '_shared/footer.html' %}
     </main>
     <div class="mdl-layout__obfuscator"></div>
   </div>
