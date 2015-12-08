@@ -6,69 +6,69 @@
 
 {% block content %}
   <div class="xs-blog xs-blog--blogpost mdl-layout mdl-layout--fixed-header mdl-js-layout is-upgraded">
-  {% include 'blog/header.html' %}
-  <main class="mdl-layout__content" ng-app="blog">
-  <div class="xs-back">
-    <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="/blog/" title="go back"
-       role="button">
-      <i class="material-icons" role="presentation">arrow_back</i>
-    </a>
-  </div>
-  <div class="xs-blog__posts mdl-grid">
-    <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
-      <div class="mdl-card__media mdl-color-text--grey-50">
-        <h3>{{ title }}</h3>
+    {% include 'shared/header.html' %}
+    <main class="mdl-layout__content" ng-app="blog">
+      <div class="xs-back">
+        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" href="/blog/" title="go back"
+           role="button">
+          <i class="material-icons" role="presentation">arrow_back</i>
+        </a>
       </div>
-      <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
-        <div class="minilogo"></div>
-        <div>
-          <strong>The Newist</strong>
-          <span>2 days ago</span>
+      <div class="xs-blog__posts mdl-grid">
+        <div class="mdl-card mdl-shadow--4dp mdl-cell mdl-cell--12-col">
+          <div class="mdl-card__media mdl-color-text--grey-50">
+            <h3>{{ title }}</h3>
+          </div>
+          <div class="mdl-color-text--grey-700 mdl-card__supporting-text meta">
+            <div class="minilogo"></div>
+            <div>
+              <strong>The Newist</strong>
+              <span>2 days ago</span>
+            </div>
+            <div class="section-spacer"></div>
+            <div class="meta__favorites">
+              425 <i class="material-icons" role="presentation">favorite</i>
+              <span class="visuallyhidden">favorites</span>
+            </div>
+            <div>
+              <i class="material-icons" role="presentation">bookmark</i>
+              <span class="visuallyhidden">bookmark</span>
+            </div>
+            <div>
+              <i class="material-icons" role="presentation">share</i>
+              <span class="visuallyhidden">share</span>
+            </div>
+          </div>
+          <div class="mdl-color-text--grey-700 mdl-card__supporting-text">
+            {{ article|safe }}
+          </div>
+
+          <xs-comment></xs-comment>
         </div>
-        <div class="section-spacer"></div>
-        <div class="meta__favorites">
-          425 <i class="material-icons" role="presentation">favorite</i>
-          <span class="visuallyhidden">favorites</span>
-        </div>
-        <div>
-          <i class="material-icons" role="presentation">bookmark</i>
-          <span class="visuallyhidden">bookmark</span>
-        </div>
-        <div>
-          <i class="material-icons" role="presentation">share</i>
-          <span class="visuallyhidden">share</span>
-        </div>
+
+        <nav class="xs-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
+          <a href="{{ newer_url }}" class="xs-nav__button">
+            <button
+              class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900"
+              role="presentation">
+              <i class="material-icons">arrow_back</i>
+            </button>
+            Newer
+          </a>
+
+          <div class="section-spacer"></div>
+          <a href="{{ older_url }}" class="xs-nav__button">
+            Older
+            <button
+              class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900"
+              role="presentation">
+              <i class="material-icons">arrow_forward</i>
+            </button>
+          </a>
+        </nav>
       </div>
-      <div class="mdl-color-text--grey-700 mdl-card__supporting-text">
-        {{ article|safe }}
-      </div>
-
-      <xs-comment></xs-comment>
-    </div>
-
-    <nav class="xs-nav mdl-color-text--grey-50 mdl-cell mdl-cell--12-col">
-      <a href="{{ newer_url }}" class="xs-nav__button">
-        <button
-          class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900"
-          role="presentation">
-          <i class="material-icons">arrow_back</i>
-        </button>
-        Newer
-      </a>
-
-      <div class="section-spacer"></div>
-      <a href="{{ older_url }}" class="xs-nav__button">
-        Older
-        <button
-          class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-color--white mdl-color-text--grey-900"
-          role="presentation">
-          <i class="material-icons">arrow_forward</i>
-        </button>
-      </a>
-    </nav>
-  </div>
-    {% include 'blog/footer.html' %}
-  </main>
+      {% include 'shared/footer.html' %}
+    </main>
     <div class="mdl-layout__obfuscator"></div>
   </div>
 {% endblock %}

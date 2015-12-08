@@ -5,84 +5,85 @@
 {% endblock %}
 
 {% block content %}
-<div class="xs-blog mdl-layout mdl-layout--fixed-header mdl-js-layout is-upgraded">
-  {% include 'blog/header.html' %}
-  <main class="mdl-layout__content">
-    <div class="xs-blog__posts mdl-grid">
-      <div class="mdl-cell mdl-cell--12-col">
-        {% include "amazon_ad.html" %}
-      </div>
+  <div class="xs-blog mdl-layout mdl-layout--fixed-header mdl-js-layout is-upgraded">
+    {% include 'shared/header.html' %}
+    <main class="mdl-layout__content">
+      <div class="xs-blog__posts mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+          {% include "amazon_ad.html" %}
+        </div>
 
-      <div class="mdl-card blog-title-banner-0 mdl-cell mdl-cell--8-col">
-        <div class="mdl-card__media mdl-color-text--grey-50">
-          <h3><a href="#">On the way to Venice</a></h3>
-        </div>
-        <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
-          <div class="minilogo"></div>
-          <div>
-            <strong>Picture of the day</strong>
-            <span>Some time ago</span>
-          </div>
-        </div>
-      </div>
-      <div class="mdl-card something-else mdl-cell mdl-cell--8-col mdl-cell--4-col-desktop">
-        {% if is_admin %}
-          <button class="mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--fab mdl-color--accent"
-                  onclick="location.href='/blog/admin/'">
-            <i class="material-icons mdl-color-text--white" role="presentation">add</i>
-            <span class="visuallyhidden">add</span>
-          </button>
-        {% endif %}
-        <div class="mdl-card__media mdl-color--white mdl-color-text--grey-600">
-          <img
-            src="https://lh3.googleusercontent.com/T42wM7bjJp9K3HGHgwcw7QUEcyE_D3XVVZvKB9Z6UlpY9u2cXctiNb10h1jJdu40AK1YEruEuZWBO5i81QJADuxX0m7uSq9jzYVNm1anVh1USHtmz4QkRfWtuMiJcrk4drEyVeLwUHKlhEmFRwwXmH-5yPKUJg2kfinDtaoDmaMKACGV-nGddBGkR3u4vAVvDflwEzgwQF_LUDcGx_XqxD-SwRyysGZBLkhO7OhJdWOPxPQq2PSaiAMloWEFnNCdD16mCe4hCFYIoziVtMpNO0kHDAxVqpFBb4p2pAJVk80eGx96D0N4Anl_S_LSNwres0ExAGmghAjg_SrzzeldHx3YNKy2El92_Lu9oJDOiohJ9XtqNJbUSrHinWW1uSIqPv4LoiGUPDEVvTwH5HdjJfCLZlY7sAlKUmYEQ83HrWobj7Ec6cD4Ei6SGQ5Xr50xrgdvR3j2D01ipE2ZVinA1Xl1TWqDNNAI8BcqoAD9WekqG6oM3P44yp4JAw9bN_0cosiDdKmVY-WYU5HCEnAXMqQoc88a3mkHg9r7ob5OosU=s500-no">
-          A mushroom
-        </div>
-        <div class="mdl-card__supporting-text meta meta--fill mdl-color-text--grey-600">
-          <div>
-            <strong>Me on SNS</strong>
-          </div>
-          <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="menubtn">
-            <li class="mdl-menu__item">Twitter</li>
-            <li class="mdl-menu__item">Facebook</li>
-            <li class="mdl-menu__item">G+</li>
-          </ul>
-          <button id="menubtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-            <i class="material-icons" role="presentation">more_vert</i>
-            <span class="visuallyhidden">show menu</span>
-          </button>
-        </div>
-      </div>
-      {% for b in recent_blogs %}
-        <div class="mdl-card blog-title-banner-1 mdl-cell mdl-cell--12-col">
+        <div class="mdl-card blog-title-banner-0 mdl-cell mdl-cell--8-col">
           <div class="mdl-card__media mdl-color-text--grey-50">
-            <h3><a href="{{ b.url }}">{{ b.title }}</a></h3>
-      </div>
-      <div class="mdl-color-text--grey-600 mdl-card__supporting-text">
-        {{ b.content|safe }}
-      </div>
-      <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
-        <div class="minilogo"></div>
-        <div>
-          <strong>The Newist</strong>
-          <span>{{ b.created }}</span>
+            <h3><a href="#">On the way to Venice</a></h3>
+          </div>
+          <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
+            <div class="minilogo"></div>
+            <div>
+              <strong>Picture of the day</strong>
+              <span>Some time ago</span>
+            </div>
+          </div>
         </div>
+        <div class="mdl-card something-else mdl-cell mdl-cell--8-col mdl-cell--4-col-desktop">
+          {% if is_admin %}
+            <button class="mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--fab mdl-color--accent"
+                    onclick="location.href='/blog/admin/'">
+              <i class="material-icons mdl-color-text--white" role="presentation">add</i>
+              <span class="visuallyhidden">add</span>
+            </button>
+          {% endif %}
+          <div class="mdl-card__media mdl-color--white mdl-color-text--grey-600">
+            <img
+              src="https://lh3.googleusercontent.com/T42wM7bjJp9K3HGHgwcw7QUEcyE_D3XVVZvKB9Z6UlpY9u2cXctiNb10h1jJdu40AK1YEruEuZWBO5i81QJADuxX0m7uSq9jzYVNm1anVh1USHtmz4QkRfWtuMiJcrk4drEyVeLwUHKlhEmFRwwXmH-5yPKUJg2kfinDtaoDmaMKACGV-nGddBGkR3u4vAVvDflwEzgwQF_LUDcGx_XqxD-SwRyysGZBLkhO7OhJdWOPxPQq2PSaiAMloWEFnNCdD16mCe4hCFYIoziVtMpNO0kHDAxVqpFBb4p2pAJVk80eGx96D0N4Anl_S_LSNwres0ExAGmghAjg_SrzzeldHx3YNKy2El92_Lu9oJDOiohJ9XtqNJbUSrHinWW1uSIqPv4LoiGUPDEVvTwH5HdjJfCLZlY7sAlKUmYEQ83HrWobj7Ec6cD4Ei6SGQ5Xr50xrgdvR3j2D01ipE2ZVinA1Xl1TWqDNNAI8BcqoAD9WekqG6oM3P44yp4JAw9bN_0cosiDdKmVY-WYU5HCEnAXMqQoc88a3mkHg9r7ob5OosU=s500-no">
+            A mushroom
+          </div>
+          <div class="mdl-card__supporting-text meta meta--fill mdl-color-text--grey-600">
+            <div>
+              <strong>Me on SNS</strong>
+            </div>
+            <ul class="mdl-menu mdl-js-menu mdl-menu--bottom-right mdl-js-ripple-effect" for="menubtn">
+              <li class="mdl-menu__item">Twitter</li>
+              <li class="mdl-menu__item">Facebook</li>
+              <li class="mdl-menu__item">G+</li>
+            </ul>
+            <button id="menubtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+              <i class="material-icons" role="presentation">more_vert</i>
+              <span class="visuallyhidden">show menu</span>
+            </button>
+          </div>
+        </div>
+        {% for b in recent_blogs %}
+          <div class="mdl-card blog-title-banner-1 mdl-cell mdl-cell--12-col">
+            <div class="mdl-card__media mdl-color-text--grey-50">
+              <h3><a href="{{ b.url }}">{{ b.title }}</a></h3>
+            </div>
+            <div class="mdl-color-text--grey-600 mdl-card__supporting-text">
+              {{ b.content|safe }}
+            </div>
+            <div class="mdl-card__supporting-text meta mdl-color-text--grey-600">
+              <div class="minilogo"></div>
+              <div>
+                <strong>The Newist</strong>
+                <span>{{ b.created }}</span>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        <nav class="xs-nav mdl-cell mdl-cell--12-col">
+          <div class="section-spacer"></div>
+          <a href="{{ latest_blog }}" class="xs-nav__button" title="Latest blog">
+            Latest
+            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+              <i class="material-icons" role="presentation">arrow_forward</i>
+            </button>
+          </a>
+        </nav>
       </div>
-    </div>
-    {% endfor %}
-    <nav class="xs-nav mdl-cell mdl-cell--12-col">
-      <div class="section-spacer"></div>
-      <a href="{{ latest_blog }}" class="xs-nav__button" title="Latest blog">
-        Latest
-        <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
-          <i class="material-icons" role="presentation">arrow_forward</i>
-        </button>
-      </a>
-    </nav>
-</div>
-{% include 'blog/footer.html' %}
-</main>
-<div class="mdl-layout__obfuscator"></div>
+      {% include 'shared/footer.html' %}
+    </main>
+    <div class="mdl-layout__obfuscator"></div>
+  </div>
 {% endblock %}
 
 {% block script_tail %}
