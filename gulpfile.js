@@ -1,5 +1,7 @@
 /**
  * Created by david on 11/21/2015.
+ *
+ * define gulp build script
  */
 
 var gulp = require('gulp'),
@@ -25,6 +27,13 @@ gulp.task('css-preprocessor', function () {
     .pipe(minifycss())
     .pipe(sourcemaps.write('maps'))
     .pipe(gulp.dest('app/static/'));
+});
+
+gulp.task('css-preprocessor-online-tools', function () {
+  return gulp.src('app/online_tools/static/css/*.css')
+    .pipe(concate('styles.all.min.css'))
+    .pipe(minifycss())
+    .pipe(gulp.dest('app/online_tools/static/'));
 });
 
 var uglifyjs_u = function (u, v) {
