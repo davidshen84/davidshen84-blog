@@ -39,13 +39,13 @@
 <body>
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
-  <div class="android-header mdl-layout__header mdl-layout__header--waterfall">
+  <div class="tools-header mdl-layout__header mdl-layout__header--waterfall">
     <div class="mdl-layout__header-row">
       <span class="android-title mdl-layout-title">
         {#<img class="android-logo-image" src="images/android-logo.png">#}
       </span>
       <!-- Add spacer, to align navigation to the right in desktop -->
-      <div class="android-header-spacer mdl-layout-spacer"></div>
+      <div class="tools-header-spacer mdl-layout-spacer"></div>
       {#<div
         class="android-search-box mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right mdl-textfield--full-width">
         <label class="mdl-button mdl-js-button mdl-button--icon" for="search-field">
@@ -57,8 +57,8 @@
         </div>
       </div>#}
       <!-- Navigation -->
-      <div class="android-navigation-container">
-        <nav class="android-navigation mdl-navigation">
+      <div class="tools-navigation-container">
+        <nav class="tools-navigation mdl-navigation">
           <a class="mdl-navigation__link mdl-typography--text-uppercase" href="">Random String</a>
           {#          <a class="mdl-navigation__link mdl-typography--text-uppercase" href="">Tablets</a>#}
           {#          <a class="mdl-navigation__link mdl-typography--text-uppercase" href="">Wear</a>#}
@@ -84,7 +84,7 @@
     </div>
   </div>
 
-  <div class="android-drawer mdl-layout__drawer">
+  <div class="tools-drawer mdl-layout__drawer">
     <span class="mdl-layout-title">
       {#<img class="android-logo-image" src="images/android-logo-white.png">#}
       <h1>XS</h1>
@@ -119,10 +119,10 @@
     </nav>
   </div>
 
-  <div class="android-content mdl-layout__content" ng-app="online-tools">
+  <div class="tools-content mdl-layout__content" ng-app="online-tools">
     <a name="top"></a>
 
-    <div class="android-be-together-section mdl-typography--text-center">
+    <div class="tools-amazon-ad-section mdl-typography--text-center">
       <div class="amazon-ad">
         <script type='text/javascript'>
           amzn_assoc_ad_type = 'banner';
@@ -139,7 +139,7 @@
           src='//z-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&Operation=GetScript&ID=OneJS&WS=1'></script>
       </div>
     </div>
-    <div class="android-screen-section mdl-typography--text-center">
+    <div class="tools-random-string-section mdl-typography--text-center">
       <a name="screens"></a>
 
       <div ng-controller="RdnGenCtrl" class="mdl-grid" style="background-color: beige;">
@@ -296,7 +296,7 @@
       </div>
     </div>#}
 
-    <footer class="android-footer mdl-mega-footer">
+    <footer class="tools-footer mdl-mega-footer">
       <div class="mdl-mega-footer--top-section">
         <div class="mdl-mega-footer--left-section">
           <button class="mdl-mega-footer--social-btn">
