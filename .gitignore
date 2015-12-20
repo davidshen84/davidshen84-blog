@@ -4,9 +4,9 @@
 
 # generated files
 dist/
+app/static/maps/
 *.min.css
-*.map
-*.all.min.js
+*.min.js
 
 
 # vendor libs
@@ -24,4 +24,4 @@ node_modules/
 *.iml
 
 # unit test generated files
-test/javascript/coverage
+/test/javascript/coverage/PhantomJS 1.9.8 (Windows 8 0.0.0)
