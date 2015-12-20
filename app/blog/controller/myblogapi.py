@@ -1,8 +1,10 @@
 # -*- coding: utf-8-unix -*-
 
 import json
+
 from flask import Blueprint, request, jsonify
 from google.appengine.api import users
+
 from blog.controller import login_admin, simple_auth
 from blog.model.blog import Blog
 from blog.model.blogcomment import BlogComment
@@ -71,9 +73,9 @@ def create():
     # clean tags
     tags = [t.strip() for t in tags]
     tags = filter(lambda t: len(t) > 0, tags)
-    blogkey = Blog.create(blog['title'], blog['content'], tags)
+    blog_key = Blog.create(blog['title'], blog['content'], tags)
 
-    if blogkey:
+    if blog_key:
         return jsonify(msg=MSG_OK)
     else:
         return MSG_SAVE_ERROR, 500
@@ -89,7 +91,7 @@ def update(urlsafe):
         return MSG_NO_CONTENT, 500
 
     # update tags
-    if blog.has_key('tags'):
+    if 'tags' in blog:
         tags = blog['tags']
         # clean tags
         tags = [t.strip() for t in tags]
@@ -97,11 +99,11 @@ def update(urlsafe):
         update_data['tags'] = tags
 
     # update content
-    if blog.has_key('content'):
+    if 'content' in blog:
         update_data['content'] = blog['content']
 
     # update publish status
-    if blog.has_key('published'):
+    if 'published' in blog:
         update_data['published'] = blog['published']
 
     if Blog.update(urlsafe, **update_data):
@@ -122,9 +124,9 @@ def destroy(urlsafe):
 @login_admin
 def publish(urlsafe):
     published = request.values['published'].lower() == 'true'
-    blogkey = Blog.publish(urlsafe, published)
+    blog_key = Blog.publish(urlsafe, published)
 
-    if blogkey:
+    if blog_key:
         return jsonify(msg=MSG_OK)
     else:
         return MSG_UPDATE_FAIL, 404
