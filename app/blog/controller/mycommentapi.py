@@ -4,9 +4,9 @@ import json
 
 from flask import Blueprint, request, jsonify
 
-from blog.module.model.blog import Blog
-from blog.module.model.blogcomment import BlogComment
-from blog.module import login_admin
+from blog.model.blog import Blog
+from blog.model.blogcomment import BlogComment
+from blog.controller import login_admin
 
 MSG_OK = 'ok'
 MSG_SAVE_ERROR = 'failed to save comment'

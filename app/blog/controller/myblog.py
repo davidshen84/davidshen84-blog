@@ -4,9 +4,9 @@ import re
 
 from flask import Blueprint, render_template, request, abort, url_for
 
-from blog.module import is_admin
-from blog.module.model.blog import Blog
-from blog.module.model.blogcomment import BlogComment
+from blog.controller import is_admin
+from blog.model.blog import Blog
+from blog.model.blogcomment import BlogComment
 from lib.markdown import markdown
 
 BAD_SP = unichr(0xa0)

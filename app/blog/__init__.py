@@ -6,10 +6,10 @@ vendor.add('lib')
 if True:
     from urllib import quote
     from flask import Flask
-    from blog.module.myblog import blueprint as myblog
-    from blog.module.myblogadmin import myblogadmin
-    from blog.module.myblogapi import blueprint as myblogapi
-    from blog.module.mycommentapi import mycommentapi
+    from blog.controller.myblog import blueprint as myblog
+    from blog.controller.myblogadmin import blueprint
+    from blog.controller.myblogapi import blueprint as myblogapi
+    from blog.controller.mycommentapi import mycommentapi
 
 
 debug_flag = True
@@ -18,7 +18,7 @@ app = Flask(__name__)
 app.jinja_env.filters['urlencode'] = quote
 app.debug = debug_flag
 app.register_blueprint(myblog)
-app.register_blueprint(myblogadmin)
+app.register_blueprint(blueprint)
 
 api = Flask(__name__)
 api.debug = debug_flag

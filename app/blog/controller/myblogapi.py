@@ -1,12 +1,11 @@
 # -*- coding: utf-8-unix -*-
 
 import json
-from flask import Blueprint, request, \
-    jsonify
+from flask import Blueprint, request, jsonify
 from google.appengine.api import users
-from blog.module import login_admin, simple_auth
-from blog.module.model.blog import Blog
-from blog.module.model.blogcomment import BlogComment
+from blog.controller import login_admin, simple_auth
+from blog.model.blog import Blog
+from blog.model.blogcomment import BlogComment
 
 MSG_OK = 'ok'
 MSG_SAVE_ERROR = 'failed to save blog'

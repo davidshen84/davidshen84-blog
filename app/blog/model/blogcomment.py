@@ -1,10 +1,7 @@
 # coding=utf-8
 
-import logging
-
-from blog import Blog
 from google.appengine.ext import ndb
-from datetime import date, datetime
+
 
 class BlogComment(ndb.Model):
   screenname = ndb.StringProperty(required=True)
