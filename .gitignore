@@ -25,3 +25,4 @@ node_modules/
 
 # unit test generated files
 /test/javascript/coverage/PhantomJS 1.9.8 (Windows 8 0.0.0)
+/app/blog/static/maps/all.min.css.map

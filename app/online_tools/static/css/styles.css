@@ -148,10 +148,10 @@ body {
 
 .tools-amazon-ad-section {
   position: relative;
+  padding: 25px 0;
   height: 90px;
   width: auto;
   background-color: #f3f3f3;
-  /*background: url('images/slide01.jpg') center 30% no-repeat;*/
   background-size: cover;
 }
 
@@ -255,6 +255,13 @@ body {
   cursor: pointer;
 }
 
+@media (min-width: 900px) {
+  .amazon-ad {
+    width: 728px;
+    margin: auto;
+  }
+}
+
 /**** Mobile layout ****/
 @media (max-width: 900px) {
   .tools-navigation-container {
@@ -275,22 +282,13 @@ body {
   }
 
   .tools-amazon-ad-section {
-    height: 350px;
+    height: 50px;
   }
 
   .tools-footer .mdl-mega-footer--bottom-section {
     display: none;
   }
-}
 
-@media (min-width: 900px) {
-  .amazon-ad {
-    width: 728px;
-    margin: auto;
-  }
-}
-
-@media (max-width: 900px) {
   .amazon-ad {
     width: 320px;
     margin: auto;

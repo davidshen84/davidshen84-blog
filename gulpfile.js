@@ -21,12 +21,12 @@ gulp.task('copy-to-dist', function () {
 });
 
 gulp.task('css-preprocessor', function () {
-  return gulp.src('app/static/*.css')
+  return gulp.src('app/blog/static/*/css/*.css')
     .pipe(sourcemaps.init())
     .pipe(concate('all.min.css'))
     .pipe(minifycss())
     .pipe(sourcemaps.write('maps'))
-    .pipe(gulp.dest('app/static/'));
+    .pipe(gulp.dest('app/blog/static/'));
 });
 
 gulp.task('css-preprocessor-online-tools', function () {

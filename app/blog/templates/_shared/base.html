@@ -25,17 +25,13 @@
 
   <!-- Add to homescreen for Chrome on Android -->
   <meta name="mobile-web-app-capable" content="yes">
-  <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
+  <link rel="icon" sizes="192x192" href="/static/favicon.ico">
 
   <!-- Add to homescreen for Safari on iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-title" content="{{ title }}">
-  <link rel="apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png">
-
-  <!-- Tile icon for Win8 (144x144 + tile color) -->
-  <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
-  <meta name="msapplication-TileColor" content="#3372DF">
+  <link rel="apple-touch-icon-precomposed" href="/static/favicon.ico">
 
   <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
   <!--
@@ -59,7 +55,7 @@
 
   <link rel="stylesheet" href="/static/lib/material/material.min.css">
   {% block styles %}
-    <link rel="stylesheet" href="/static/all.min.css">
+    <link rel="stylesheet" href="/blog/static/all.min.css">
   {% endblock %}
 
   {% block title %}
@@ -76,10 +72,10 @@
   <script src="/static/lib/angular/angular-resource.min.js"></script>
   <script src="/static/lib/angular/angular-route.min.js"></script>
   {% if config['DEBUG'] %}
-    <script src="/blog/static/_shared/shared/js/blogapi.js"></script>
+    <script src="/blog/static/_shared/js/blogapi.js"></script>
     <script src="/blog/static/blog/js/blog.js"></script>
   {% else %}
-    <script src="/blog/static/_shared/shared/shared.all.min.js"></script>
+    <script src="/blog/static/_shared/shared.all.min.js"></script>
     <script src="/blog/static/blog/blog.all.min.js"></script>
   {% endif %}
 {% endblock %}
