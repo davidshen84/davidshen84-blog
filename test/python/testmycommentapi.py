@@ -5,90 +5,90 @@ import unittest2 as unittest
 # set up environment
 import sys
 import os
-
-if len(sys.argv) > 1:
-  gaesdk_path = sys.argv[1]
-
-  sys.path.insert(0, gaesdk_path)
-  sys.path.insert(0, '../../app/')
-else:
-  print 'gae sdk is required'
-  sys.exit(-1)
-
-import dev_appserver
-dev_appserver.fix_sys_path()
-
-# real test code
-from blog import app
-from blog.modules.blog.db.blog import Blog
-from blog.modules.blog.db.blogcomment import BlogComment
-from datetime import datetime
-from google.appengine.api import users
-from google.appengine.ext import testbed
 import json
 
+
+try:
+    if 'GAE_SDK' in os.environ:
+        sys.path.insert(0, os.environ['GAE_SDK'])
+
+    import dev_appserver
+
+    dev_appserver.fix_sys_path()
+except ImportError:
+    dev_appserver = None
+    print 'gae sdk is required'
+    sys.exit(-1)
+
+# real test code
+from google.appengine.ext import testbed
+
+from blog import api
+from blog.model.blog import Blog
+from blog.model.blogcomment import BlogComment
+
+
 class MyCommentApiTestCase(unittest.TestCase):
+    def setUp(self):
+        # First, create an instance of the Testbed class.
+        self.testbed = testbed.Testbed()
+        # Then activate the testbed, which prepares the service stubs for use.
+        self.testbed.activate()
+        # Next, declare which service stubs you want to use.
+        self.testbed.init_datastore_v3_stub()
+        self.testbed.init_user_stub()
+        self.testbed.init_memcache_stub()
 
-  def setUp(self):
-    # First, create an instance of the Testbed class.
-    self.testbed = testbed.Testbed()
-    # Then activate the testbed, which prepares the service stubs for use.
-    self.testbed.activate()
-    # Next, declare which service stubs you want to use.
-    self.testbed.init_datastore_v3_stub()
-    self.testbed.init_user_stub()
-    self.testbed.init_memcache_stub()
+        self.api = api.test_client()
+        self.base = '/blog/comment/api/'
 
-    self.app = app.test_client()
-    self.base = '/blog/comment/api/'
+        self.blog1 = Blog.create('test1', 'content 1', published=True)
 
-    self.blog1 = Blog.create('test1', 'content 1', published=True)
+    def tearDown(self):
+        self.testbed.deactivate()
 
-  def tearDown(self):
-    self.testbed.deactivate()
+    def testCreate(self):
+        r = self.api.post(
+            self.base + 'sync/' + self.blog1.urlsafe(),
+            data=json.dumps({
+                'screenname': 'user1',
+                'email': 'a@b.c',
+                'comment': 'comment'
+            }),
+            content_type='application/json'
+        )
 
-  def testCreate(self):
-    r = self.app.post(
-      self.base + 'sync/' + self.blog1.urlsafe(),
-      data=json.dumps({
-        'screenname': 'user1',
-        'email': 'a@b.c',
-        'comment': 'comment'
-      }),
-      content_type='application/json'
-    )
-    
-    self.assertEqual(200, r.status_code)
-    blog = Blog.get_by_id('test1')
-    comments = BlogComment.query(ancestor=blog.key)
-    comments_count = reduce(lambda n, c: n+1, comments, 0)
-    self.assertEqual(1, comments_count)
+        self.assertEqual(200, r.status_code)
+        blog = Blog.get_by_id('test1')
+        comments = BlogComment.query(ancestor=blog.key)
+        comments_count = reduce(lambda n, c: n + 1, comments, 0)
+        self.assertEqual(1, comments_count)
 
-  @unittest.skip('design change')
-  def testDestroy(self):
-    id = BlogComment.create(self.blog1, 'user1', 'a@b.c', 'comments').id()
-    blog = Blog.get_by_id('test1')
-    comments = BlogComment.query(ancestor=blog.key)
-    comments_count = reduce(lambda n, c: n+1, comments, 0)
-    self.assertEqual(1, comments_count)
+    def testDestroy(self):
+        urlsafe = BlogComment.create(self.blog1, 'user1', 'a@b.c', 'comments').urlsafe()
+        blog = Blog.get_by_id('test1')
+        comments = BlogComment.query(ancestor=blog.key)
+        comments_count = reduce(lambda n, c: n + 1, comments, 0)
+        self.assertEqual(1, comments_count)
 
-    # use admin account
-    os.environ['USER_IS_ADMIN'] = '1'
-    r = self.app.delete(self.base + 'sync/%d' % (id))
-    self.assertEqual(200, r.status_code)
-    blog = Blog.get_by_id('test1')
-    comments = BlogComment.query(ancestor=blog.key)
-    comments_count = reduce(lambda n, c: n+1, comments, 0)
-    self.assertEqual(0, comments_count)
+        # use admin account
+        os.environ['USER_IS_ADMIN'] = '1'
+        r = self.api.delete('{}sync/{}'.format(self.base, urlsafe))
+        self.assertEqual(200, r.status_code)
+        blog = Blog.get_by_id('test1')
+        comments = BlogComment.query(ancestor=blog.key)
+        comments_count = reduce(lambda n, c: n + 1, comments, 0)
+        self.assertEqual(0, comments_count)
 
-  def testCollection(self):
-    BlogComment.create(self.blog1, 'user1', 'a@b.c', 'comments')
-    r = self.app.get(self.base + 'sync/' + self.blog1.urlsafe())
-    self.assertEqual(200, r.status_code)
-    self.assertEqual(1, len(json.loads(r.data)))
+    def testCollection(self):
+        BlogComment.create(self.blog1, 'user1', 'a@b.c', 'comments')
+        r = self.api.get(self.base + 'sync/' + self.blog1.urlsafe())
+        self.assertEqual(200, r.status_code)
+        self.assertEqual(1, len(json.loads(r.data)))
+
 
 if __name__ == '__main__':
-  suite = unittest.TestLoader().loadTestsFromTestCase(MyCommentApiTestCase)
-  # suite = unittest.TestLoader().loadTestsFromName('testmycommentapi.MyCommentApiTestCase.testCollection')
-  result = unittest.TextTestRunner(verbosity=1).run(suite)
-  sys.exit(len(result.failures))
+    suite = unittest.TestLoader().loadTestsFromTestCase(MyCommentApiTestCase)
+    # suite = unittest.TestLoader().loadTestsFromName('testmycommentapi.MyCommentApiTestCase.testCollection')
+    result = unittest.TextTestRunner(verbosity=1).run(suite)
+    sys.exit(len(result.failures))

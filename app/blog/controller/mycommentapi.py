@@ -25,7 +25,7 @@ def query(urlsafe):
                      'email': c.email,
                      'comment': c.comment,
                      'created': str(c.created)}
-                    for c in BlogComment.getComments(blog.key)]
+                    for c in BlogComment.get_comments(blog.key)]
     else:
         comments = []
 

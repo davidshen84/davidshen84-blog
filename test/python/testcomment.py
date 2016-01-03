@@ -1,10 +1,24 @@
 # -*- coding: utf-8-unix -*-
 
-import unittest2 as unittest
-from google.appengine.ext import testbed
+import os
 
-from blog.module.model.blog import Blog
-from blog.module.model.blogcomment import BlogComment
+import unittest2 as unittest
+
+try:
+    if 'GAE_SDK' in os.environ:
+        sys.path.insert(0, os.environ['GAE_SDK'])
+
+    import dev_appserver
+
+    dev_appserver.fix_sys_path()
+except ImportError:
+    dev_appserver = None
+    print 'gae sdk is required'
+    sys.exit(-1)
+
+from google.appengine.ext import testbed
+from blog.model.blog import Blog
+from blog.model.blogcomment import BlogComment
 
 
 class BlogCommentTestCase(unittest.TestCase):
@@ -21,12 +35,8 @@ class BlogCommentTestCase(unittest.TestCase):
         self.content1 = 'test content1'
         self.tags1 = ['tag11', 'tag12']
 
-        self.title2 = 'test title2'
-        self.content2 = 'test content2'
-        self.tags2 = ['tag21', 'tag22']
-
-        Blog.create('test', 'test content')
-        self.blog = Blog.get_by_title('test', published_only=False)
+        Blog.create(self.title1, self.content1)
+        self.blog = Blog.get_by_title(self.title1, published_only=False)
         self.blog_key = self.blog.key
 
     def tearDown(self):
@@ -41,16 +51,17 @@ class BlogCommentTestCase(unittest.TestCase):
         BlogComment.create(self.blog_key, "test user", "test@test.com", "test comment1")
         BlogComment.create(self.blog_key, "test user", "test@test.com", "test comment2")
 
-        comments = BlogComment.getComments(self.blog_key)
+        comments = BlogComment.get_comments(self.blog_key)
 
         self.assertIsNotNone(comments)
         self.assertEqual(reduce(lambda x, y: x + 1, comments, 0), 2)
 
     def testDestroy(self):
+        BlogComment.create(self.blog_key, "test user", "test@test.com", "test comment1")
         comment_key = BlogComment.create(self.blog_key, "test user", "test@test.com", "test comment2")
 
         BlogComment.destroy(comment_key.urlsafe())
-        comments = BlogComment.getComments(self.blog_key).fetch()
+        comments = BlogComment.get_comments(self.blog_key).fetch()
         self.assertEqual(len(comments), 1)
 
 

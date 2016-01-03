@@ -69,7 +69,10 @@ def fetch(urlsafe, published_only):
 @login_admin
 def create():
     blog = request.json
-    tags = blog['tags']
+    if blog is None:
+        return MSG_SAVE_ERROR, 500
+
+    tags = blog['tags'] if 'tags' in blog else []
     # clean tags
     tags = [t.strip() for t in tags]
     tags = filter(lambda t: len(t) > 0, tags)
