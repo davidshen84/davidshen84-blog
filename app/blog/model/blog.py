@@ -230,4 +230,4 @@ class Blog(ndb.Model):
   def get_recent(cls):
     """returns the latest 10 blogs"""
 
-    return cls.query().order(- cls.created).fetch(10)
+    return cls.query(Blog.published == True).order(- cls.created).fetch(10)

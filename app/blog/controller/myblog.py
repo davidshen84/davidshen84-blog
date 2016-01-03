@@ -34,7 +34,7 @@ def index():
     recent_blogs = [{'created': b.created, 'title': b.title, 'url': url_for_blog(b),
                      'content': markdown(''.join(strip_title(b.content).splitlines(True)[:10]))}
                     for b in Blog.get_recent()]
-    latest_blog = Blog.query().order(- Blog.created).get()
+    latest_blog = Blog.query(Blog.published == True).order(- Blog.created).get()
 
     latest_blog_url = '#'
     if latest_blog is not None:

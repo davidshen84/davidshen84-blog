@@ -1,15 +1,17 @@
 # -*- coding: utf-8-unix -*-
 
 from google.appengine.ext import vendor
-vendor.add('lib')
+try:
+    vendor.add('lib')
+except:
+    pass
 
-if True:
-    from urllib import quote
-    from flask import Flask
-    from blog.controller.myblog import blueprint as blog
-    from blog.controller.myblogadmin import blueprint as blogadmin
-    from blog.controller.myblogapi import blueprint as blogapi
-    from blog.controller.mycommentapi import blueprint as blogcommentapi
+from urllib import quote
+from flask import Flask
+from blog.controller.myblog import blueprint as blog
+from blog.controller.myblogadmin import blueprint as blogadmin
+from blog.controller.myblogapi import blueprint as blogapi
+from blog.controller.mycommentapi import blueprint as blogcommentapi
 
 
 debug_flag = True
