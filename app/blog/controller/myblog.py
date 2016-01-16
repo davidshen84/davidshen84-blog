@@ -62,7 +62,7 @@ def blog(year, month, urlsafe):
 
     # created = myblog.created
     # article_path = url_for('.blog', year=created.year, month=created.month, urlsafe=myblog.key.urlsafe())
-    last_modified = format_date(myblog.lastmodified)
+    last_modified = format_date(myblog.last_modified)
     comments = BlogComment.query(ancestor=myblog.key)
 
     blog_title = myblog.title

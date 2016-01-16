@@ -21,7 +21,7 @@ def query(urlsafe):
 
     if blog:
         comments = [{'urlsafe': c.key.urlsafe(),
-                     'screenname': c.screenname,
+                     'screen_name': c.screen_name,
                      'email': c.email,
                      'comment': c.comment,
                      'created': str(c.created)}
@@ -38,11 +38,11 @@ def create(urlsafe):
     blog = Blog.get_by_urlsafe(urlsafe)
 
     if blog:
-        comment_key = BlogComment.create(blog.key, comment['screenname'],
+        comment_key = BlogComment.create(blog.key, comment['screen_name'],
                                          comment['email'], comment['comment'])
         comment = comment_key.get()
 
-        return jsonify({'screenname': comment.screenname,
+        return jsonify({'screen_name': comment.screen_name,
                         'comment': comment.comment,
                         'created': str(comment.created)})
     else:

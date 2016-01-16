@@ -45,14 +45,6 @@ class BlogTestCase(unittest.TestCase):
     def tearDown(self):
         self.testbed.deactivate()
 
-    def testGetBlogByTitle(self):
-        Blog.create(self.title1, self.content1)
-        Blog.create(self.title2, self.content2)
-
-        blog = Blog.get_by_title(self.title1, False)
-        self.assertIsNotNone(blog)
-        self.assertIsInstance(blog, Blog)
-
     def testPublish(self):
         key1 = Blog.create(self.title1, self.content1)
         Blog.create(self.title2, self.content2)
@@ -217,7 +209,8 @@ class BlogTestCase(unittest.TestCase):
 
     def testGetRecent(self):
         for i in range(15):
-            Blog.create("{}_{}".format(self.title1, i), self.content1, self.tags1, created=date(2015, 1, i + 1))
+            Blog.create("{}_{}".format(self.title1, i), self.content1, self.tags1, created=date(2015, 1, i + 1),
+                        published=True)
 
         recent_blogs = Blog.get_recent()
         latest = recent_blogs[0]
