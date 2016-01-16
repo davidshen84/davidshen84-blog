@@ -1,1 +1,2 @@
-# -*- coding: utf-8-unix -*-
+from blog import Blog
+from comment import Comment

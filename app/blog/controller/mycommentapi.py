@@ -5,8 +5,8 @@ import json
 from flask import Blueprint, request, jsonify
 
 from blog.controller import login_admin
-from blog.model.blog import Blog
-from blog.model.blogcomment import BlogComment
+from blog.model import Blog
+from blog.model import Comment
 
 MSG_OK = 'ok'
 MSG_SAVE_ERROR = 'failed to save comment'
@@ -25,7 +25,7 @@ def query(urlsafe):
                      'email': c.email,
                      'comment': c.comment,
                      'created': str(c.created)}
-                    for c in BlogComment.get_comments(blog.key)]
+                    for c in Comment.get_comments(blog.key)]
     else:
         comments = []
 
@@ -38,8 +38,8 @@ def create(urlsafe):
     blog = Blog.get_by_urlsafe(urlsafe)
 
     if blog:
-        comment_key = BlogComment.create(blog.key, comment['screen_name'],
-                                         comment['email'], comment['comment'])
+        comment_key = Comment.create(blog.key, comment['screen_name'],
+                                     comment['email'], comment['comment'])
         comment = comment_key.get()
 
         return jsonify({'screen_name': comment.screen_name,
@@ -52,5 +52,5 @@ def create(urlsafe):
 @route('/sync/<urlsafe>', methods=['DELETE'])
 @login_admin
 def destroy(urlsafe):
-    BlogComment.destroy(urlsafe)
+    Comment.destroy(urlsafe)
     return MSG_OK, 200

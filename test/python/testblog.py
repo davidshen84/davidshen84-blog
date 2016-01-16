@@ -21,7 +21,7 @@ except ImportError:
 # real test code
 from datetime import date
 from google.appengine.ext import testbed
-from blog.model.blog import Blog
+from blog.model import Blog
 
 
 class BlogTestCase(unittest.TestCase):

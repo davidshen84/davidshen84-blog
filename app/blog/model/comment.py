@@ -1,7 +1,7 @@
 from google.appengine.ext import ndb
 
 
-class BlogComment(ndb.Model):
+class Comment(ndb.Model):
     """
     BlogComment
 

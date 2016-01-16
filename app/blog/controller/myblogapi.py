@@ -6,8 +6,8 @@ from flask import Blueprint, request, jsonify
 from google.appengine.api import users
 
 from blog.controller import login_admin, simple_auth
-from blog.model.blog import Blog
-from blog.model.blogcomment import BlogComment
+from blog.model import Blog
+from blog.model import Comment
 
 MSG_OK = 'ok'
 MSG_SAVE_ERROR = 'failed to save blog'
@@ -54,7 +54,7 @@ def fetch(urlsafe, published_only):
 
     if blog:
         comments = [{'screen_name': c.screen_name, 'email': c.email, 'comment': c.comment}
-                    for c in BlogComment.query(ancestor=blog.key)]
+                    for c in Comment.query(ancestor=blog.key)]
         return jsonify(
             title=blog.title,
             content=blog.content,

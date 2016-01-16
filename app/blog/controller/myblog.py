@@ -6,8 +6,8 @@ from datetime import datetime
 from flask import Blueprint, render_template, request, abort, url_for
 
 from blog.controller import is_admin
-from blog.model.blog import Blog
-from blog.model.blogcomment import BlogComment
+from blog.model import Blog
+from blog.model import Comment
 from lib.markdown import markdown
 
 BAD_SP = unichr(0xa0)
@@ -63,7 +63,7 @@ def blog(year, month, urlsafe):
     # created = myblog.created
     # article_path = url_for('.blog', year=created.year, month=created.month, urlsafe=myblog.key.urlsafe())
     last_modified = format_date(myblog.last_modified)
-    comments = BlogComment.query(ancestor=myblog.key)
+    comments = Comment.query(ancestor=myblog.key)
 
     blog_title = myblog.title
     blog_content = strip_title(myblog.content)
