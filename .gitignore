@@ -4,14 +4,12 @@
 
 # generated files
 dist/
-app/static/maps/
 *.min.css
 *.min.js
 
 
 # vendor libs
-app/blog/module/*.zip
-app/lib/*
+app/lib/
 !app/lib/__init__.py
 app/static/lib/
 
@@ -21,8 +19,7 @@ node_modules/
 
 # intellij files
 .idea/
-*.iml
 
 # unit test generated files
-/test/javascript/coverage/PhantomJS 1.9.8 (Windows 8 0.0.0)
+/test/javascript/coverage/
 /app/blog/static/maps/all.min.css.map

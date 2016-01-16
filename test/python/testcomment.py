@@ -18,7 +18,7 @@ except ImportError:
 
 from google.appengine.ext import testbed
 from blog.model.blog import Blog
-from blog.model.blogcomment import BlogComment
+from blog.model import Comment
 
 
 class BlogCommentTestCase(unittest.TestCase):
@@ -35,33 +35,32 @@ class BlogCommentTestCase(unittest.TestCase):
         self.content1 = 'test content1'
         self.tags1 = ['tag11', 'tag12']
 
-        Blog.create(self.title1, self.content1)
-        self.blog = Blog.get_by_title(self.title1, published_only=False)
-        self.blog_key = self.blog.key
+        self.blog_key = Blog.create(self.title1, self.content1)
+        self.blog = self.blog_key.get()
 
     def tearDown(self):
         self.testbed.deactivate()
 
     def testCreate(self):
-        comment = BlogComment.create(self.blog_key, "test user", "test@test.com", "test comment")
+        comment = Comment.create(self.blog_key, "test user", "test@test.com", "test comment")
 
         self.assertIsNotNone(comment)
 
     def testGetComments(self):
-        BlogComment.create(self.blog_key, "test user", "test@test.com", "test comment1")
-        BlogComment.create(self.blog_key, "test user", "test@test.com", "test comment2")
+        Comment.create(self.blog_key, "test user", "test@test.com", "test comment1")
+        Comment.create(self.blog_key, "test user", "test@test.com", "test comment2")
 
-        comments = BlogComment.get_comments(self.blog_key)
+        comments = Comment.get_comments(self.blog_key)
 
         self.assertIsNotNone(comments)
         self.assertEqual(reduce(lambda x, y: x + 1, comments, 0), 2)
 
     def testDestroy(self):
-        BlogComment.create(self.blog_key, "test user", "test@test.com", "test comment1")
-        comment_key = BlogComment.create(self.blog_key, "test user", "test@test.com", "test comment2")
+        Comment.create(self.blog_key, "test user", "test@test.com", "test comment1")
+        comment_key = Comment.create(self.blog_key, "test user", "test@test.com", "test comment2")
 
-        BlogComment.destroy(comment_key.urlsafe())
-        comments = BlogComment.get_comments(self.blog_key).fetch()
+        Comment.destroy(comment_key.urlsafe())
+        comments = Comment.get_comments(self.blog_key).fetch()
         self.assertEqual(len(comments), 1)
 
 

@@ -1,12 +1,13 @@
 # -*- coding: utf-8-unix -*-
 
 import re
+from datetime import datetime
 
 from flask import Blueprint, render_template, request, abort, url_for
 
 from blog.controller import is_admin
-from blog.model.blog import Blog
-from blog.model.blogcomment import BlogComment
+from blog.model import Blog
+from blog.model import Comment
 from lib.markdown import markdown
 
 BAD_SP = unichr(0xa0)
@@ -29,9 +30,14 @@ def url_for_blog(b):
     return url_for('.blog', year=created.year, month=created.month, urlsafe=b.key.urlsafe())
 
 
+def format_date(date):
+    date_format = '%m-%d-%Y'
+    return datetime.strftime(date, date_format)
+
+
 @route('/')
 def index():
-    recent_blogs = [{'created': b.created, 'title': b.title, 'url': url_for_blog(b),
+    recent_blogs = [{'created': format_date(b.created), 'title': b.title, 'url': url_for_blog(b),
                      'content': markdown(''.join(strip_title(b.content).splitlines(True)[:10]))}
                     for b in Blog.get_recent()]
     latest_blog = Blog.query(Blog.published == True).order(- Blog.created).get()
@@ -54,10 +60,10 @@ def blog(year, month, urlsafe):
     if not myblog:
         return abort(404)
 
-    created = myblog.created
-    article_path = url_for('.blog', year=created.year,
-                           month=created.month, urlsafe=myblog.key.urlsafe())
-    comments = BlogComment.query(ancestor=myblog.key)
+    # created = myblog.created
+    # article_path = url_for('.blog', year=created.year, month=created.month, urlsafe=myblog.key.urlsafe())
+    last_modified = format_date(myblog.last_modified)
+    comments = Comment.query(ancestor=myblog.key)
 
     blog_title = myblog.title
     blog_content = strip_title(myblog.content)
@@ -75,13 +81,12 @@ def blog(year, month, urlsafe):
 
     return render_template('blog/blog.html',
                            title=blog_title,
+                           last_modified=last_modified,
                            tags=','.join(myblog.tags),
                            article=markdown(blog_content),
                            comments=comments,
-                           monthFullName=monthFullName,
-                           articlePath=article_path,
-                           isXhr=request.is_xhr or ('xhr' in request.args),
-                           is_admin=is_admin(),
+                           # isXhr=request.is_xhr or ('xhr' in request.args),
+                           # is_admin=is_admin(),
                            older_url=older_url,
                            newer_url=newer_url)
 

@@ -25,7 +25,7 @@ from google.appengine.ext import testbed
 
 from blog import api
 from blog.model.blog import Blog
-from blog.model.blogcomment import BlogComment
+from blog.model.comment import Comment
 
 
 class MyCommentApiTestCase(unittest.TestCase):
@@ -51,7 +51,7 @@ class MyCommentApiTestCase(unittest.TestCase):
         r = self.api.post(
             self.base + 'sync/' + self.blog1.urlsafe(),
             data=json.dumps({
-                'screenname': 'user1',
+                'screen_name': 'user1',
                 'email': 'a@b.c',
                 'comment': 'comment'
             }),
@@ -60,14 +60,14 @@ class MyCommentApiTestCase(unittest.TestCase):
 
         self.assertEqual(200, r.status_code)
         blog = Blog.get_by_id('test1')
-        comments = BlogComment.query(ancestor=blog.key)
-        comments_count = reduce(lambda n, c: n + 1, comments, 0)
-        self.assertEqual(1, comments_count)
+        comments = [c for c in Comment.query(ancestor=blog.key)]
+        self.assertEqual(1, len(comments))
+        self.assertEqual('user1', comments[0].screen_name)
 
     def testDestroy(self):
-        urlsafe = BlogComment.create(self.blog1, 'user1', 'a@b.c', 'comments').urlsafe()
+        urlsafe = Comment.create(self.blog1, 'user1', 'a@b.c', 'comments').urlsafe()
         blog = Blog.get_by_id('test1')
-        comments = BlogComment.query(ancestor=blog.key)
+        comments = Comment.query(ancestor=blog.key)
         comments_count = reduce(lambda n, c: n + 1, comments, 0)
         self.assertEqual(1, comments_count)
 
@@ -76,15 +76,20 @@ class MyCommentApiTestCase(unittest.TestCase):
         r = self.api.delete('{}sync/{}'.format(self.base, urlsafe))
         self.assertEqual(200, r.status_code)
         blog = Blog.get_by_id('test1')
-        comments = BlogComment.query(ancestor=blog.key)
+        comments = Comment.query(ancestor=blog.key)
         comments_count = reduce(lambda n, c: n + 1, comments, 0)
         self.assertEqual(0, comments_count)
 
     def testCollection(self):
-        BlogComment.create(self.blog1, 'user1', 'a@b.c', 'comments')
+        Comment.create(self.blog1, 'user1', 'a@b.c', 'comments')
         r = self.api.get(self.base + 'sync/' + self.blog1.urlsafe())
         self.assertEqual(200, r.status_code)
-        self.assertEqual(1, len(json.loads(r.data)))
+        comments = json.loads(r.data)
+        self.assertEqual(1, len(comments))
+
+        comment0 = comments[0]
+        self.assertEqual('user1', comment0['screen_name'])
+        self.assertEqual('a@b.c', comment0['email'])
 
 
 if __name__ == '__main__':
