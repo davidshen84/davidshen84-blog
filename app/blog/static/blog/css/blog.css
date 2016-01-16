@@ -341,10 +341,12 @@ body .xs-blog {
 }
 
 .xs-blog--blogpost .meta > * {
+/*
   -webkit-box-align: center;
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
+*/
 }
 
 .xs-blog--blogpost .meta + .mdl-card__supporting-text {
