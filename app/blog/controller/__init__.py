@@ -1,9 +1,8 @@
-# -*- coding: utf-8-unix -*-
+from functools import wraps
+from urllib import unquote
 
 from flask import abort
-from functools import wraps
 from google.appengine.api import users
-from urllib import unquote
 
 
 def is_admin():
@@ -46,3 +45,8 @@ def auto_unquote(unquotee):
         return func
 
     return decorated
+
+
+def format_date(date):
+    date_format = '%m-%d-%Y'
+    return date.strftime(date_format)
