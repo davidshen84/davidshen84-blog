@@ -1,11 +1,9 @@
-# -*- coding: utf-8-unix -*-
-
 import json
 
 from flask import Blueprint, request, jsonify
 from google.appengine.api import users
 
-from blog.controller import login_admin, simple_auth
+from blog.controller import login_admin, simple_auth, format_date
 from blog.model import Blog
 from blog.model import Comment
 
@@ -43,7 +41,7 @@ def query(published_only):
 
     return json.dumps(
         [{'title': b.title, 'urlsafe': b.key.urlsafe(),
-          'published': b.published, 'last_modified': b.last_modified.strftime('%Y/%m/%d')}
+          'published': b.published, 'last_modified': format_date(b.last_modified)}
          for b in blogs])
 
 

@@ -2,9 +2,9 @@
   <form novalidate name="form" ng-submit="submit()">
     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell-6-col mdl-textfield mdl-js-textfield">
-        <input class="mdl-textfield__input" type="text" id="screenname" pattern="[a-zA-Z0-9]{3,}"
-               ng-model="comment.screenname" required/>
-        <label class="mdl-textfield__label" for="screenname">Screen Name</label>
+        <input class="mdl-textfield__input" type="text" id="screen_name" pattern="[a-zA-Z0-9]{3,}"
+               ng-model="comment.screen_name" required/>
+        <label class="mdl-textfield__label" for="screen_name">Screen Name</label>
       </div>
       <div class="mdl-cell mdl-cell-6-col mdl-textfield mdl-js-textfield">
         <input class="mdl-textfield__input" type="email" id="email" ng-model="comment.email" required/>
@@ -26,7 +26,7 @@
       <img src="http://www.googleplusblog.it/wp-content/uploads/2011/08/v-per-vendetta.png" class="comment__avatar">
 
       <div class="comment__author">
-        <strong>{{ comment.screenname }}</strong>
+        <strong>{{ comment.screen_name }}</strong>
         <span>{{ comment.created }}</span>
       </div>
     </header>

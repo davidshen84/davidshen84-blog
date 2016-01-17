@@ -1,10 +1,8 @@
-# -*- coding: utf-8-unix -*-
-
 import json
 
 from flask import Blueprint, request, jsonify
 
-from blog.controller import login_admin
+from blog.controller import login_admin, format_date
 from blog.model import Blog
 from blog.model import Comment
 
@@ -24,7 +22,7 @@ def query(urlsafe):
                      'screen_name': c.screen_name,
                      'email': c.email,
                      'comment': c.comment,
-                     'created': str(c.created)}
+                     'created': format_date(c.created)}
                     for c in Comment.get_comments(blog.key)]
     else:
         comments = []
@@ -44,7 +42,7 @@ def create(urlsafe):
 
         return jsonify({'screen_name': comment.screen_name,
                         'comment': comment.comment,
-                        'created': str(comment.created)})
+                        'created': format_date(comment.created)})
     else:
         return MSG_SAVE_ERROR, 500
 

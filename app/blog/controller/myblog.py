@@ -1,11 +1,8 @@
-# -*- coding: utf-8-unix -*-
-
 import re
-from datetime import datetime
 
 from flask import Blueprint, render_template, request, abort, url_for
 
-from blog.controller import is_admin
+from blog.controller import is_admin, format_date
 from blog.model import Blog
 from blog.model import Comment
 from lib.markdown import markdown
@@ -28,11 +25,6 @@ def url_for_blog(b):
     created = b.created
 
     return url_for('.blog', year=created.year, month=created.month, urlsafe=b.key.urlsafe())
-
-
-def format_date(date):
-    date_format = '%m-%d-%Y'
-    return datetime.strftime(date, date_format)
 
 
 @route('/')
