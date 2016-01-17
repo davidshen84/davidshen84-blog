@@ -4,15 +4,15 @@
  * define gulp build script
  */
 
-var gulp = require('gulp'),
-  minifycss = require('gulp-minify-css'),
-  concate = require('gulp-concat'),
-  sourcemaps = require('gulp-sourcemaps'),
-  uglifyjs = require('gulp-uglify'),
-  replace = require('gulp-replace');
+import gulp from 'gulp';
+import minifycss from 'gulp-minify-css';
+import concate from 'gulp-concat';
+import sourcemaps from 'gulp-sourcemaps';
+import uglifyjs from 'gulp-uglify';
+import replace from 'gulp-replace';
 
-gulp.task('copy-to-dist', function () {
-  return gulp.src(['app/**',
+gulp.task('copy-to-dist', () => {
+  gulp.src(['app/**',
       '!app/blog/static/*/css', '!app/blog/static/*/css/*.css',
       '!app/blog/static/*/js', '!app/blog/static/*/js/*.js',
       '!app/lib/flask/{testsuite,testsuite/**}',
@@ -20,8 +20,8 @@ gulp.task('copy-to-dist', function () {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('css-preprocessor-blog', function () {
-  return gulp.src('app/blog/static/*/css/*.css')
+gulp.task('css-preprocessor-blog', () => {
+  gulp.src('app/blog/static/*/css/*.css')
     .pipe(sourcemaps.init())
     .pipe(concate('all.min.css'))
     .pipe(minifycss())
@@ -29,8 +29,8 @@ gulp.task('css-preprocessor-blog', function () {
     .pipe(gulp.dest('app/blog/static/'));
 });
 
-gulp.task('css-preprocessor-online-tools', function () {
-  return gulp.src('app/online_tools/static/css/*.css')
+gulp.task('css-preprocessor-online-tools', () => {
+  gulp.src('app/online_tools/static/css/*.css')
     .pipe(concate('styles.all.min.css'))
     .pipe(minifycss())
     .pipe(gulp.dest('app/online_tools/static/'));
@@ -38,16 +38,13 @@ gulp.task('css-preprocessor-online-tools', function () {
 
 gulp.task('css-preprocessor', ['css-preprocessor-blog', 'css-preprocessor-online-tools']);
 
-var uglifyjs_uv = function (u, v) {
-  return function () {
-    v = v ? v : '';
-    var path = 'app/' + u + '/static/' + v;
+var uglifyjs_uv = (u, v = '') =>  () => {
+  var path = `app/${u}/static/${v}`;
 
-    return gulp.src(path + '/js/*.js')
-      .pipe(concate((v ? v : u) + '.all.min.js'))
-      .pipe(uglifyjs())
-      .pipe(gulp.dest(path + '/'));
-  };
+  return gulp.src(`${path}/js/*.js`)
+    .pipe(concate(`${(v || u)}.all.min.js`))
+    .pipe(uglifyjs())
+    .pipe(gulp.dest(`${path}/`));
 };
 
 gulp.task('uglifyjs-admin', uglifyjs_uv('blog', 'admin'));
@@ -57,15 +54,15 @@ gulp.task('uglifyjs-online-tools', uglifyjs_uv('online_tools'));
 
 gulp.task('uglifyjs', ['uglifyjs-admin', 'uglifyjs-blog', 'uglifyjs-shared']);
 
-/*
- gulp.task('watch', function () {
- gulp.watch('app/static/!*.css', ['css-preprocessor']);
- });*/
-
-gulp.task('disable-debug-flag', function () {
-  return gulp.src('app/blog/__init__.py')
+gulp.task('disable-debug-flag', () => {
+  gulp.src('app/blog/__init__.py')
     .pipe(replace('debug_flag = False', 'debug_flag = True'))
     .pipe(gulp.dest('dist/blog/'));
 });
 
-gulp.task('build', ['css-preprocessor', 'uglifyjs', 'copy-to-dist']);
+gulp.task('build', ['css-preprocessor', 'uglifyjs', 'copy-to-dist', 'disable-debug-flag']);
+
+/*
+ gulp.task('watch', function () {
+ gulp.watch('app/static/!*.css', ['css-preprocessor']);
+ });*/

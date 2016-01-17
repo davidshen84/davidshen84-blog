@@ -3,6 +3,7 @@
   "expr": true,
   "browser": true,
   "devel": true,
+  "esnext": true,
   "globals": {
     "angular": true,
     "EpicEditor": true,
