@@ -8,7 +8,8 @@ var gulp = require('gulp'),
   minifycss = require('gulp-minify-css'),
   concate = require('gulp-concat'),
   sourcemaps = require('gulp-sourcemaps'),
-  uglifyjs = require('gulp-uglify');
+  uglifyjs = require('gulp-uglify'),
+  replace = require('gulp-replace');
 
 gulp.task('copy-to-dist', function () {
   return gulp.src(['app/**',
@@ -37,8 +38,9 @@ gulp.task('css-preprocessor-online-tools', function () {
 
 gulp.task('css-preprocessor', ['css-preprocessor-blog', 'css-preprocessor-online-tools']);
 
-var uglifyjs_u = function (u, v) {
+var uglifyjs_uv = function (u, v) {
   return function () {
+    v = v ? v : '';
     var path = 'app/' + u + '/static/' + v;
 
     return gulp.src(path + '/js/*.js')
@@ -48,10 +50,10 @@ var uglifyjs_u = function (u, v) {
   };
 };
 
-gulp.task('uglifyjs-admin', uglifyjs_u('blog', 'admin'));
-gulp.task('uglifyjs-blog', uglifyjs_u('blog', 'blog'));
-gulp.task('uglifyjs-shared', uglifyjs_u('blog', '_shared'));
-gulp.task('uglifyjs-online-tools', uglifyjs_u('online_tools', ''));
+gulp.task('uglifyjs-admin', uglifyjs_uv('blog', 'admin'));
+gulp.task('uglifyjs-blog', uglifyjs_uv('blog', 'blog'));
+gulp.task('uglifyjs-shared', uglifyjs_uv('blog', '_shared'));
+gulp.task('uglifyjs-online-tools', uglifyjs_uv('online_tools'));
 
 gulp.task('uglifyjs', ['uglifyjs-admin', 'uglifyjs-blog', 'uglifyjs-shared']);
 
@@ -59,5 +61,11 @@ gulp.task('uglifyjs', ['uglifyjs-admin', 'uglifyjs-blog', 'uglifyjs-shared']);
  gulp.task('watch', function () {
  gulp.watch('app/static/!*.css', ['css-preprocessor']);
  });*/
+
+gulp.task('disable-debug-flag', function () {
+  return gulp.src('app/blog/__init__.py')
+    .pipe(replace('debug_flag = False', 'debug_flag = True'))
+    .pipe(gulp.dest('dist/blog/'));
+});
 
 gulp.task('build', ['css-preprocessor', 'uglifyjs', 'copy-to-dist']);
