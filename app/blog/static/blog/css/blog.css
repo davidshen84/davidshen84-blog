@@ -356,7 +356,7 @@ body .xs-blog {
 
 .xs-blog--blogpost .meta + .mdl-card__supporting-text p {
   max-width: 512px;
-  margin: 16px auto;
+  margin: 16px 0;
   font-size: 16px;
   line-height: 28px;
 }
