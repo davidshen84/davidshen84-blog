@@ -72,17 +72,3 @@
     <div class="mdl-layout__obfuscator"></div>
   </div>
 {% endblock %}
-
-{% block script_tail %}
-  <script src="/static/lib/material/material.min.js"></script>
-  <script src="/static/lib/angular/angular.min.js"></script>
-  <script src="/static/lib/angular/angular-resource.min.js"></script>
-  <script src="/static/lib/angular/angular-route.min.js"></script>
-  {% if config['DEBUG'] %}
-    <script src="/blog/static/_shared/js/blogapi.js"></script>
-    <script src="/blog/static/blog/js/blog.js"></script>
-  {% else %}
-    <script src="/blog/static/_shared/shared.all.min.js"></script>
-    <script src="/blog/static/blog/blog.all.min.js"></script>
-  {% endif %}
-{% endblock %}

@@ -18,29 +18,30 @@ import uglify from 'gulp-uglify';
 
 
 gulp.task('bower-files', () => {
-  var angularFilter = filter(['**/angular*/*.js'], {restore: true}),
+  var angularFilter = filter(['**/angular*/*'], {restore: true}),
     eeFilter = filter(['**/epiceditor/**'], {restore: true}),
-    mdlFilter = filter(['**/material-design-lite/**'], {restore: true});
+    mdlFilter = filter(['**/material-design-lite/*'], {restore: true});
 
   return gulp.src(mainBowerFiles({
-    overrides: {
-      angular: {
-        main: 'angular.min.js'
-      },
-      "angular-resource": {
-        main: 'angular-resource.min.js'
-      },
-      "angular-route": {
-        main: 'angular-route.min.js'
-      },
-      epiceditor: {
-        main: ['epiceditor/js/*.min.js', 'epiceditor/themes/**']
+      overrides: {
+        angular: {
+          main: 'angular.min.js'
+        },
+        "angular-resource": {
+          main: 'angular-resource.min.js'
+        },
+        "angular-route": {
+          main: 'angular-route.min.js'
+        },
+        epiceditor: {
+          main: ['epiceditor/js/*.min.js', 'epiceditor/themes/**']
+        }
       }
-    }
-  }), {base: './bower_components'})
+    }), {base: './bower_components'})
     .pipe(angularFilter)
     .pipe(flatten())
     .pipe(rename(path => path.dirname += '/angular'))
+    .pipe(replace(/\/\/# sourceMappingURL=.*/, ''))
     //.pipe(debug({title: 'angular'}))
     .pipe(angularFilter.restore)
     .pipe(eeFilter)
@@ -49,12 +50,14 @@ gulp.task('bower-files', () => {
     .pipe(eeFilter.restore)
     .pipe(mdlFilter)
     .pipe(rename(path => path.dirname = '/material'))
+    .pipe(replace(/\/\/# sourceMappingURL=.*/, ''))
     .pipe(mdlFilter.restore)
     .pipe(gulp.dest('app/static/lib'));
 });
 
 gulp.task('copy-to-dist', () => {
   gulp.src(['app/**',
+      '!app/blog/__init__.py',
       '!app/blog/static/*/css', '!app/blog/static/*/css/*.css',
       '!app/blog/static/*/js', '!app/blog/static/*/js/*.js',
       '!app/lib/*.*-info', '!app/lib/*.*-info/**',
@@ -99,7 +102,7 @@ gulp.task('uglify', ['uglify-admin', 'uglify-blog', 'uglify-shared']);
 
 gulp.task('disable-debug-flag', () => {
   gulp.src('app/blog/__init__.py')
-    .pipe(replace('debug_flag = False', 'debug_flag = True'))
+    .pipe(replace('debug_flag = True', 'debug_flag = False'))
     .pipe(gulp.dest('dist/blog/'));
 });
 

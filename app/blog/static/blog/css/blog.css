@@ -93,18 +93,10 @@ body .xs-blog {
   width: 100%;
   padding: 16px;
   min-height: 64px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  /*-webkit-box-align: center;*/
-  /*-webkit-align-items: center;*/
-  /*-ms-flex-align: center;*/
-  /*align-items: center;*/
 }
 
 .xs-blog .mdl-card__supporting-text strong {
-  font-weight: 400;
+  font-weight: 800;
 }
 
 .xs-blog .mdl-card__media ~ .mdl-card__supporting-text {
@@ -364,7 +356,7 @@ body .xs-blog {
 
 .xs-blog--blogpost .meta + .mdl-card__supporting-text p {
   max-width: 512px;
-  margin: 16px auto;
+  margin: 16px 0;
   font-size: 16px;
   line-height: 28px;
 }
