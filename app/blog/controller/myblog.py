@@ -40,6 +40,7 @@ def index():
                                   month=latest_blog.created.month, urlsafe=latest_blog.key.urlsafe())
 
     return render_template('blog/index.html',
+                           title='Xi Shen\'s Blog',
                            recent_blogs=recent_blogs,
                            latest_blog=latest_blog_url,
                            is_admin=is_admin())

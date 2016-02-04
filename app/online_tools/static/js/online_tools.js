@@ -26,21 +26,10 @@
 
             charArr = '';
 
-            if ($scope.hasLowerCase) {
-              charArr += lowerCases;
-            }
-
-            if ($scope.hasUpperCase) {
-              charArr += upperCases;
-            }
-
-            if ($scope.hasDigit) {
-              charArr += digits;
-            }
-
-            if ($scope.hasSpecial) {
-              charArr += specials;
-            }
+            $scope.hasLowerCase && (charArr += lowerCases);
+            $scope.hasUpperCase && (charArr += upperCases);
+            $scope.hasDigit && (charArr += digits);
+            $scope.hasSpecial && (charArr += specials);
 
             // generate some random CJK characters
             if ($scope.hasCJK) {
@@ -60,6 +49,8 @@
                 $scope.generatedChars += charArr[rnd % charArrLen];
               }
             }
+
+            ga('send', 'event', 'click', 'generate');
           };
 
           // automatically select the content on mouse over
