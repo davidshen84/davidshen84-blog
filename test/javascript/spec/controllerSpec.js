@@ -1,4 +1,4 @@
-describe('controllers', function () {
+describe('controller specifications', function () {
   'use strict';
 
   beforeEach(module('admin', 'blogapi'));
