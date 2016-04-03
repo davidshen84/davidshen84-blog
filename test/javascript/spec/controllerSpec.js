@@ -184,7 +184,10 @@ describe('controller specifications', function () {
           BlogComment: blogCmt,
           editor: function () {
             return eeditor;
-          }
+          },
+          snackbar: sinon.stub().returns({
+            showSnackbar: sinon.stub()
+          })
         });
       scope.save();
       blogUpdateStub.should.have.been.called;
