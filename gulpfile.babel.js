@@ -100,13 +100,7 @@ gulp.task('uglify-online-tools', uglify_uv('online_tools'));
 
 gulp.task('uglify', ['uglify-admin', 'uglify-blog', 'uglify-shared']);
 
-gulp.task('disable-debug-flag', () => {
-  gulp.src('app/blog/__init__.py')
-    .pipe(replace('debug_flag = True', 'debug_flag = False'))
-    .pipe(gulp.dest('dist/blog/'));
-});
-
-gulp.task('build', ['minifycss', 'uglify', 'copy-to-dist', 'disable-debug-flag']);
+gulp.task('build', ['minifycss', 'uglify', 'copy-to-dist']);
 
 /*
  gulp.task('watch', function () {
