@@ -2,6 +2,15 @@
   'use strict';
 
   angular.module('admin', ['blogapi', 'admin.directive'])
+    .factory('snackbar', ['$document', function ($document) {
+      var snackbar = null;
+
+      return function () {
+        snackbar || (snackbar = $document[0].querySelector("#snackbar").MaterialSnackbar);
+
+        return snackbar;
+      };
+    }])
     .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
 
       $routeProvider
@@ -65,8 +74,8 @@
           };
         }])
     .controller('CreateEditCtrl',
-      ['$scope', '$routeParams', '$interpolate', '$sce', '$window', '$location', 'Blog', 'BlogComment', 'editor',
-        function ($scope, $routeParams, $interpolate, $sce, $window, $location, Blog, BlogComment, editor) {
+      ['$scope', '$routeParams', '$window', '$location', 'Blog', 'BlogComment', 'editor', 'snackbar',
+        function ($scope, $routeParams, $window, $location, Blog, BlogComment, editor, snackbar) {
           componentHandler.upgradeAllRegistered();
 
           var titlePattern = /^#.*$/m;
@@ -78,15 +87,9 @@
           }
 
           $scope.urlsafe = $routeParams.urlsafe;
-          var isNew = $scope.urlsafe ? false: true,
-            notificationTemplate = $interpolate(
-              '<div class="alert alert-{{type}}" data-timestamp={{timestamp}}>\
-                <button type="button" class="close" data-dismiss="alert">&times;</button>\
-              {{msg}}</div>'
-            );
+          var isNew = $scope.urlsafe ? false : true;
 
           $scope.isClean = true;
-          $scope.notifyMessage = '';
 
           if ($scope.urlsafe) {
             Blog.get({"urlsafe": $scope.urlsafe}, function (blog) {
@@ -111,11 +114,10 @@
             function updateSuccess(data) {
               $scope.isClean = true;
               isNew = false;
-              $scope.notifyMessage = $sce.trustAsHtml(notificationTemplate({
-                "msg": data.msg,
-                "type": "success",
-                "timestamp": +new Date()
-              }));
+              snackbar().showSnackbar({
+                message: data.msg,
+                timeout: 5000
+              });
             }
 
             if (isNew) {
@@ -143,14 +145,6 @@
               function () {
                 $scope.comments = BlogComment.query({"urlsafe": urlsafe});
               });
-          };
-
-          $scope.showMsg = function () {
-            if ($scope.lastAction) {
-              return notificationTemplate($scope.lastAction);
-            }
-
-            return null;
           };
 
           $scope.cancel = function () {

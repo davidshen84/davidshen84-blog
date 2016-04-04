@@ -48,4 +48,4 @@ builtins:
 - remote_api: on
 
 env_variables:
-  debug: False
+  debug: True

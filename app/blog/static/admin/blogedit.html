@@ -2,9 +2,10 @@
   <eeditor isclean="isClean"></eeditor>
   <div style="background-color: beige; padding-left: 10px;">
     <div class="mdl-textfield mdl-js-textfield">
-      <input class="mdl-textfield__input" type="text" id="tags1" ng-model="tags" ng-change="isClean=false"
+      <input class="mdl-textfield__input" type="text" id="tags" ng-model="tags" ng-change="isClean=false"
              placeholder="tags...">
-      <label class="mdl-textfield__label" for="tags1"><!--this empty label is required for visual effect--></label>
+      <label class="mdl-textfield__label" for="tags">
+        <!--this empty label is required for visual effect--></label>
     </div>
 
     <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" ng-click="save()"
@@ -15,7 +16,11 @@
     <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--colored" ng-click="cancel()">
       <i class="material-icons">exit_to_app</i>
     </button>
-    <div ng-bind-html="notifyMessage"></div>
+
+    <div id="snackbar" class="mdl-js-snackbar mdl-snackbar">
+      <div class="mdl-snackbar__text"></div>
+      <button class="mdl-snackbar__action" type="button"></button>
+    </div>
   </div>
 </div>
 

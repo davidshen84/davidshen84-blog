@@ -21,7 +21,7 @@
     "angular": "~1.*",
     "angular-resource": "~1.*",
     "angular-route": "~1.*",
-    "material-design-lite": "~1.0.*",
+    "material-design-lite": "~1.1.*",
     "epiceditor": "~0.2.*"
   },
   "devDependencies": {

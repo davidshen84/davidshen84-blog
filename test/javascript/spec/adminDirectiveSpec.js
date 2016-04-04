@@ -66,12 +66,32 @@ describe('Admin directive and their controllers', function () {
   });
 
   describe('EEditorDirectiveCtrl', function () {
-    var scope, eeditorSpy, editorLoadStub, editorStub;
+    var scope, eeditorStub, editorLoadStub, editorStub;
 
     beforeEach(inject(function ($rootScope) {
       scope = $rootScope.$new();
-      eeditorSpy = {on: sinon.stub()};
-      editorLoadStub = sinon.stub().returns(eeditorSpy);
+      eeditorStub = {
+        getElement: sinon.stub().returns({
+          contentDocument: {
+            createElement: sinon.stub().returns({}),
+            head: {
+              appendChild: sinon.stub()
+            }
+          },
+          contentWindow: {
+            MathJax: {
+              Hub: {
+                Queue: sinon.stub()
+              }
+            },
+            Array: sinon.stub()
+          }
+        }),
+        on: sinon.stub()
+      };
+      eeditorStub.on.returnsThis();
+
+      editorLoadStub = sinon.stub().callsArgOn(0, eeditorStub).returns(eeditorStub);
       editorStub = sinon.stub().returns({load: editorLoadStub});
     }));
 
@@ -85,12 +105,13 @@ describe('Admin directive and their controllers', function () {
 
       editorStub.should.have.been.called;
       editorLoadStub.should.have.been.called;
-      eeditorSpy.on.should.have.been.called;
+      eeditorStub.on.should.have.been.called;
     }));
 
     it('should call scope.$apply to update isclean', inject(function ($controller) {
       // setup spy/stub
-      eeditorSpy.on.withArgs('update').callsArgWith(1, scope);
+
+      eeditorStub.on.withArgs('update').callsArgWith(1, scope).returnsThis();
       sinon.spy(scope, '$apply');
 
       // resolve the controller
@@ -101,7 +122,7 @@ describe('Admin directive and their controllers', function () {
           editor: editorStub
         });
 
-      eeditorSpy.on.should.have.been.calledWith('update');
+      eeditorStub.on.should.have.been.calledWith('update');
       scope.$apply.should.have.been.called;
       scope.isclean.should.be.false;
     }));
