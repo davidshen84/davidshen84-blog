@@ -210,7 +210,7 @@ class Blog(ndb.Model):
         return query.get()
 
     @classmethod
-    def get_newer(cls, urlsafe, published_only=False):
+    def get_newer(cls, urlsafe, published_only=True):
         """get one blog that is created after current one
         :param published_only:
         :param urlsafe: urlsafe for current blog
