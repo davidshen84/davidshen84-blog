@@ -26,3 +26,14 @@ indexes:
   - name: published
   - name: created
     direction: desc
+
+- kind: Blog
+  properties:
+  - name: published
+  - name: last_modified
+
+- kind: Blog
+  properties:
+  - name: published
+  - name: last_modified
+    direction: desc
