@@ -75,7 +75,7 @@ def blog(year, month, urlsafe):
     return render_template('blog/blog.html',
                            title=blog_title,
                            last_modified=last_modified,
-                           tags=','.join(myblog.tags),
+                           tags=', '.join(myblog.tags),
                            article=markdown(blog_content),
                            comments=comments,
                            # isXhr=request.is_xhr or ('xhr' in request.args),
