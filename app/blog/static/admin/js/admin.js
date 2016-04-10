@@ -36,6 +36,8 @@
     .controller('ListCtrl',
       ['$scope', '$timeout', '$filter', '$location', 'Blog',
         function ($scope, $timeout, $filter, $location, Blog) {
+          componentHandler.upgradeAllRegistered();
+
           $scope.blogs = Blog.query();
 
           // define the edit function for the blog
@@ -76,8 +78,6 @@
     .controller('CreateEditCtrl',
       ['$scope', '$routeParams', '$window', '$location', 'Blog', 'BlogComment', 'editor', 'snackbar',
         function ($scope, $routeParams, $window, $location, Blog, BlogComment, editor, snackbar) {
-          componentHandler.upgradeAllRegistered();
-
           var titlePattern = /^#.*$/m;
 
           function extractTitleFromContent(content) {

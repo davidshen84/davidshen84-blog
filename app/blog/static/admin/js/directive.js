@@ -42,13 +42,13 @@
           };
 
         editor(opt).load(function () {
-            // create a script element inside of the iframe
-            previewer = this.getElement('previewerIframe');
-            var script = previewer.contentDocument.createElement('script');
-            script.src = mathJaxSrc;
-            // load MathJax inside of iframe's head
-            previewer.contentDocument.head.appendChild(script);
-          })
+          // create a script element inside of the iframe
+          previewer = this.getElement('previewerIframe');
+          var script = previewer.contentDocument.createElement('script');
+          script.src = mathJaxSrc;
+          // load MathJax inside of iframe's head
+          previewer.contentDocument.head.appendChild(script);
+        })
           .on('update', function () {
             $scope.$apply(function (scope) {
               scope.isclean = false;
