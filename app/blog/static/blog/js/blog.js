@@ -1,4 +1,4 @@
-(function (angular) {
+(function (angular, componentHandler) {
   'use strict';
 
   angular.module('blog', ['blogapi'])
@@ -9,6 +9,8 @@
       };
     })
     .controller('CommentCtrl', ['$scope', '$location', 'BlogComment', function ($scope, $location, Comment) {
+      componentHandler.upgradeAllRegistered();
+
       var default_comment = {};
 
       // build params from url
@@ -28,5 +30,5 @@
         });
       };
     }]);
-})(angular);
+})(angular, componentHandler);
 

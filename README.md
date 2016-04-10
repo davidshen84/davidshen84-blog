@@ -10,3 +10,5 @@ Features:
     - AngularJS
     - Material Design Lite
     - Gulp
+    - MathJax
+    - EpicEditor

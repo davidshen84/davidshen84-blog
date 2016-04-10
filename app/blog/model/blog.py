@@ -205,25 +205,24 @@ class Blog(ndb.Model):
         :param urlsafe: urlsafe for current blog
         """
 
-        current_cls = ndb.Key(urlsafe=urlsafe).get()
-        query = cls.query(cls.created < current_cls.created, cls.published == published_only)
-        return query.get()
+        current = ndb.Key(urlsafe=urlsafe).get()
+        query = cls.query(cls.last_modified < current.last_modified, cls.published == published_only)
+        return query.order(- cls.last_modified).get()
 
     @classmethod
-    def get_newer(cls, urlsafe, published_only=False):
+    def get_newer(cls, urlsafe, published_only=True):
         """get one blog that is created after current one
         :param published_only:
         :param urlsafe: urlsafe for current blog
         """
 
-        current_blog = ndb.Key(urlsafe=urlsafe).get()
-        query = cls.query(cls.created > current_blog.created,
-                          cls.published == published_only)
+        current = ndb.Key(urlsafe=urlsafe).get()
+        query = cls.query(cls.last_modified > current.last_modified, cls.published == published_only)
 
-        return query.get()
+        return query.order(- cls.last_modified).get()
 
     @classmethod
     def get_recent(cls):
         """returns the latest 10 blogs"""
 
-        return cls.query(cls.published == True).order(- cls.created).fetch(10)
+        return cls.query(cls.published == True).order(- cls.last_modified).fetch(10)
