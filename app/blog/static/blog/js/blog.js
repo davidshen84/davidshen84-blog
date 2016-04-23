@@ -2,11 +2,9 @@
   'use strict';
 
   angular.module('blog', ['blogapi'])
-    .directive('xsComment', function () {
-      return {
-        templateUrl: 'blog/static/blog/comment-template.html',
-        restrict: 'E'
-      };
+    .component('xsComment', {
+      templateUrl: 'blog/static/blog/comment-template.html',
+      controller: 'CommentCtrl'
     })
     .controller('CommentCtrl', ['$scope', '$location', 'BlogComment', function ($scope, $location, Comment) {
       componentHandler.upgradeAllRegistered();
