@@ -1,14 +1,14 @@
-describe('Blog service', function() {
+describe('Blog service', function () {
   'use strict';
 
   var $http;
 
   beforeEach(module('blogapi'));
-  beforeEach(inject(function($httpBackend) {
+  beforeEach(inject(function ($httpBackend) {
     $http = $httpBackend;
   }));
 
-  afterEach(function(){
+  afterEach(function () {
     $http.flush();
     $http.verifyNoOutstandingExpectation();
     $http.verifyNoOutstandingRequest();
@@ -20,13 +20,13 @@ describe('Blog service', function() {
     Blog.get();
   }));
 
-  it('should make PUT request to /blog/api/sync/test', inject(function(Blog) {
+  it('should make PUT request to /blog/api/sync/test', inject(function (Blog) {
     $http.when('PUT', '/blog/api/sync/test').respond(null);
     $http.expect('PUT', '/blog/api/sync/test', {});
-    Blog.update({ "urlsafe": "test"}, {});
+    Blog.update({"urlsafe": "test"}, {});
   }));
 
-  it('should make POST request to /blog/api/sync/test', inject(function(Blog) {
+  it('should make POST request to /blog/api/sync/test', inject(function (Blog) {
     var data = {
       "urlsafe": 'test',
       "content": 'content',
@@ -39,26 +39,26 @@ describe('Blog service', function() {
   }));
 });
 
-describe('BlogComment service', function() {
+describe('BlogComment service', function () {
   'use strict';
 
   var $http;
 
   beforeEach(module('blogapi'));
-  beforeEach(inject(function($httpBackend) {
+  beforeEach(inject(function ($httpBackend) {
     $http = $httpBackend;
   }));
 
-  afterEach(function(){
+  afterEach(function () {
     $http.verifyNoOutstandingExpectation();
     $http.verifyNoOutstandingRequest();
   });
 
-  it('should resolve BlogComment', inject(function(BlogComment) {
+  it('should resolve BlogComment', inject(function (BlogComment) {
     BlogComment.should.be.ok;
   }));
 
-  it('should make DELETE request to /blog/comment/api/sync', inject(function(BlogComment) {
+  it('should make DELETE request to /blog/comment/api/sync', inject(function (BlogComment) {
     var data = {
       "urlsafe": 1
     };

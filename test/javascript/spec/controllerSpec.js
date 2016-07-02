@@ -1,7 +1,15 @@
 describe('controller specifications', function () {
   'use strict';
 
-  beforeEach(module('admin', 'blogapi'));
+  before(function () {
+    try {
+      sinon.spy(componentHandler, 'upgradeAllRegistered');
+    } catch (e) {
+      // ignore possible multiple spy
+    }
+  });
+
+  beforeEach(module('admin', 'blog', 'blogapi'));
 
   describe('ListCtrl', function () {
     var ctrl, scope, blog, location;
@@ -20,6 +28,7 @@ describe('controller specifications', function () {
           bind: sinon.spy()
         }
       };
+
       ctrl = $controller('ListCtrl',
         {
           $scope: scope,
@@ -30,6 +39,10 @@ describe('controller specifications', function () {
 
     it('should resolve ListCtrl', function () {
       ctrl.should.be.ok;
+    });
+
+    it('should initialize MDL components', function () {
+      componentHandler.upgradeAllRegistered.should.have.been.called;
     });
 
     it('should call url.bind', function () {
@@ -63,19 +76,6 @@ describe('controller specifications', function () {
 
     beforeEach(inject(function ($rootScope) {
       scope = $rootScope.$new();
-    }));
-
-    it('should initialize MDL components', inject(function ($controller) {
-      sinon.spy(componentHandler, 'upgradeAllRegistered');
-      $controller('CreateEditCtrl',
-        {
-          $scope: scope,
-          $routeParams: routeParam,
-          editor: function () {
-            return {};
-          }
-        });
-      componentHandler.upgradeAllRegistered.should.have.been.called;
     }));
 
     it('should call BlogComment.remove, then BlogComment.query', inject(function ($controller, BlogComment) {
@@ -248,5 +248,48 @@ describe('controller specifications', function () {
       Blog.save.should.not.have.been.called;
       window.alert.should.have.been.calledWith('blog needs a title');
     }));
+  });
+
+  describe('CommentCtrl', function () {
+    var ctrl, $http, $scope;
+
+    beforeEach(inject(function ($controller, $rootScope, $httpBackend, BlogComment) {
+      $http = $httpBackend;
+
+      $scope = $rootScope.$new();
+      ctrl = $controller('CommentCtrl', {
+        $scope: $scope,
+        $location: {
+          absUrl: sinon.stub().returns('url/path')
+        },
+        BlogComment: BlogComment
+      });
+
+      $http.when('GET', '/blog/static/admin/bloglist.html').respond('');
+    }));
+
+    it('should resolve', function () {
+      ctrl.should.be.ok;
+    });
+
+    it('should get comments for blog', function () {
+      $http.when('GET', '/blog/comment/api/sync/path').respond('[]');
+      $http.expect('GET', '/blog/comment/api/sync/path');
+
+      $http.when('GET', 'blog/static/blog/comment-template.html').respond('');
+
+      $http.flush();
+      $http.verifyNoOutstandingExpectation();
+      $http.verifyNoOutstandingRequest();
+    });
+
+    it('should save and append the new comment', function () {
+      sinon.stub($scope.comment, '$save')
+        .withArgs({urlsafe: 'path'})
+        .callsArg(1);
+
+      $scope.submit();
+      $scope.comments.length.should.equal(1);
+    });
   });
 });

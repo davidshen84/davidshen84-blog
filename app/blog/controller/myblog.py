@@ -29,7 +29,7 @@ def url_for_blog(b):
 
 @route('/')
 def index():
-    recent_blogs = [{'created': format_date(b.created), 'title': b.title, 'url': url_for_blog(b),
+    recent_blogs = [{'last_modified': format_date(b.last_modified), 'title': b.title, 'url': url_for_blog(b),
                      'content': markdown(''.join(strip_title(b.content).splitlines(True)[:10]))}
                     for b in Blog.get_recent()]
     latest_blog = Blog.query(Blog.published == True).order(- Blog.created).get()
