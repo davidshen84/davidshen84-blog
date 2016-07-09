@@ -10,7 +10,7 @@ import filter from 'gulp-filter';
 import flatten from 'gulp-flatten';
 import gulp from 'gulp';
 import mainBowerFiles from 'main-bower-files';
-import minifycss from 'gulp-minify-css';
+import cleancss from "gulp-clean-css";
 import rename from 'gulp-rename';
 import replace from 'gulp-replace';
 import sourcemaps from 'gulp-sourcemaps';
@@ -66,25 +66,27 @@ gulp.task('copy-to-dist', () => {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('minifycss-blog', () => {
+gulp.task('cleancss-blog', () => {
   gulp.src('app/blog/static/*/css/*.css')
     .pipe(sourcemaps.init())
     .pipe(concate('all.min.css'))
-    .pipe(minifycss())
+    .pipe(cleancss())
     .pipe(sourcemaps.write('maps'))
     .pipe(gulp.dest('app/blog/static/'));
 });
 
-gulp.task('minifycss-online-tools', () => {
+gulp.task('cleancss-online-tools', () => {
   gulp.src('app/online_tools/static/css/*.css')
+    .pipe(sourcemaps.init())
     .pipe(concate('styles.all.min.css'))
-    .pipe(minifycss())
+    .pipe(cleancss())
+    .pipe(sourcemaps.write('maps'))
     .pipe(gulp.dest('app/online_tools/static/'));
 });
 
-gulp.task('minifycss', ['minifycss-blog', 'minifycss-online-tools']);
+gulp.task('cleancss', ['cleancss-blog', 'cleancss-online-tools']);
 
-var uglify_uv = (u, v = '') =>  () => {
+var uglify_uv = (u, v = '') => () => {
   var path = `app/${u}/static/${v}`;
 
   return gulp.src(`${path}/js/*.js`)
@@ -100,7 +102,7 @@ gulp.task('uglify-online-tools', uglify_uv('online_tools'));
 
 gulp.task('uglify', ['uglify-admin', 'uglify-blog', 'uglify-shared']);
 
-gulp.task('build', ['minifycss', 'uglify', 'copy-to-dist']);
+gulp.task('build', ['cleancss', 'uglify', 'copy-to-dist']);
 
 /*
  gulp.task('watch', function () {

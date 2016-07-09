@@ -22,4 +22,4 @@ node_modules/
 
 # unit test generated files
 /test/javascript/coverage/
-/app/blog/static/maps/all.min.css.map
+/app/*/static/maps/
