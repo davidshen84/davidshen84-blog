@@ -1,0 +1,9 @@
+{
+  "extends": "google",
+  "installedESLint": true,
+  "rules": {
+    "camelcase": 0,
+    "no-return-assign": 0,
+    "max-len": 0
+  }
+}

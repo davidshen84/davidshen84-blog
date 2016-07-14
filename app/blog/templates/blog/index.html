@@ -9,7 +9,7 @@
           {% include "_shared/amazon_ad.html" %}
         </div>
 
-        <div class="mdl-card blog-title-banner-0 mdl-cell mdl-cell--8-col">
+        <div class="mdl-card blog-title-banner-0 mdl-cell mdl-cell--8-col mdl-shadow--2dp">
           <div class="mdl-card__media mdl-color-text--grey-50">
             <h3><a href="#">On the way to Venice</a></h3>
           </div>
@@ -21,7 +21,7 @@
             </div>
           </div>
         </div>
-        <div class="mdl-card something-else mdl-cell mdl-cell--8-col mdl-cell--4-col-desktop">
+        <div class="mdl-card something-else mdl-cell mdl-cell--8-col mdl-cell--4-col-desktop mdl-shadow--2dp">
           {% if is_admin %}
             <button class="mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--fab mdl-color--accent"
                     onclick="location.href='/blog/admin/'">
@@ -30,9 +30,7 @@
             </button>
           {% endif %}
           <div class="mdl-card__media mdl-color--white mdl-color-text--grey-600">
-            <img
-              src="https://farm2.staticflickr.com/1567/26117929815_bc1c76fef9_s.jpg">
-            An egg
+            TBD
           </div>
           <div class="mdl-card__supporting-text meta meta--fill mdl-color-text--grey-600">
             <div>
@@ -50,7 +48,7 @@
           </div>
         </div>
         {% for b in recent_blogs %}
-          <div class="mdl-card blog-title-banner-1 mdl-cell mdl-cell--12-col">
+          <div class="mdl-card blog-title-banner-1 mdl-cell mdl-cell--12-col mdl-shadow--2dp">
             <div class="mdl-card__media mdl-color-text--grey-50">
               <h3><a href="{{ b.url }}">{{ b.title }}</a></h3>
             </div>
