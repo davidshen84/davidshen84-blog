@@ -56,8 +56,8 @@ gulp.task('bower-files', () => {
 
 gulp.task('copy-to-dist', () => {
   gulp.src(['app/**',
-    '!app/blog/__init__.py',
-    '!app/blog/static/*/css', '!app/blog/static/*/css/*.css',
+    '!app/blog/static/*/css', '!app/blog/static/*/css/*.sass',
+    '!app/online_tools/static/css', '!app/online_tools/static/css/*.sass',
     '!app/blog/static/*/js', '!app/blog/static/*/js/*.js',
     '!app/lib/*.*-info', '!app/lib/*.*-info/**',
     '!app/lib/flask/{testsuite,testsuite/**}',
@@ -104,7 +104,7 @@ gulp.task('uglify-online-tools', uglify_uv('online_tools'));
 
 gulp.task('uglify-js', ['uglify-admin', 'uglify-blog', 'uglify-shared']);
 
-gulp.task('build', ['build-styles', 'uglify-js', 'copy-to-dist']);
+gulp.task('build', ['build-sass', 'uglify-js', 'copy-to-dist']);
 
 /*
  gulp.task('watch', function () {
