@@ -22,7 +22,7 @@ class Blog(ndb.Model):
     tags = ndb.StringProperty(repeated=True)
 
     @classmethod
-    def key_for_title(cls, title):
+    def key_from_title(cls, title):
         return ndb.Key(cls, title)
 
     @classmethod
@@ -43,9 +43,16 @@ class Blog(ndb.Model):
 
     @classmethod
     def create(cls, title, content, tags=None, **kws):
-        if not tags:
-            tags = []
-        key = cls.key_for_title(title)
+        """
+
+        :rtype: ndb.Key
+        :type title: str
+        :type content: str
+        :type tags: list
+        """
+        title = title.strip()
+        tags = tags if tags else []
+        key = cls.key_from_title(title)
         if not key.get():
             return cls(key=key,
                        title=title,
@@ -70,15 +77,15 @@ class Blog(ndb.Model):
             else:
                 return None
 
-        except (ProtocolBufferDecodeError, TypeError), e:
+        except (ProtocolBufferDecodeError, TypeError) as e:
             logging.warning("bad urlsafe value: %s, %s" % (urlsafe, e))
             return None
 
     @classmethod
-    def destroy(cls, urlsafe):
+    def delete(cls, urlsafe):
         try:
             ndb.Key(urlsafe=urlsafe).delete()
-        except TypeError, e:
+        except TypeError as e:
             logging.warning("bad urlsafe value: %s, %s" % (urlsafe, e))
 
     @classmethod
@@ -91,13 +98,13 @@ class Blog(ndb.Model):
         return query.fetch(projection=[cls.title])
 
     @classmethod
-    def get_blog_status(cls, published_only=True):
+    def get_blogs(cls, published_only=True):
         if published_only:
             query = cls.query(cls.published == True)
         else:
             query = cls.query()
 
-        return query.fetch(projection=[cls.title, cls.published, cls.last_modified])
+        return query.fetch()
 
     @classmethod
     def publish(cls, urlsafe, published):

@@ -61,6 +61,7 @@ gulp.task('copy-to-dist', () => {
     '!app/blog/static/*/js', '!app/blog/static/*/js/*.js',
     '!app/lib/*.*-info', '!app/lib/*.*-info/**',
     '!app/lib/flask/{testsuite,testsuite/**}',
+    '!app/lib/flask_restful/{testsuite,testsuite/**}',
     '!app/lib/werkzeug/{debug,debug/**}'])
     .pipe(gulp.dest('dist'));
 });

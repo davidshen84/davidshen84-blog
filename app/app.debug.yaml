@@ -32,6 +32,9 @@ handlers:
 - url: /blog/comment/api.*
   script: blog.api
 
+- url: /blog/resources/.*
+  script: blog.resource
+
 - url: /blog.*
   script: blog.app
 

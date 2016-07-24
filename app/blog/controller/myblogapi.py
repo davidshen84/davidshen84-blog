@@ -3,7 +3,7 @@ import json
 from flask import Blueprint, request, jsonify
 from google.appengine.api import users
 
-from blog.controller import login_admin, simple_auth, format_date
+from blog.controller import require_admin, simple_auth, format_date
 from blog.model import Blog
 from blog.model import Comment
 
@@ -20,7 +20,7 @@ route = blueprint.route
 
 
 @route('/')
-@login_admin
+@require_admin
 def index():
     return jsonify(msg=users.get_current_user().nickname(), logout=users.create_logout_url('/blog/api/'))
 
@@ -28,7 +28,7 @@ def index():
 @route('/sync')
 @simple_auth
 def query(published_only):
-    blogs = Blog.get_blog_status(published_only)
+    blogs = Blog.get_blogs(published_only)
     # apply filters if provided
     f = request.values.get('f')
     if f:
@@ -64,7 +64,7 @@ def fetch(urlsafe, published_only):
 
 
 @route('/sync', methods=['POST'])
-@login_admin
+@require_admin
 def create():
     blog = request.json
     if blog is None:
@@ -83,7 +83,7 @@ def create():
 
 
 @route('/sync/<urlsafe>', methods=['PUT'])
-@login_admin
+@require_admin
 def update(urlsafe):
     update_data = {}
     blog = request.json
@@ -114,15 +114,15 @@ def update(urlsafe):
 
 
 @route('/sync/<urlsafe>', methods=['DELETE'])
-@login_admin
+@require_admin
 def destroy(urlsafe):
-    Blog.destroy(urlsafe)
+    Blog.delete(urlsafe)
 
     return MSG_OK
 
 
 @route('/syncpub/<urlsafe>', methods=['PUT'])
-@login_admin
+@require_admin
 def publish(urlsafe):
     published = request.values['published'].lower() == 'true'
     blog_key = Blog.publish(urlsafe, published)

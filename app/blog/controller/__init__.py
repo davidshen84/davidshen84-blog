@@ -9,7 +9,7 @@ def is_admin():
     return users.is_current_user_admin()
 
 
-def login_admin(f):
+def require_admin(f):
     @wraps(f)
     def func(*args, **kwargs):
         if users.is_current_user_admin():

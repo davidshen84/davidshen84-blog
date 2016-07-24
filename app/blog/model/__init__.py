@@ -1,2 +1,4 @@
-from blog import Blog
-from comment import Comment
+from __future__ import absolute_import
+
+from blog.model.blog import Blog
+from blog.model.comment import Comment

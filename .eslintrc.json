@@ -4,6 +4,18 @@
   "rules": {
     "camelcase": 0,
     "no-return-assign": 0,
-    "max-len": 0
+    "max-len": 0,
+    "space-before-function-paren": 0,
+    "no-unused-expressions": 0
+  },
+  "env": {
+    "browser": true,
+    "mocha": true
+  },
+  "globals": {
+    "angular": true,
+    "inject": true,
+    "sinon": true,
+    "componentHandler": true
   }
 }

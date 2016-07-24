@@ -2,7 +2,7 @@ import json
 
 from flask import Blueprint, request, jsonify
 
-from blog.controller import login_admin, format_date
+from blog.controller import require_admin, format_date
 from blog.model import Blog
 from blog.model import Comment
 
@@ -48,7 +48,7 @@ def create(urlsafe):
 
 
 @route('/sync/<urlsafe>', methods=['DELETE'])
-@login_admin
+@require_admin
 def destroy(urlsafe):
-    Comment.destroy(urlsafe)
+    Comment.delete(urlsafe)
     return MSG_OK, 200
