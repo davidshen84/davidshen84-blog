@@ -1,7 +1,7 @@
 describe('Blog resource', () => {
   "use strict";
 
-  var $http;
+  let $http;
 
   beforeEach(module('blogResource'));
   beforeEach(inject($httpBackend => $http = $httpBackend));
@@ -39,14 +39,14 @@ describe('Blog resource', () => {
   }));
 
   it('[instance] should make POST request to /blog/resources/blogs/', inject(Blog => {
-    var blogData = {
+    let blogData = {
       title: 'title',
       content: 'content',
       tags: ['a', 'b']
     };
 
     $http.expect('POST', '/blog/resources/blogs', blogData).respond(200, {key: 'some key'});
-    var blog = new Blog(blogData);
+    let blog = new Blog(blogData);
     blog.$save(rep => {
       rep.should.be.ok;
       rep.key.should.equals('some key');
@@ -72,7 +72,7 @@ describe('Blog resource', () => {
 describe('BlogComment resource', () => {
   "use strict";
 
-  var $http;
+  let $http;
 
   beforeEach(module('blogResource'));
   beforeEach(inject($httpBackend => $http = $httpBackend));
@@ -92,13 +92,13 @@ describe('BlogComment resource', () => {
   }));
 
   it('should make POST request to /blog/resources/comments/abc', inject(BlogComment => {
-    var comment = {screen_name: 'name', email: 'email', comment: 'comment'};
+    let comment = {screen_name: 'name', email: 'email', comment: 'comment'};
     $http.expect('POST', '/blog/resources/comments/abc', comment).respond();
     BlogComment.save({urlsafe: 'abc'}, comment, rep => rep.should.be.ok);
   }));
 
   it('should make POST request to /blog/resources/comments/abc, 500', inject(BlogComment => {
-    var comment = {screen_name: 'name', email: 'email', comment: 'comment'};
+    let comment = {screen_name: 'name', email: 'email', comment: 'comment'};
     $http.expect('POST', '/blog/resources/comments/abc', comment).respond(500, {});
     BlogComment.save({urlsafe: 'abc'}, comment, undefined, rep => {
       rep.should.be.ok;

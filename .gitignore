@@ -3,6 +3,7 @@
 *~
 
 # generated files
+app/*/static/*/maps/
 app/*/static/maps/
 dist/
 *.min.css

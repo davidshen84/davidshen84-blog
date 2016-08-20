@@ -1,8 +1,8 @@
 from __future__ import absolute_import
 
 from blog import model
+from blog.controller import simple_auth, require_admin
 from blog.resources import FormattedDate, UrlSafe
-from controller import simple_auth, require_admin
 from flask import Blueprint, request
 from flask.ext.restful import Resource, Api, fields, marshal_with, abort
 from marshmallow import Schema, post_load
@@ -10,10 +10,13 @@ from marshmallow import Schema, post_load
 blueprint = Blueprint('blog resource', __name__, url_prefix='/blog/resources')
 api = Api(blueprint)
 
+MESSAGE_OK = 'OK~'
+
 resource_fields = {
     'title': fields.String,
     'last_modified': FormattedDate(attribute='last_modified'),
-    'content': fields.String
+    'content': fields.String,
+    'tags': fields.List(fields.String())
 }
 
 
@@ -51,7 +54,7 @@ class BlogResource(Resource):
 
         # blog_update = json.loads(request.json)
         if model.Blog.update(urlsafe, **request.json):
-            return 200
+            return {'message': MESSAGE_OK}
         else:
             return None, 404
 

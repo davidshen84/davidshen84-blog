@@ -27,25 +27,26 @@ class TestBlogs(unittest.TestCase):
 
     @with_admin
     def testGetByUrlSafe_admin(self):
-        key = Blog.create("test", "content")
+        key = Blog.create('test', 'content', tags=['666', 'aaa'])
         r = self.client.get('/blog/resources/blogs/' + key.urlsafe())
 
         self.assertEqual(200, r.status_code)
         blog = json.loads(r.data)
-        self.assertEqual("test", blog['title'])
-        self.assertEqual("content", blog['content'])
+        self.assertEqual('test', blog['title'])
+        self.assertEqual('content', blog['content'])
+        self.assertItemsEqual(['666', 'aaa'], blog['tags'])
 
     def testGetByUrlSafe_not_admin(self):
-        key = Blog.create("test", "content", published=True)
+        key = Blog.create('test', 'content', published=True)
         r = self.client.get('/blog/resources/blogs/' + key.urlsafe())
 
         self.assertEqual(200, r.status_code)
         blog = json.loads(r.data)
-        self.assertEqual("test", blog['title'])
-        self.assertEqual("content", blog['content'])
+        self.assertEqual('test', blog['title'])
+        self.assertEqual('content', blog['content'])
 
     def testGetByUrlSafe_not_admin_404(self):
-        key = Blog.create("test", "content")
+        key = Blog.create('test', 'content')
         r = self.client.get('/blog/resources/blogs/' + key.urlsafe())
 
         self.assertEqual(404, r.status_code)

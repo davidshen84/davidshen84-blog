@@ -1,7 +1,7 @@
 (function (angular, componentHandler) {
   'use strict';
 
-  angular.module('admin', ['blogapi', 'admin.directive'])
+  angular.module('admin', ['blogResource', 'admin.directive'])
     .factory('snackbar', ['$document', function ($document) {
       var snackbar = null;
 
@@ -12,24 +12,20 @@
       };
     }])
     .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
-
       $routeProvider
-        .when('/blog/admin/',
-          {
-            "controller": 'ListCtrl',
-            "templateUrl": '/blog/static/admin/bloglist.html'
-          })
-        .when('/blog/admin/edit/:urlsafe*',
-          {
-            "controller": 'CreateEditCtrl',
-            "templateUrl": '/blog/static/admin/blogedit.html'
-          })
-        .when('/blog/admin/new',
-          {
-            "controller": 'CreateEditCtrl',
-            "templateUrl": '/blog/static/admin/blogedit.html'
-          })
-        .otherwise({"redirectTo": '/blog/admin/'});
+        .when('/blog/admin/', {
+          controller: 'ListCtrl',
+          templateUrl: '/blog/static/admin/bloglist.html'
+        })
+        .when('/blog/admin/edit/:urlsafe*', {
+          controller: 'CreateEditCtrl',
+          templateUrl: '/blog/static/admin/blogedit.html'
+        })
+        .when('/blog/admin/new', {
+          controller: 'CreateEditCtrl',
+          templateUrl: '/blog/static/admin/blogedit.html'
+        })
+        .otherwise({redirectTo: '/blog/admin/'});
 
       $locationProvider.html5Mode(true);
     }])
@@ -48,9 +44,9 @@
           };
 
           $scope.setPubStatus = function (blog) {
-            Blog.update({"urlsafe": blog.urlsafe}, {"published": !blog.published},
+            Blog.update({urlsafe: blog.urlsafe}, {published: !blog.published},
               function (response) {
-                if (response.msg === 'ok') {
+                if (response.message) {
                   $timeout(function () {
                     $scope.$apply(function () {
                       blog.published = !blog.published;
@@ -61,11 +57,11 @@
           };
 
           $scope.deleteBlog = function (urlsafe) {
-            Blog.remove({"urlsafe": urlsafe},
+            Blog.remove({urlsafe: urlsafe},
               function () {
                 $timeout(function () {
                   $scope.$apply(function () {
-                    $scope.blogs.blogs = $filter('filter')($scope.blogs.blogs, {'urlsafe': '!' + urlsafe});
+                    $scope.blogs = $filter('filter')($scope.blogs, {urlsafe: '!' + urlsafe});
                   });
                 }, 500);
               });
@@ -78,8 +74,14 @@
     .controller('CreateEditCtrl',
       ['$scope', '$routeParams', '$window', '$location', 'Blog', 'BlogComment', 'editor', 'snackbar',
         function ($scope, $routeParams, $window, $location, Blog, BlogComment, editor, snackbar) {
+          componentHandler.upgradeAllRegistered();
           var titlePattern = /^#.*$/m;
 
+          /**
+           * Extract the first line of the content as title
+           * @param {string} content - Blog content
+           * @return {string} - The title
+           */
           function extractTitleFromContent(content) {
             var match = titlePattern.exec(content);
 
@@ -87,53 +89,58 @@
           }
 
           $scope.urlsafe = $routeParams.urlsafe;
-          var isNew = $scope.urlsafe ? false : true;
+          var isNew = !$scope.urlsafe;
 
           $scope.isClean = true;
 
           if ($scope.urlsafe) {
-            Blog.get({"urlsafe": $scope.urlsafe}, function (blog) {
+            Blog.get({urlsafe: $scope.urlsafe}, function (blog) {
               editor().importFile(blog.title, blog.content);
-              $scope.tags = blog.tags.join(', ');
+              $scope.tags = blog.tags && blog.tags.join(', ');
             });
 
             // try to get comments
-            $scope.comments = BlogComment.query({"urlsafe": $scope.urlsafe});
+            $scope.comments = BlogComment.query({urlsafe: $scope.urlsafe});
           }
 
           $scope.save = function () {
-            var content = editor().exportFile(),
-              title = extractTitleFromContent(content),
-              tags = $scope.tags || '';
+            var content = editor().exportFile();
+            var title = extractTitleFromContent(content);
+            var tags = $scope.tags || '';
 
             if (title === null) {
               $window.alert('blog needs a title');
               return;
             }
 
+            /**
+             * Callback after blog updated
+             * @param {*} data - Server response data
+             */
             function updateSuccess(data) {
               $scope.isClean = true;
               isNew = false;
               snackbar().showSnackbar({
-                message: data.msg,
+                message: data.message,
                 timeout: 5000
               });
             }
 
             if (isNew) {
-              Blog.save({
-                  "title": title,
-                  "content": content,
-                  "tags": tags.length ? $scope.tags.split(',') : []
+              Blog.save(
+                {
+                  title: title,
+                  content: content,
+                  tags: tags.length ? $scope.tags.split(',') : []
                 },
                 updateSuccess
               );
             } else {
               Blog.update(
-                {"urlsafe": $scope.urlsafe},
+                {urlsafe: $scope.urlsafe},
                 {
-                  "content": content,
-                  "tags": tags.length ? $scope.tags.split(',') : []
+                  content: content,
+                  tags: tags.length ? $scope.tags.split(',') : []
                 },
                 updateSuccess
               );
@@ -141,9 +148,9 @@
           };
 
           $scope.deleteComment = function (urlsafe) {
-            BlogComment.remove({"urlsafe": urlsafe}, null,
+            BlogComment.remove({urlsafe: urlsafe}, undefined,
               function () {
-                $scope.comments = BlogComment.query({"urlsafe": urlsafe});
+                $scope.comments = BlogComment.query({urlsafe: urlsafe});
               });
           };
 
