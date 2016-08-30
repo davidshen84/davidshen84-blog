@@ -27,30 +27,39 @@ describe('Blog resource', () => {
     Blog.get({urlsafe: 'abc'});
   }));
 
-  it('should make POST request to /blog/resources/blogs/', inject(Blog => {
-    $http.expect('POST', '/blog/resources/blogs').respond(201, {key: 'some key'});
-    Blog.save({
-      title: 'title',
-      content: 'content'
-    }, rep => {
-      rep.should.be.ok;
-      rep.key.should.equals('some key');
-    });
+  it('should make POST request to /blog/resources/blogs/ts', inject(Blog => {
+    let ts = Date.now();
+    $http.expect('POST', `/blog/resources/blogs/${ts}`).respond(201, {key: 'some key', message: 'some message'});
+    Blog.save({urlsafe: ts},
+      {
+        title: 'title',
+        content: 'content'
+      }, rep => {
+        rep.should.be.ok;
+        rep.key.should.equals('some key');
+        rep.message.should.equals('some message');
+      });
   }));
 
-  it('[instance] should make POST request to /blog/resources/blogs/', inject(Blog => {
+  it('[instance] should make POST request to /blog/resources/blogs/ts', inject(Blog => {
+    let ts = Date.now();
     let blogData = {
       title: 'title',
       content: 'content',
       tags: ['a', 'b']
     };
 
-    $http.expect('POST', '/blog/resources/blogs', blogData).respond(200, {key: 'some key'});
-    let blog = new Blog(blogData);
-    blog.$save(rep => {
-      rep.should.be.ok;
-      rep.key.should.equals('some key');
+    $http.expect('POST', `/blog/resources/blogs/${ts}`, blogData).respond(200, {
+      key: 'some key',
+      message: 'some message'
     });
+    let blog = new Blog(blogData);
+    blog.$save({urlsafe: ts},
+      rep => {
+        rep.should.be.ok;
+        rep.key.should.equals('some key');
+        rep.message.should.equals('some message');
+      });
   }));
 
   it('should make PUT request to /blog/resources/blogs', inject(Blog => {

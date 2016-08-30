@@ -56,6 +56,7 @@ gulp.task('bower-files', () => {
 
 gulp.task('copy-to-dist', () => {
   gulp.src(['app/**',
+    '!app/app.debug.yaml',
     '!app/blog/static/*/css', '!app/blog/static/*/css/*.sass',
     '!app/online_tools/static/css', '!app/online_tools/static/css/*.sass',
     '!app/blog/static/*/js', '!app/blog/static/*/js/*.js',

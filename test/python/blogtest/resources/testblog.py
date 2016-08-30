@@ -54,7 +54,7 @@ class TestBlogs(unittest.TestCase):
     @with_admin
     def testPostBlog(self):
         create_title = 'test create title'
-        r = self.client.post('/blog/resources/blogs/',
+        r = self.client.post('/blog/resources/blogs/123',
                              data=json.dumps({
                                  'title': create_title,
                                  'content': 'content',
@@ -66,6 +66,7 @@ class TestBlogs(unittest.TestCase):
 
         data = json.loads(r.data)
         self.assertIsNotNone(data['urlsafe'])
+        self.assertIsNotNone(data['message'])
 
         blog = Blog.get_by_urlsafe(data['urlsafe'], published_only=False)
         self.assertIsNotNone(blog)

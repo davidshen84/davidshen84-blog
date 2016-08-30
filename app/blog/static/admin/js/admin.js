@@ -115,19 +115,20 @@
 
             /**
              * Callback after blog updated
-             * @param {*} data - Server response data
+             * @param {*} response - Server response
              */
-            function updateSuccess(data) {
+            function updateSuccess(response) {
               $scope.isClean = true;
               isNew = false;
               snackbar().showSnackbar({
-                message: data.message,
+                message: response.message,
                 timeout: 5000
               });
             }
 
             if (isNew) {
               Blog.save(
+                {urlsafe: Date.now()},
                 {
                   title: title,
                   content: content,

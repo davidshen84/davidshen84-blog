@@ -41,11 +41,17 @@ class BlogResource(Resource):
         return blog if blog else abort(404)
 
     @require_admin
-    @marshal_with({'urlsafe': UrlSafe(attribute='key')})
-    def post(self):
+    @marshal_with({'urlsafe': UrlSafe(attribute='key'),
+                   'message': fields.String})
+    def post(self, urlsafe):
+        """Create a new blog entry.
+
+        :param urlsafe: ignored
+        :return: The new blog's key in urlsafe encoding.
+        """
         blog_schema = BlogSchema()
         data, error = blog_schema.load(request.json)
-        return {'key': data.put()}, 201
+        return {'key': data.put(), 'message': MESSAGE_OK}, 201
 
     @require_admin
     def put(self, urlsafe):
