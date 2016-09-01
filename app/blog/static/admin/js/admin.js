@@ -3,12 +3,8 @@
 
   angular.module('admin', ['blogResource', 'admin.directive'])
     .factory('snackbar', ['$document', function ($document) {
-      var snackbar = null;
-
       return function () {
-        snackbar || (snackbar = $document[0].querySelector("#snackbar").MaterialSnackbar);
-
-        return snackbar;
+        return $document[0].querySelector("#snackbar").MaterialSnackbar;
       };
     }])
     .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
@@ -122,7 +118,7 @@
               isNew = false;
               snackbar().showSnackbar({
                 message: response.message,
-                timeout: 5000
+                timeout: 3000
               });
             }
 

@@ -104,7 +104,7 @@ class Blog(ndb.Model):
         else:
             query = cls.query()
 
-        return query.fetch()
+        return query.order(- cls.last_modified).fetch()
 
     @classmethod
     def publish(cls, urlsafe, published):
