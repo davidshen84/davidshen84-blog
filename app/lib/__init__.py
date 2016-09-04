@@ -5,4 +5,5 @@ __author__ = 'david'
 requirements = """
 Flask==0.10.1
 Markdown==2.6.6
+Flask_RESTful=0.3.5
 """

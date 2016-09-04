@@ -17,9 +17,9 @@ import uglify from 'gulp-uglify';
 import sass from 'gulp-sass';
 
 gulp.task('bower-files', () => {
-  var angularFilter = filter(['**/angular*/*'], {restore: true});
-  var eeFilter = filter(['**/epiceditor/**'], {restore: true});
-  var mdlFilter = filter(['**/material-design-lite/*'], {restore: true});
+  let angularFilter = filter(['**/angular*/*'], {restore: true});
+  let eeFilter = filter(['**/epiceditor/**'], {restore: true});
+  let mdlFilter = filter(['**/material-design-lite/*'], {restore: true});
 
   return gulp.src(mainBowerFiles({
     overrides: {
@@ -56,11 +56,13 @@ gulp.task('bower-files', () => {
 
 gulp.task('copy-to-dist', () => {
   gulp.src(['app/**',
+    '!app/app.debug.yaml',
     '!app/blog/static/*/css', '!app/blog/static/*/css/*.sass',
     '!app/online_tools/static/css', '!app/online_tools/static/css/*.sass',
     '!app/blog/static/*/js', '!app/blog/static/*/js/*.js',
     '!app/lib/*.*-info', '!app/lib/*.*-info/**',
     '!app/lib/flask/{testsuite,testsuite/**}',
+    '!app/lib/flask_restful/{testsuite,testsuite/**}',
     '!app/lib/werkzeug/{debug,debug/**}'])
     .pipe(gulp.dest('dist'));
 });
@@ -88,12 +90,14 @@ gulp.task('sass-online-tools', () => {
 
 gulp.task('build-sass', ['sass-blog', 'sass-online-tools']);
 
-var uglify_uv = (u, v = '') => () => {
-  var path = `app/${u}/static/${v}`;
+let uglify_uv = (u, v = '') => () => {
+  let path = `app/${u}/static/${v}`;
 
   return gulp.src(`${path}/js/*.js`)
-    .pipe(concate(`${(v || u)}.all.min.js`))
+    .pipe(sourcemaps.init())
     .pipe(uglify())
+    .pipe(concate(`${(v || u)}.all.min.js`))
+    .pipe(sourcemaps.write('maps'))
     .pipe(gulp.dest(`${path}/`));
 };
 

@@ -1,4 +1,7 @@
+import logging
+
 from google.appengine.ext import ndb
+from google.net.proto.ProtocolBuffer import ProtocolBufferDecodeError
 
 
 class Comment(ndb.Model):
@@ -28,5 +31,8 @@ class Comment(ndb.Model):
         return comments
 
     @classmethod
-    def destroy(cls, urlsafe):
-        ndb.Key(urlsafe=urlsafe).delete()
+    def delete(cls, urlsafe):
+        try:
+            ndb.Key(urlsafe=urlsafe).delete()
+        except ProtocolBufferDecodeError as e:
+            logging.warning('bad urlsafe value: {}, {}'.format(urlsafe, e))

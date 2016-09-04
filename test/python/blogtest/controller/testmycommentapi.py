@@ -2,27 +2,10 @@
 
 import unittest2 as unittest
 
-# set up environment
-import sys
 import os
 import json
 
-
-try:
-    if 'GAE_SDK' in os.environ:
-        sys.path.insert(0, os.environ['GAE_SDK'])
-
-    import dev_appserver
-
-    dev_appserver.fix_sys_path()
-except ImportError:
-    dev_appserver = None
-    print 'gae sdk is required'
-    sys.exit(-1)
-
-# real test code
 from google.appengine.ext import testbed
-
 from blog import api
 from blog.model.blog import Blog
 from blog.model.comment import Comment
@@ -90,10 +73,3 @@ class MyCommentApiTestCase(unittest.TestCase):
         comment0 = comments[0]
         self.assertEqual('user1', comment0['screen_name'])
         self.assertEqual('a@b.c', comment0['email'])
-
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(MyCommentApiTestCase)
-    # suite = unittest.TestLoader().loadTestsFromName('testmycommentapi.MyCommentApiTestCase.testCollection')
-    result = unittest.TextTestRunner(verbosity=1).run(suite)
-    sys.exit(len(result.failures))
