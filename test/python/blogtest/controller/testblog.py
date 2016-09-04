@@ -2,23 +2,6 @@
 
 import unittest2 as unittest
 
-# set up environment
-import sys
-import os
-
-try:
-    if 'GAE_SDK' in os.environ:
-        sys.path.insert(0, os.environ['GAE_SDK'])
-
-    import dev_appserver
-
-    dev_appserver.fix_sys_path()
-except ImportError:
-    dev_appserver = None
-    print 'gae sdk is required'
-    sys.exit(-1)
-
-# real test code
 from datetime import date
 from google.appengine.ext import testbed
 from blog.model import Blog
@@ -51,8 +34,8 @@ class BlogTestCase(unittest.TestCase):
 
         Blog.update(key1.urlsafe(), published=True)
 
-        blog1 = Blog.key_for_title(self.title1).get()
-        blog2 = Blog.key_for_title(self.title2).get()
+        blog1 = Blog.key_from_title(self.title1).get()
+        blog2 = Blog.key_from_title(self.title2).get()
 
         self.assertTrue(blog1.published)
         self.assertFalse(blog2.published)
@@ -62,8 +45,8 @@ class BlogTestCase(unittest.TestCase):
         Blog.create(self.title2, self.content2, published=True)
         Blog.update(key1.urlsafe(), published=False)
 
-        blog1 = Blog.key_for_title(self.title1).get()
-        blog2 = Blog.key_for_title(self.title2).get()
+        blog1 = Blog.key_from_title(self.title1).get()
+        blog2 = Blog.key_from_title(self.title2).get()
 
         self.assertFalse(blog1.published)
         self.assertTrue(blog2.published)
@@ -130,7 +113,7 @@ class BlogTestCase(unittest.TestCase):
         blog1 = Blog.create(self.title1, self.content1, self.tags1)
         # verify the data exists
         self.assertIsNotNone(Blog.get_by_id(self.title1))
-        Blog.destroy(blog1.urlsafe())
+        Blog.delete(blog1.urlsafe())
         # verify the data is destroyed
         self.assertIsNone(Blog.get_by_id(self.title1))
 
@@ -149,7 +132,7 @@ class BlogTestCase(unittest.TestCase):
         self.assertFalse(blog.published)
 
     def testCreateKey(self):
-        key = Blog.key_for_title('test')
+        key = Blog.key_from_title('test')
 
         self.assertEqual('Blog', key.kind())
         self.assertEqual('test', key.id())
@@ -220,6 +203,8 @@ class BlogTestCase(unittest.TestCase):
 
 
 if __name__ == '__main__':
+    import sys
+
     suite = unittest.TestLoader().loadTestsFromTestCase(BlogTestCase)
     # suite = unittest.TestLoader().loadTestsFromName('testblog.BlogTestCase.testUpdate')
     result = unittest.TextTestRunner().run(suite)

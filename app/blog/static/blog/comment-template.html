@@ -2,7 +2,7 @@
   <form novalidate name="form" ng-submit="submit()">
     <div class="mdl-grid">
       <div class="mdl-cell mdl-cell-6-col mdl-textfield mdl-js-textfield">
-        <input class="mdl-textfield__input" type="text" id="screen_name" pattern="[a-zA-Z0-9]{3,}"
+        <input class="mdl-textfield__input" type="text" id="screen_name" pattern="\w{3,}"
                ng-model="comment.screen_name" required/>
         <label class="mdl-textfield__label" for="screen_name">Screen Name</label>
       </div>
@@ -11,7 +11,7 @@
         <label class="mdl-textfield__label" for="email">Email (It will NOT be displayed)</label>
       </div>
       <div class="mdl-cell mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-        <textarea rows=1 class="mdl-textfield__input" id="comment" ng-model="comment.comment" required></textarea>
+        <textarea class="mdl-textfield__input" id="comment" type="text" ng-model="comment.comment" rows="3" required></textarea>
         <label for="comment" class="mdl-textfield__label">Join the discussion</label>
       </div>
       <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" type="submit"

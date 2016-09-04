@@ -1,5 +1,4 @@
 application: davidshen84
-version: 1
 runtime: python27
 api_version: 1
 threadsafe: yes
@@ -31,6 +30,9 @@ handlers:
 
 - url: /blog/comment/api.*
   script: blog.api
+
+- url: /blog/resources/.*
+  script: blog.resource
 
 - url: /blog.*
   script: blog.app

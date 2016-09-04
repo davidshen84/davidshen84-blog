@@ -3,10 +3,11 @@
 *~
 
 # generated files
+app/*/static/*/maps/
+app/*/static/maps/
 dist/
 *.min.css
 *.min.js
-
 
 # vendor libs
 app/lib/
@@ -22,4 +23,3 @@ node_modules/
 
 # unit test generated files
 /test/javascript/coverage/
-/app/blog/static/maps/all.min.css.map

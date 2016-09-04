@@ -30,11 +30,7 @@
     rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="/static/lib/material/material.min.css">
-  {% if config['DEBUG'] %}
-    <link rel="stylesheet" href="/online_tools/static/css/styles.css">
-  {% else %}
-    <link rel="stylesheet" href="/online_tools/static/styles.all.min.css">
-  {% endif %}
+  <link rel="stylesheet" href="/online_tools/static/all.min.css">
 
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -45,7 +41,6 @@
     ga('create', 'UA-35014753-1', 'auto');
     ga('set', 'appName', 'online tools');
     ga('send', 'pageview');
-
   </script>
 </head>
 <body>

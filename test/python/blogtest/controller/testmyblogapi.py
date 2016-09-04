@@ -3,23 +3,9 @@
 import unittest2 as unittest
 
 # set up environment
-import sys
 import os
 import json
 
-try:
-    if 'GAE_SDK' in os.environ:
-        sys.path.insert(0, os.environ['GAE_SDK'])
-
-    import dev_appserver
-
-    dev_appserver.fix_sys_path()
-except ImportError:
-    dev_appserver = None
-    print 'gae sdk is required'
-    sys.exit(-1)
-
-# real test code
 from google.appengine.ext import testbed
 
 from datetime import datetime
@@ -44,7 +30,7 @@ class MyBlogApiTestCase(unittest.TestCase):
         self.blog1 = Blog.create('test1', 'content 1', published=True)
         self.blog2 = Blog.create('test2', 'content 2', published=False)
 
-        # admim
+        # admin
         os.environ['USER_IS_ADMIN'] = '1'
 
     def tearDown(self):
@@ -147,10 +133,3 @@ class MyBlogApiTestCase(unittest.TestCase):
         self.assertEqual(200, r.status_code)
         data = json.loads(r.data)
         self.assertEqual(2, len(data['archives'][year][month]))
-
-
-if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(MyBlogApiTestCase)
-    # suite = unittest.TestLoader().loadTestsFromName('testmyblogapi.MyBlogApiTestCase.testPut')
-    result = unittest.TextTestRunner(verbosity=1).run(suite)
-    sys.exit(len(result.failures))

@@ -1,20 +1,8 @@
 # -*- coding: utf-8-unix -*-
 
-import os
+from __future__ import absolute_import
 
 import unittest2 as unittest
-
-try:
-    if 'GAE_SDK' in os.environ:
-        sys.path.insert(0, os.environ['GAE_SDK'])
-
-    import dev_appserver
-
-    dev_appserver.fix_sys_path()
-except ImportError:
-    dev_appserver = None
-    print 'gae sdk is required'
-    sys.exit(-1)
 
 from google.appengine.ext import testbed
 from blog.model.blog import Blog
@@ -59,15 +47,6 @@ class BlogCommentTestCase(unittest.TestCase):
         Comment.create(self.blog_key, "test user", "test@test.com", "test comment1")
         comment_key = Comment.create(self.blog_key, "test user", "test@test.com", "test comment2")
 
-        Comment.destroy(comment_key.urlsafe())
+        Comment.delete(comment_key.urlsafe())
         comments = Comment.get_comments(self.blog_key).fetch()
         self.assertEqual(len(comments), 1)
-
-
-if __name__ == '__main__':
-    import sys
-
-    suite = unittest.TestLoader().loadTestsFromTestCase(BlogCommentTestCase)
-    # suite = unittest.TestLoader().loadTestsFromName('testcomment.BlogCommentTestCase.testDestroy')
-    result = unittest.TextTestRunner().run(suite)
-    sys.exit(len(result.failures))

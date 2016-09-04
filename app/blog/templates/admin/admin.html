@@ -11,18 +11,7 @@
   </div>
 {% endblock %}
 
-{% block script_tail %}
-  <script src="/static/lib/material/material.min.js"></script>
-  <script src="/static/lib/angular/angular.min.js"></script>
-  <script src="/static/lib/angular/angular-resource.min.js"></script>
-  <script src="/static/lib/angular/angular-route.min.js"></script>
+{% block local_scripts %}
   <script src="/static/lib/epiceditor/js/epiceditor.min.js"></script>
-  {% if config['DEBUG'] %}
-    <script src="/blog/static/_shared/js/blogapi.js"></script>
-    <script src="/blog/static/admin/js/directive.js"></script>
-    <script src="/blog/static/admin/js/admin.js"></script>
-  {% else %}
-    <script src="/blog/static/_shared/_shared.all.min.js"></script>
-    <script src="/blog/static/admin/admin.all.min.js"></script>
-  {% endif %}
+  <script src="/blog/static/admin/admin.all.min.js"></script>
 {% endblock %}
