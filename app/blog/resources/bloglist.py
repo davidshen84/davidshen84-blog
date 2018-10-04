@@ -5,8 +5,10 @@ from blog.model import Blog
 from blog.resources import FormattedDate, UrlSafe
 from flask import Blueprint, request
 from flask.ext.restful import Resource, Api, fields, marshal_with
+from flask_cors import CORS
 
 blueprint = Blueprint('blog list', __name__, url_prefix='/blog/resources')
+CORS(blueprint, origins=['https://davidshen84.github.io/', 'http://localhost:4200'])
 api = Api(blueprint)
 
 resource_fields = {

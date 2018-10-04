@@ -5,9 +5,11 @@ from blog.controller import simple_auth, require_admin
 from blog.resources import FormattedDate, UrlSafe
 from flask import Blueprint, request
 from flask.ext.restful import Resource, Api, fields, marshal_with, abort
+from flask_cors import CORS
 from marshmallow import Schema, post_load
 
 blueprint = Blueprint('blog resource', __name__, url_prefix='/blog/resources')
+CORS(blueprint, origins=['https://davidshen84.github.io/', 'http://localhost:4200'])
 api = Api(blueprint)
 
 MESSAGE_OK = 'OK~'

@@ -23,3 +23,5 @@ node_modules/
 
 # unit test generated files
 /test/javascript/coverage/
+
+venv/
