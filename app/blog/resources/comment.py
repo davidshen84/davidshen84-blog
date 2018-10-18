@@ -1,13 +1,12 @@
 from __future__ import absolute_import, print_function
 
 from blog.model import Blog, Comment
-from blog.controller import require_admin
 from flask import Blueprint
 from flask import request
 from flask.ext.restful import Resource, Api, marshal_with, fields, abort
 from marshmallow import Schema
 from marshmallow import post_load
-from blog.resources import UrlSafe, FormattedDate
+from blog.resources import UrlSafe, FormattedDate, require_admin
 
 blueprint = Blueprint('blog comments', __name__, url_prefix='/blog/resources')
 api = Api(blueprint)
