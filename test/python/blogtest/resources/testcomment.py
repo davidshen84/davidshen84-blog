@@ -12,7 +12,7 @@ from blogtest.resources import with_admin
 
 class TestComment(unittest.TestCase):
     def __init__(self, *args, **kwargs):
-        super(unittest.TestCase, self).__init__(*args, **kwargs)
+        super(TestComment, self).__init__(*args, **kwargs)
 
         self.testbed = Testbed()
         self.client = resource.test_client()

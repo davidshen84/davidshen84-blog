@@ -12,7 +12,7 @@ from blogtest.resources import with_admin
 
 class TestBlogs(unittest.TestCase):
     def __init__(self, *args, **kwargs):
-        super(unittest.TestCase, self).__init__(*args, **kwargs)
+        super(TestBlogs, self).__init__(*args, **kwargs)
 
         self.testbed = Testbed()
         self.client = resource.test_client()
