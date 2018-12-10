@@ -3,7 +3,7 @@ from __future__ import absolute_import
 from blog import model
 from blog.resources import FormattedDate, UrlSafe, require_admin, simple_auth
 from flask import Blueprint, request
-from flask.ext.restful import Resource, Api, fields, marshal_with, abort
+from flask_restful import Resource, Api, fields, marshal_with, abort
 from flask_cors import CORS
 from marshmallow import Schema, post_load
 
@@ -51,7 +51,7 @@ class BlogResource(Resource):
         """
         blog_schema = BlogSchema()
         data, error = blog_schema.load(request.json)
-        if error is None:
+        if not error:
             return {'key': data.put(), 'message': MESSAGE_OK}, 201
         else:
             return None, 400

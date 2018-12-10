@@ -3,7 +3,8 @@
 __author__ = 'david'
 
 requirements = """
-Flask==0.10.1
-Flask_RESTful=0.3.5
-marshmallow==2.15.6
+Flask==1.0.2
+Flask_RESTful==0.3.6
+Flask_Cors==3.0.7
+marshmallow==2.16.3
 """

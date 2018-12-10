@@ -54,7 +54,7 @@ class TestBlogs(unittest.TestCase):
     @with_admin
     def testPostBlog(self):
         create_title = 'test create title'
-        r = self.client.post('/blog/resources/blogs/123',
+        r = self.client.post('/blog/resources/blogs/',
                              data=json.dumps({
                                  'title': create_title,
                                  'content': 'content',
