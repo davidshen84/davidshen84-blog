@@ -1,20 +1,28 @@
 /**
  * Created by david on 11/21/2015.
  *
- * define gulp build script
+ * Define gulp build script.
  */
 
+'use strict';
+
 import gulp from 'gulp';
-// import debug from 'gulp-debug';
+import del from 'del';
+import filter from 'gulp-filter';
+import replace from 'gulp-string-replace';
 
 gulp.task('copy-to-dist', () => {
-  gulp.src(['app/**',
-    '!app/app.debug.yaml',
-    '!app/lib/*.*-info', '!app/lib/*.*-info/**',
-    '!app/lib/flask/{testsuite,testsuite/**}',
-    '!app/lib/flask_restful/{testsuite,testsuite/**}',
-    '!app/lib/werkzeug/{debug,debug/**}'])
+  let appYamlFilter = filter(['app/app.yaml'], {restore: true});
+  return gulp.src([
+    'app/**',
+    '!app/lib/*.*-info/**', '!app/lib/*.*-info',
+    '!app/lib/requirements.txt'])
+    .pipe(appYamlFilter)
+    .pipe(replace('debug: True', 'debug: False'))
+    .pipe(appYamlFilter.restore)
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('build', ['copy-to-dist']);
+gulp.task('build:clean', () => del(['dist/**']));
+
+gulp.task('build', ['build:clean', 'copy-to-dist']);

@@ -5,19 +5,37 @@ api_version: 1
 threadsafe: yes
 
 handlers:
-- url: /favicon\.ico
-  static_files: static/favicon.ico
-  upload: static/favicon\.ico
+  - url: /favicon\.ico
+    static_files: static/favicon.ico
+    upload: static/favicon\.ico
 
-- url: /robots.txt
-  static_files: static/robots.txt
-  upload: static/robots\.txt
+  - url: /robots.txt
+    static_files: static/robots.txt
+    upload: static/robots\.txt
 
-- url: /blog/resources/.*
-  script: blog.resource
+  - url: /blog/resources/.*
+    script: blog.resource
+
+libraries:
+  - name: flask
+    version:  "0.12"
+  - name: jinja2
+    version: "2.6"
+  - name: pycrypto
+    version: "2.6.1"
+  - name: markupsafe
+    version: "0.23"
+  - name: werkzeug
+    version: "0.11.10"
+  - name: pytz
+    version: "2017.3"
+  - name: six
+    version: "1.9.0"
+  - name: ssl
+    version: "2.7.11"
 
 builtins:
-- remote_api: on
+  - remote_api: on
 
 env_variables:
-  debug: False
+  debug: True

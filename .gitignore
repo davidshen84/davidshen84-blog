@@ -10,18 +10,11 @@ dist/
 *.min.js
 
 # vendor libs
-app/lib/
-!app/lib/__init__.py
-app/static/lib/
+app/lib/*
+!app/lib/requirements.txt
 
 # npm and bower packages
-bower_components/
 node_modules/
 
 # intellij files
 .idea/
-
-# unit test generated files
-/test/javascript/coverage/
-
-venv/
