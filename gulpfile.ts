@@ -5,13 +5,13 @@
  */
 
 import del = require('del');
-import {dest, series, src} from 'gulp';
+import {series} from 'gulp';
 import filter = require('gulp-filter');
 import replace = require('gulp-replace');
+import {dest, src} from 'vinyl-fs';
 
 export function copyToDist() {
   const appYamlFilter = filter(['app/app.yaml'], {restore: true});
-  // noinspection JSDeprecatedSymbols, TypeScriptValidateJSTypes
   return src([
     'app/**',
     '!app/lib/*.*-info/**', '!app/lib/*.*-info',
