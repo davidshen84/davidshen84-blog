@@ -1,10 +1,11 @@
 from __future__ import absolute_import
 
-from blog import model
-from blog.resources import FormattedDate, UrlSafe, require_admin, simple_auth
 from flask import Blueprint, request
-from flask_restful import Resource, Api, fields, marshal_with, abort
+
+from blog import model
+from blog.resources import FormattedDate, UrlSafe, authorize
 from flask_cors import CORS
+from flask_restful import Resource, Api, fields, marshal_with, abort
 from marshmallow import Schema, post_load
 
 blueprint = Blueprint('blog resource', __name__, url_prefix='/blog/resources')
@@ -34,14 +35,14 @@ class BlogSchema(Schema):
 
 
 class BlogResource(Resource):
-    @simple_auth
+    @authorize(required=False, published_only=True)
     @marshal_with(resource_fields)
     def get(self, urlsafe, published_only):
         blog = model.Blog.get_by_urlsafe(urlsafe, published_only)
 
         return blog if blog else abort(404)
 
-    @require_admin
+    @authorize(audience='post')
     @marshal_with({'urlsafe': UrlSafe(attribute='key'),
                    'message': fields.String})
     def post(self):
@@ -54,9 +55,9 @@ class BlogResource(Resource):
         if not error:
             return {'key': data.put(), 'message': MESSAGE_OK}, 201
         else:
-            return None, 400
+            return error, 400
 
-    @require_admin
+    @authorize()
     def put(self, urlsafe):
         if not request.json:
             abort(500, message="No Content")
@@ -67,7 +68,7 @@ class BlogResource(Resource):
         else:
             return None, 404
 
-    @require_admin
+    @authorize()
     def delete(self, urlsafe):
         model.Blog.delete(urlsafe)
 

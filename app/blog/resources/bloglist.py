@@ -1,10 +1,13 @@
 from __future__ import absolute_import
 
-from blog.model import Blog
-from blog.resources import FormattedDate, UrlSafe, simple_auth
+import logging
+
 from flask import Blueprint, request
-from flask_restful import Resource, Api, fields, marshal_with
+
+from blog.model import Blog
+from blog.resources import FormattedDate, UrlSafe, authorize
 from flask_cors import CORS
+from flask_restful import Resource, Api, fields, marshal_with
 
 blueprint = Blueprint('blog list', __name__, url_prefix='/blog/resources')
 CORS(blueprint, origins=['https://davidshen84.github.io', 'http://localhost:4200'])
@@ -19,11 +22,12 @@ resource_fields = {
 
 
 class BlogListResource(Resource):
-    @simple_auth
+    @authorize(required=False, published_only=True)
     @marshal_with(resource_fields)
-    def get(self, published_only):
+    def get(self, published_only=True):
         query = request.args.get('query')
-        collection = Blog.get_blogs(published_only)
+        logging.debug('published_only %s', not (published_only == 'False'))
+        collection = Blog.get_blogs(published_only=not (published_only == 'False'))
 
         # a simple per character filter
         return collection if not query else dict(((blog.key.urlsafe(), blog) for blog in collection

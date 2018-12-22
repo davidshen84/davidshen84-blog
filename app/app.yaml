@@ -28,7 +28,7 @@ libraries:
   - name: werkzeug
     version: "0.11.10"
   - name: pytz
-    version: "2017.3"
+    version: "2017.2"
   - name: six
     version: "1.9.0"
   - name: ssl
@@ -41,11 +41,12 @@ env_variables:
   debug: True
   public_key: |
     -----BEGIN PUBLIC KEY-----
-    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuvjQCEuIe/iA3I2glPcg
-    VlbqP8JxPktL4J2TU3fNT/jqI6WR6VyKPicU/dYzwbs2pxAllNa3+Yfaqqw7mY7C
-    Nf9BYuewEgjGgNc8t0BBPVTT4vBgx8t5s5V/HZPU+5SRB3F86jwC6zluhtPqGGm/
-    pz3f+xfZarbNkJl1HrXuKZCdF1sh15Z+gTUOjJHBx37HUCBi/Q6cO/cf7RNfp5zk
-    4V9Q7dRMTMeDl5YfFbUMahi4TmyCHvS0WHlIqsECJfmNvj7MQv9wftlRkyY4vorv
-    QIWEvyz9tLmGe5YHXuI9PY10r+LOt99wRYL8LFmHXdC+1fv+75QeVBeUSSBahcMH
-    pwIDAQAB
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAspxDaMQjotR5gzug7u+F
+    fVgLe1tXH/Kt6JHq3A0OnBUXMTjopbnACU3BxOPRV6r27QNoMF7VO5dEbIErBNzd
+    TgOPxTtvlggDhoRQxPpr53jVWD3dHMhKQyjgP8wjvS3/44dXlfDEAn0T1DtoLPLq
+    8BO8D3lAk4xax57IdgTe7fZ92rfg1ctN7Tbf/Kj6+gmLnqJ+4TbDazD9AoE1C2qn
+    rTXHw0Ky/q672+Im2IGHkne72kKcJ9HC5oNIqMN77mHyXH7TrauQwGMYM5ao5n/s
+    D3aixmodW8u4OovkmW0XPoUdNs3SZSBJoB66lJhhc0THA+6YthRvQKobgqvm+n1W
+    0wIDAQAB
     -----END PUBLIC KEY-----
+

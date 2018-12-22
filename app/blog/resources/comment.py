@@ -1,12 +1,13 @@
 from __future__ import absolute_import, print_function
 
-from blog.model import Blog, Comment
 from flask import Blueprint
 from flask import request
+
+from blog.model import Blog, Comment
+from blog.resources import UrlSafe, FormattedDate
 from flask_restful import Resource, Api, marshal_with, fields, abort
 from marshmallow import Schema
 from marshmallow import post_load
-from blog.resources import UrlSafe, FormattedDate, require_admin
 
 blueprint = Blueprint('blog comments', __name__, url_prefix='/blog/resources')
 api = Api(blueprint)
@@ -62,7 +63,7 @@ class CommentResource(Resource):
         else:
             abort(404)
 
-    @require_admin
+    # @require_admin
     def delete(self, urlsafe):
         Comment.delete(urlsafe)
 
