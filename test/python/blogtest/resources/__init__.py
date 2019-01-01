@@ -1,6 +1,8 @@
 import os
 from functools import wraps
 
+os.environ['public_key'] = 'pk'
+
 
 def with_admin(f):
     @wraps(f)
@@ -10,4 +12,5 @@ def with_admin(f):
         os.environ['USER_IS_ADMIN'] = '0'
 
         return ret
+
     return func

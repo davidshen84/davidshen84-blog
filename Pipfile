@@ -8,6 +8,8 @@ name = "pypi"
 [dev-packages]
 "unittest2" = "*"
 pycrypto = "*"
+pytest = "*"
+mock = "*"
 
 [requires]
 python_version = "2.7"

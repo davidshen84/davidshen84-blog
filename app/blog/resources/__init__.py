@@ -24,7 +24,7 @@ class UrlSafe(fields.Raw):
         return value.urlsafe()
 
 
-def authorize(required=True, **kwargs_):
+def authorize(required=True, **decoded_kwargs):
     parser = RequestParser()
     parser.add_argument('Authorization', type=str, required=False, location='headers')
     options = {
@@ -43,21 +43,26 @@ def authorize(required=True, **kwargs_):
                 else:
                     return f(*args, **kwargs)
 
-            _, token = authorization_header.split(' ')
+            token = ''
+            try:
+                scheme, token = authorization_header.split(' ')
+                if scheme != 'Bearer':
+                    raise ValueError(scheme)
+            except ValueError:
+                abort(401, 'Invalid Authorization header')
 
             decoded = dict()
             try:
-                decoded = jwt.decode(token, public_key, algorithms='RS256', options=options, **kwargs_)
-                logging.debug(decoded)
+                decoded = jwt.decode(token, public_key, algorithms='RS256', options=options, **decoded_kwargs)
             except InvalidTokenError as e:
                 if required:
                     logging.error('JWT decode error: %s', e.message)
                     abort(401)
-            for k in decoded.keys():
-                if k not in kwargs_.keys():
-                    del decoded[k]
+
+            # Delete unknown parameters from the decoded payload.
+            for k in (k for k in decoded.keys() if k not in decoded_kwargs.keys()):
+                del decoded[k]
             kwargs.update(decoded)
-            logging.debug(kwargs)
 
             return f(*args, **kwargs)
 
