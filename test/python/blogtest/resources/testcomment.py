@@ -5,7 +5,7 @@ import json
 import unittest2 as unittest
 from google.appengine.ext.testbed import Testbed
 
-from blog import resource
+from blog import resources
 from blog.model import Blog, Comment
 from blogtest.resources import with_admin
 
@@ -15,7 +15,7 @@ class TestComment(unittest.TestCase):
         super(TestComment, self).__init__(*args, **kwargs)
 
         self.testbed = Testbed()
-        self.client = resource.test_client()
+        self.client = resources.test_client()
 
     def setUp(self):
         self.testbed.activate()

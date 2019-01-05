@@ -2,57 +2,72 @@ from __future__ import absolute_import, print_function
 
 import json
 
-import unittest2 as unittest
 from google.appengine.ext.testbed import Testbed
+from mock import patch
 
-from blog import resource
 from blog.model import Blog
-from blogtest.resources import with_admin
+from blogtest.resources import DecoratorMock
 
 
-class TestBlogs(unittest.TestCase):
-    def __init__(self, *args, **kwargs):
-        super(TestBlogs, self).__init__(*args, **kwargs)
+class TestBlogResource(object):
+    authorize_patcher = None
 
+    @classmethod
+    def setup_class(cls):
+        cls.decorator_mock = DecoratorMock()
+        cls.authorize_patcher = patch('blog.resources.authorize')
+        cls.authorize_mock = cls.authorize_patcher.start()
+        cls.authorize_mock.return_value = cls.decorator_mock
+
+        # Imports the module after it has been patched.
+        from blog.resource import app
+        cls.client = app.test_client()
+
+    @classmethod
+    def teardown_class(cls):
+        cls.authorize_patcher.stop()
+
+    def setup_method(self):
         self.testbed = Testbed()
-        self.client = resource.test_client()
-
-    def setUp(self):
         self.testbed.activate()
         self.testbed.init_datastore_v3_stub()
         self.testbed.init_memcache_stub()
 
-    def tearDown(self):
+    def teardown_method(self):
         self.testbed.deactivate()
 
-    @with_admin
-    def testGetByUrlSafe_admin(self):
+    def test_get_by_urlsafe_admin(self):
+        self.decorator_mock.published_only = False
         key = Blog.create('test', 'content', tags=['666', 'aaa'])
         r = self.client.get('/blog/resources/blogs/' + key.urlsafe())
 
-        self.assertEqual(200, r.status_code)
+        assert r.status_code == 200
         blog = json.loads(r.data)
-        self.assertEqual('test', blog['title'])
-        self.assertEqual('content', blog['content'])
-        self.assertItemsEqual(['666', 'aaa'], blog['tags'])
+        assert blog['title'] == 'test'
+        assert blog['content'] == 'content'
+        assert blog['tags'] == ['666', 'aaa']
 
-    def testGetByUrlSafe_not_admin(self):
+    def test_get_by_urlsafe_not_admin(self):
+        self.decorator_mock.published_only = True
         key = Blog.create('test', 'content', published=True)
         r = self.client.get('/blog/resources/blogs/' + key.urlsafe())
 
-        self.assertEqual(200, r.status_code)
+        assert r.status_code == 200
         blog = json.loads(r.data)
-        self.assertEqual('test', blog['title'])
-        self.assertEqual('content', blog['content'])
+        assert blog['title'] == 'test'
+        assert blog['content'] == 'content'
 
-    def testGetByUrlSafe_not_admin_404(self):
+    def test_get_by_urlsafe_not_admin_404(self):
+        self.decorator_mock.published_only = True
         key = Blog.create('test', 'content')
         r = self.client.get('/blog/resources/blogs/' + key.urlsafe())
 
-        self.assertEqual(404, r.status_code)
+        assert r.status_code == 404
 
-    @with_admin
-    def testPostBlog(self):
+    def test_post_blog(self):
+        self.decorator_mock.published_only = None
+        self.decorator_mock.authorized = True
+
         create_title = 'test create title'
         r = self.client.post('/blog/resources/blogs/',
                              data=json.dumps({
@@ -62,19 +77,21 @@ class TestBlogs(unittest.TestCase):
                              }),
                              content_type='application/json')
 
-        self.assertEqual(201, r.status_code)
+        assert r.status_code == 201
 
         data = json.loads(r.data)
-        self.assertIsNotNone(data['urlsafe'])
-        self.assertIsNotNone(data['message'])
+        assert data['urlsafe'] is not None
+        assert data['message'] is not None
 
         blog = Blog.get_by_urlsafe(data['urlsafe'], published_only=False)
-        self.assertIsNotNone(blog)
-        self.assertEqual(create_title, blog.title)
-        self.assertEqual('content', blog.content)
+        assert blog is not None
+        assert blog.title == create_title
+        assert blog.content == 'content'
 
-    @with_admin
-    def testPutBlog(self):
+    def test_put_blog(self):
+        self.decorator_mock.published_only = None
+        self.decorator_mock.authorized = True
+
         key = Blog.create('title', 'content')
         urlsafe = key.urlsafe()
 
@@ -85,14 +102,16 @@ class TestBlogs(unittest.TestCase):
                                 'tags': ['new tag']
                             }),
                             content_type='application/json')
-        self.assertEqual(200, r.status_code)
+        assert r.status_code == 200
 
         blog = Blog.get_by_urlsafe(urlsafe, False)
-        self.assertEqual('new content', blog.content)
-        self.assertItemsEqual(['new tag'], blog.tags)
+        assert blog.content == 'new content'
+        assert blog.tags == ['new tag']
 
-    @with_admin
-    def testPutBlog_publish(self):
+    def test_put_blog_publish(self):
+        self.decorator_mock.published_only = None
+        self.decorator_mock.authorized = True
+
         key = Blog.create('title', 'content')
         urlsafe = key.urlsafe()
 
@@ -101,31 +120,35 @@ class TestBlogs(unittest.TestCase):
                                 'published': True
                             }),
                             content_type='application/json')
-        self.assertEqual(200, r.status_code)
+        assert r.status_code == 200
         blog = Blog.get_by_urlsafe(urlsafe, False)
-        self.assertTrue(blog.published)
+        assert blog.published
 
-    @with_admin
-    def testPutBlog_unpublish(self):
+    def test_put_blog_unpublish(self):
+        self.decorator_mock.published_only = None
+        self.decorator_mock.authorized = True
+
         key = Blog.create('title', 'content', published=True)
         urlsafe = key.urlsafe()
 
-        self.assertTrue(key.get().published)
+        assert key.get().published
         r = self.client.put('/blog/resources/blogs/' + urlsafe,
                             data=json.dumps({
                                 'published': False
                             }),
                             content_type='application/json')
-        self.assertEqual(200, r.status_code)
+        assert r.status_code == 200
         blog = Blog.get_by_urlsafe(urlsafe, False)
-        self.assertFalse(blog.published)
+        assert not blog.published
 
-    @with_admin
-    def testDeleteBlog(self):
+    def test_delete_blog(self):
+        self.decorator_mock.published_only = None
+        self.decorator_mock.authorized = True
+
         key = Blog.create('delete me', 'bad content')
         urlsafe = key.urlsafe()
 
         r = self.client.delete('/blog/resources/blogs/' + urlsafe)
-        self.assertEqual(200, r.status_code)
+        assert r.status_code == 200
         blog = Blog.get_by_urlsafe(urlsafe)
-        self.assertIsNone(blog)
+        assert blog is None

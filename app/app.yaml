@@ -14,7 +14,7 @@ handlers:
     upload: static/robots\.txt
 
   - url: /blog/resources/.*
-    script: blog.resource
+    script: blog.resource.app
 
 libraries:
   - name: flask
