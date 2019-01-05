@@ -1,7 +1,5 @@
 from __future__ import absolute_import
 
-import logging
-
 from flask import Blueprint, request
 
 from blog.model import Blog
@@ -26,8 +24,7 @@ class BlogListResource(Resource):
     @marshal_with(resource_fields)
     def get(self, published_only=True):
         query = request.args.get('query')
-        logging.debug('published_only %s', not (published_only == 'False'))
-        collection = Blog.get_blogs(published_only=not (published_only == 'False'))
+        collection = Blog.get_blogs(published_only=published_only)
 
         # a simple per character filter
         return collection if not query else dict(((blog.key.urlsafe(), blog) for blog in collection

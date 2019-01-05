@@ -1,4 +1,4 @@
-from __future__ import absolute_import, print_function
+from __future__ import absolute_import
 
 import json
 
@@ -6,7 +6,7 @@ from google.appengine.ext.testbed import Testbed
 from mock import patch
 
 from blog.model import Blog
-from blogtest.resources import DecoratorMock
+from test.blog.resources import DecoratorMock
 
 
 class TestBlogResource(object):
