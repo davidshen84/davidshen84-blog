@@ -1,12 +1,10 @@
-from __future__ import absolute_import
-
 from flask import Blueprint, request
-
-from blog import model
-from blog.resources import FormattedDate, UrlSafe, authorize
 from flask_cors import CORS
 from flask_restful import Resource, Api, fields, marshal_with, abort
 from marshmallow import Schema, post_load
+
+from blog import model
+from blog.resources import FormattedDate, UrlSafe, authorize
 
 blueprint = Blueprint('blog resource', __name__, url_prefix='/blog/resources')
 CORS(blueprint, origins=['https://davidshen84.github.io', 'http://localhost:4200'])
@@ -31,7 +29,7 @@ class BlogSchema(Schema):
 
     @post_load
     def create_blog(self, data):
-        return model.Blog(**data)
+        raise Exception('forbidden!')
 
 
 class BlogResource(Resource):
@@ -40,7 +38,7 @@ class BlogResource(Resource):
     def get(self, urlsafe, published_only):
         blog = model.Blog.get_by_urlsafe(urlsafe, published_only)
 
-        return blog if blog else abort(404)
+        raise Exception()
 
     @authorize(audience='post')
     @marshal_with({'urlsafe': UrlSafe(attribute='key'),

@@ -1,7 +1,0 @@
-aniso8601
-click
-flask_cors
-flask_restful
-itsdangerous
-marshmallow
-pyjwt

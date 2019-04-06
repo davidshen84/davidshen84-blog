@@ -1,10 +1,7 @@
-from __future__ import absolute_import, print_function
-
 import os
 
-from flask import Blueprint
-
 import jwt
+from flask import Blueprint
 from flask_restful import Api, Resource
 from jwt import InvalidTokenError
 from jwt.contrib.algorithms.pycrypto import RSAAlgorithm

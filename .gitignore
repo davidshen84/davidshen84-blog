@@ -2,19 +2,11 @@
 *.pyo
 *~
 
-# generated files
-app/*/static/*/maps/
-app/*/static/maps/
-dist/
-*.min.css
-*.min.js
-
-# vendor libs
-app/lib/*
-!app/lib/requirements.txt
-
 # npm and bower packages
 node_modules/
 
 # intellij files
 .idea/
+
+# virtualenv packages
+venv/

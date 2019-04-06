@@ -1,15 +1,14 @@
-from __future__ import absolute_import
-
 import logging
 import os
+from datetime import datetime
 from functools import wraps
-
-from werkzeug.exceptions import abort
 
 import jwt
 from flask_restful import fields
 from flask_restful.reqparse import RequestParser
+from google.cloud.datastore import Key
 from jwt import InvalidTokenError
+from werkzeug.exceptions import abort
 
 public_key = os.environ['public_key'].encode('ascii')
 
@@ -17,6 +16,11 @@ public_key = os.environ['public_key'].encode('ascii')
 class FormattedDate(fields.Raw):
     def format(self, value):
         return format_date(value)
+
+
+class IdOrName(fields.Raw):
+    def format(self, value: Key):
+        return value.id_or_name
 
 
 class UrlSafe(fields.Raw):
@@ -71,6 +75,6 @@ def authorize(required=True, **known_kwargs):
     return decorator
 
 
-def format_date(date):
+def format_date(date: datetime):
     date_format = '%m-%d-%Y'
     return date.strftime(date_format)
