@@ -60,7 +60,7 @@ def authorize(required=True, **known_kwargs):
                 decoded = jwt.decode(token, public_key, algorithms='RS256', options=options, **known_kwargs)
             except InvalidTokenError as e:
                 if required:
-                    logging.error('JWT decode error: %s', e.message)
+                    logging.error('JWT decode error: %s', repr(e))
                     abort(401)
 
             # Delete unknown parameters from the decoded payload.

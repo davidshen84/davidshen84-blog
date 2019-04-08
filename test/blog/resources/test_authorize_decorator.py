@@ -1,11 +1,9 @@
-from __future__ import absolute_import
-
 import pytest
+from jwt import InvalidTokenError
 from mock import patch, MagicMock
 from werkzeug.exceptions import Unauthorized
 
 from blog.resources import authorize
-from jwt import InvalidTokenError
 
 
 class TestAuthorizeDecorator(object):
@@ -28,7 +26,7 @@ class TestAuthorizeDecorator(object):
             return True
 
         assert target()
-        decode_mock.assert_called_with('token', 'pk', algorithms='RS256',
+        decode_mock.assert_called_with('token', b'pk', algorithms='RS256',
                                        options={'require_nbf': True, 'require_exp': True})
 
     @patch('blog.resources.jwt.decode')
